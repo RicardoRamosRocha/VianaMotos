@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("VianaMotos.Web")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+346089a9c548b84b2827f069cbf5a92fbee86435")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cc6993652d14fb5dea0c8aa0da8c3f68a1297281")]
 [assembly: System.Reflection.AssemblyProductAttribute("VianaMotos.Web")]
 [assembly: System.Reflection.AssemblyTitleAttribute("VianaMotos.Web")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
