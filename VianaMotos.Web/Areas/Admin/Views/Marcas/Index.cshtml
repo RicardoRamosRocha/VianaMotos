@@ -1,0 +1,30 @@
+﻿@model IEnumerable<VianaMotos.Web.Models.Marca>
+
+<h1>Marcas</h1>
+
+<p>
+    <a asp-area="Admin"
+       asp-controller="Marcas"
+       asp-action="Create"
+       class="btn btn-primary">
+        Nova Marca
+    </a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Ativa</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var marca in Model)
+        {
+            <tr>
+                <td>@marca.Nome</td>
+                <td>@marca.Ativa</td>
+            </tr>
+        }
+    </tbody>
+</table>
