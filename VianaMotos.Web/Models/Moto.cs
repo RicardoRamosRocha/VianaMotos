@@ -41,4 +41,6 @@ public class Moto
     public Combustivel? Combustivel { get; set; }
 
     public ICollection<FotoMoto> Fotos { get; set; } = new List<FotoMoto>();
+
+    public ICollection<Venda> Vendas { get; set; } = new List<Venda>();
 }
