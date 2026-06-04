@@ -11,4 +11,6 @@ public class Marca
     public string Nome { get; set; } = string.Empty;
 
     public bool Ativa { get; set; } = true;
+
+    public ICollection<Moto> Motos { get; set; } = new List<Moto>();
 }
