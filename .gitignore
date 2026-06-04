@@ -4,7 +4,4 @@ obj/
 *.user
 *.suo
 TestResults/
-
 wwwroot/uploads/
-
-appsettings.Development.json
