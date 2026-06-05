@@ -48,4 +48,55 @@ public class MarcasController : Controller
 
         return RedirectToAction(nameof(Index));
     }
+
+    public async Task<IActionResult> Edit(int id)
+    {
+        var marca = await _context.Marcas.FindAsync(id);
+
+        if (marca == null)
+            return NotFound();
+
+        return View(marca);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(int id, Marca marca)
+    {
+        if (id != marca.Id)
+            return NotFound();
+
+        if (!ModelState.IsValid)
+            return View(marca);
+
+        _context.Update(marca);
+        await _context.SaveChangesAsync();
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    public async Task<IActionResult> Delete(int id)
+    {
+        var marca = await _context.Marcas.FindAsync(id);
+
+        if (marca == null)
+            return NotFound();
+
+        return View(marca);
+    }
+
+    [HttpPost, ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteConfirmed(int id)
+    {
+        var marca = await _context.Marcas.FindAsync(id);
+
+        if (marca != null)
+        {
+            _context.Marcas.Remove(marca);
+            await _context.SaveChangesAsync();
+        }
+
+        return RedirectToAction(nameof(Index));
+    }
 }
