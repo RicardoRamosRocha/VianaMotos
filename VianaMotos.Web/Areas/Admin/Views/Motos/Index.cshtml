@@ -12,6 +12,7 @@
 <table class="table table-striped">
     <thead>
         <tr>
+            <th>Foto</th>
             <th>Modelo</th>
             <th>Marca</th>
             <th>Categoria</th>
@@ -25,6 +26,18 @@
         @foreach (var moto in Model)
         {
             <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(moto.FotoPrincipal))
+                    {
+                        <img src="~/uploads/motos/@moto.FotoPrincipal"
+                             width="100"
+                             class="img-thumbnail" />
+                    }
+                    else
+                    {
+                        <span>Sem Foto</span>
+                    }
+                </td>
                 <td>@moto.Modelo</td>
                 <td>@moto.Marca?.Nome</td>
                 <td>@moto.Categoria?.Nome</td>

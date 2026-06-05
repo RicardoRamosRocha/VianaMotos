@@ -4,17 +4,23 @@ using Microsoft.EntityFrameworkCore;
 using VianaMotos.Web.Data;
 using VianaMotos.Web.Models;
 using VianaMotos.Web.ViewModels;
+using System.IO;
 
 namespace VianaMotos.Web.Areas.Admin.Controllers;
 
 [Area("Admin")]
 public class MotosController : Controller
 {
+    private readonly IWebHostEnvironment _environment;
+
     private readonly AppDbContext _context;
 
-    public MotosController(AppDbContext context)
+    public MotosController(
+    AppDbContext context,
+    IWebHostEnvironment environment)
     {
         _context = context;
+        _environment = environment;
     }
 
     public async Task<IActionResult> Index()
@@ -42,11 +48,39 @@ public class MotosController : Controller
     {
         if (!ModelState.IsValid)
         {
-            vm.Marcas = (await CarregarViewModelAsync()).Marcas;
-            vm.Categorias = (await CarregarViewModelAsync()).Categorias;
-            vm.Combustiveis = (await CarregarViewModelAsync()).Combustiveis;
+            var listas = await CarregarViewModelAsync();
+
+            vm.Marcas = listas.Marcas;
+            vm.Categorias = listas.Categorias;
+            vm.Combustiveis = listas.Combustiveis;
 
             return View(vm);
+        }
+
+        if (vm.ArquivoFoto != null && vm.ArquivoFoto.Length > 0)
+        {
+            var nomeArquivo =
+                $"{Guid.NewGuid()}{Path.GetExtension(vm.ArquivoFoto.FileName)}";
+
+            var pastaUploads = Path.Combine(
+                _environment.WebRootPath,
+                "uploads",
+                "motos");
+
+            Directory.CreateDirectory(pastaUploads);
+
+            var caminhoArquivo = Path.Combine(
+                pastaUploads,
+                nomeArquivo);
+
+            using (var stream = new FileStream(
+                caminhoArquivo,
+                FileMode.Create))
+            {
+                await vm.ArquivoFoto.CopyToAsync(stream);
+            }
+
+            vm.Moto.FotoPrincipal = nomeArquivo;
         }
 
         vm.Moto.DataCadastro = DateTime.Now;

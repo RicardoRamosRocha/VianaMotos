@@ -25,6 +25,9 @@ public class Moto
     [StringLength(2000)]
     public string? Descricao { get; set; }
 
+    [StringLength(255)]
+    public string? FotoPrincipal { get; set; }
+
     public bool Disponivel { get; set; } = true;
 
     public DateTime DataCadastro { get; set; } = DateTime.Now;

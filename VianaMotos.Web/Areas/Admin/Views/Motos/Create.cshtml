@@ -2,7 +2,9 @@
 
 <h1>Nova Moto</h1>
 
-<form asp-action="Create" method="post">
+<form asp-action="Create"
+      method="post"
+      enctype="multipart/form-data">
 
     @Html.AntiForgeryToken()
 
@@ -70,6 +72,17 @@
                class="form-check-input" />
         <label asp-for="Moto.Disponivel"
                class="form-check-label"></label>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ArquivoFoto" class="form-label">
+            Foto Principal
+        </label>
+
+        <input asp-for="ArquivoFoto"
+               type="file"
+               class="form-control"
+               accept="image/*" />
     </div>
 
     <button type="submit"
