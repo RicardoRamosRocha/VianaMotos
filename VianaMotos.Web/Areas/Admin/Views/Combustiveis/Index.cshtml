@@ -1,0 +1,44 @@
+﻿@model IEnumerable<VianaMotos.Web.Models.Combustivel>
+
+<h1>Combustíveis</h1>
+
+<p>
+    <a asp-area="Admin"
+       asp-controller="Combustiveis"
+       asp-action="Create"
+       class="btn btn-primary">
+        Novo Combustível
+    </a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Ativa</th>
+            <th width="200">Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var combustivel in Model)
+        {
+            <tr>
+                <td>@combustivel.Nome</td>
+                <td>@combustivel.Ativo</td>
+                <td>
+                    <a asp-action="Edit"
+                       asp-route-id="@combustivel.Id"
+                       class="btn btn-warning btn-sm">
+                        Editar
+                    </a>
+
+                    <a asp-action="Delete"
+                       asp-route-id="@combustivel.Id"
+                       class="btn btn-danger btn-sm">
+                        Excluir
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
