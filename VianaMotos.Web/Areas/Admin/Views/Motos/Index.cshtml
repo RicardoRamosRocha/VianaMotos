@@ -1,0 +1,36 @@
+﻿@model IEnumerable<VianaMotos.Web.Models.Moto>
+
+<h1>Motos</h1>
+
+<p>
+    <a asp-action="Create"
+       class="btn btn-primary">
+        Nova Moto
+    </a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Modelo</th>
+            <th>Marca</th>
+            <th>Categoria</th>
+            <th>Ano</th>
+            <th>Valor</th>
+            <th>Disponível</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var moto in Model)
+        {
+            <tr>
+                <td>@moto.Modelo</td>
+                <td>@moto.Marca?.Nome</td>
+                <td>@moto.Categoria?.Nome</td>
+                <td>@moto.Ano</td>
+                <td>@moto.Valor.ToString("C")</td>
+                <td>@moto.Disponivel</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,85 @@
+﻿@model VianaMotos.Web.ViewModels.MotoViewModel
+
+<h1>Nova Moto</h1>
+
+<form asp-action="Create" method="post">
+
+    @Html.AntiForgeryToken()
+
+    <div class="mb-3">
+        <label asp-for="Moto.Modelo"></label>
+        <input asp-for="Moto.Modelo" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Moto.MarcaId"></label>
+        <select asp-for="Moto.MarcaId"
+                asp-items="Model.Marcas"
+                class="form-select">
+            <option value="">Selecione</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Moto.CategoriaId"></label>
+        <select asp-for="Moto.CategoriaId"
+                asp-items="Model.Categorias"
+                class="form-select">
+            <option value="">Selecione</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Moto.CombustivelId"></label>
+        <select asp-for="Moto.CombustivelId"
+                asp-items="Model.Combustiveis"
+                class="form-select">
+            <option value="">Selecione</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Moto.Ano"></label>
+        <input asp-for="Moto.Ano" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Moto.Cor"></label>
+        <input asp-for="Moto.Cor" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Moto.Quilometragem"></label>
+        <input asp-for="Moto.Quilometragem" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Moto.Valor"></label>
+        <input asp-for="Moto.Valor" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Moto.Descricao"></label>
+        <textarea asp-for="Moto.Descricao"
+                  class="form-control"
+                  rows="4"></textarea>
+    </div>
+
+    <div class="form-check mb-3">
+        <input asp-for="Moto.Disponivel"
+               class="form-check-input" />
+        <label asp-for="Moto.Disponivel"
+               class="form-check-label"></label>
+    </div>
+
+    <button type="submit"
+            class="btn btn-success">
+        Salvar
+    </button>
+
+    <a asp-action="Index"
+       class="btn btn-secondary">
+        Voltar
+    </a>
+
+</form>
