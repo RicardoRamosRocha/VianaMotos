@@ -58,6 +58,73 @@ public class MotosController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    public async Task<IActionResult> Edit(int id)
+    {
+        var moto = await _context.Motos.FindAsync(id);
+
+        if (moto == null)
+            return NotFound();
+
+        var vm = await CarregarViewModelAsync();
+
+        vm.Moto = moto;
+
+        return View(vm);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(int id, MotoViewModel vm)
+    {
+        if (id != vm.Moto.Id)
+            return NotFound();
+
+        if (!ModelState.IsValid)
+        {
+            var listas = await CarregarViewModelAsync();
+
+            vm.Marcas = listas.Marcas;
+            vm.Categorias = listas.Categorias;
+            vm.Combustiveis = listas.Combustiveis;
+
+            return View(vm);
+        }
+
+        _context.Update(vm.Moto);
+
+        await _context.SaveChangesAsync();
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    public async Task<IActionResult> Delete(int id)
+    {
+        var moto = await _context.Motos
+            .Include(x => x.Marca)
+            .Include(x => x.Categoria)
+            .FirstOrDefaultAsync(x => x.Id == id);
+
+        if (moto == null)
+            return NotFound();
+
+        return View(moto);
+    }
+
+    [HttpPost, ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteConfirmed(int id)
+    {
+        var moto = await _context.Motos.FindAsync(id);
+
+        if (moto != null)
+        {
+            _context.Motos.Remove(moto);
+            await _context.SaveChangesAsync();
+        }
+
+        return RedirectToAction(nameof(Index));
+    }
+
     private async Task<MotoViewModel> CarregarViewModelAsync()
     {
         return new MotoViewModel
