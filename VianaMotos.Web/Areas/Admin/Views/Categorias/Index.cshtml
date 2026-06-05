@@ -1,0 +1,44 @@
+﻿@model IEnumerable<VianaMotos.Web.Models.Categoria>
+
+<h1>Categorias</h1>
+
+<p>
+    <a asp-area="Admin"
+       asp-controller="Categorias"
+       asp-action="Create"
+       class="btn btn-primary">
+        Nova Categoria
+    </a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Ativa</th>
+            <th width="200">Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var categoria in Model)
+        {
+            <tr>
+                <td>@categoria.Nome</td>
+                <td>@categoria.Ativa</td>
+                <td>
+                    <a asp-action="Edit"
+                       asp-route-id="@categoria.Id"
+                       class="btn btn-warning btn-sm">
+                        Editar
+                    </a>
+
+                    <a asp-action="Delete"
+                       asp-route-id="@categoria.Id"
+                       class="btn btn-danger btn-sm">
+                        Excluir
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
