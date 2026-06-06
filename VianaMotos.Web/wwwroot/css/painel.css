@@ -1,6 +1,4 @@
-﻿body {
-    background: #000 !important;
-}
+﻿
 
 .admin-navbar {
     background: #c40000 !important;
@@ -72,13 +70,14 @@ body {
 
 /* Fundo geral */
 body {
-    background-color: var(--viana-black);
+    background-image: url('/images/planodefundo.png');
+    background-size: cover;
     color: var(--viana-white);
 }
 
 /* Navbar */
 .navbar {
-    background-color: var(--viana-red) !important;
+    background-color: var(--viana-black) !important;
 }
 
     .navbar .nav-link,
