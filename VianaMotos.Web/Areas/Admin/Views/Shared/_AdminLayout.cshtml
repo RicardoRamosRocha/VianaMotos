@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewData["Title"] - Teste</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet"
+          href="~/css/painel.css"
+          asp-append-version="true" />
+
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg admin-navbar">
+
+        <div class="container-fluid">
+
+            <a class="navbar-brand"
+               asp-area="Admin"
+               asp-controller="Motos"
+               asp-action="Index">
+
+                <img src="~/images/VianaLogo.png"
+                     height="45" />
+
+            </a>
+
+            <div class="collapse navbar-collapse">
+
+                <ul class="navbar-nav ms-auto">
+
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           asp-area="Admin"
+                           asp-controller="Motos"
+                           asp-action="Index">
+                            Motos
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           asp-area="Admin"
+                           asp-controller="Marcas"
+                           asp-action="Index">
+                            Marcas
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           asp-area="Admin"
+                           asp-controller="Categorias"
+                           asp-action="Index">
+                            Categorias
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           asp-area=""
+                           asp-controller="Home"
+                           asp-action="Index">
+                            Ver Site
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+    <main class="container-fluid py-4">
+
+        @RenderBody()
+
+    </main>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

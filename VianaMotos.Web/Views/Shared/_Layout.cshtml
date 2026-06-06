@@ -8,17 +8,24 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/VianaMotos.Web.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/viana.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/painel.css" asp-append-version="true" />
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+    <nav class="navbar navbar-expand-lg navbar-dark viana-navbar shadow">
         <div class="container">
 
             <a class="navbar-brand fw-bold"
                asp-area=""
                asp-controller="Home"
                asp-action="Index">
-                🏍️ Viana Motos
+
+                <img src="~/images/VianaLogo.png"
+                     alt="Viana Motos"
+                     height="50"
+                     class="me-2" />
+
             </a>
 
             <button class="navbar-toggler"
@@ -30,33 +37,19 @@
 
             </button>
 
-            <div class="collapse navbar-collapse"
-                 id="menu">
+            <div class="collapse navbar-collapse" id="menu">
 
                 <ul class="navbar-nav ms-auto">
 
                     <li class="nav-item">
-                        <a class="nav-link"
-                           asp-controller="Home"
-                           asp-action="Index">
+                        <a class="nav-link" asp-controller="Home" asp-action="Index">
                             Início
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link"
-                           asp-controller="Motos"
-                           asp-action="Index">
-                            Motos
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link"
-                           asp-area="Admin"
-                           asp-controller="Motos"
-                           asp-action="Index">
-                            Painel Admin
+                        <a class="nav-link" asp-controller="Home" asp-action="Contato">
+                            Contato
                         </a>
                     </li>
 

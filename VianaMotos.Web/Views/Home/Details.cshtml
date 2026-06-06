@@ -1,0 +1,91 @@
+﻿@model VianaMotos.Web.Models.Moto
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-md-7">
+
+            @if (Model.Fotos.Any())
+            {
+                var principal = Model.Fotos
+                    .FirstOrDefault(x => x.Principal)
+                    ?? Model.Fotos.First();
+
+                <img src="~/uploads/motos/@principal.CaminhoImagem"
+                     class="img-fluid rounded shadow"
+                     style="width:100%;height:450px;object-fit:cover;" />
+
+                <div class="row">
+
+                    @foreach (var foto in Model.Fotos)
+                    {
+                        <div class="col-3 mb-3">
+                            <img src="~/uploads/motos/@foto.CaminhoImagem"
+                                 class="img-thumbnail" />
+                        </div>
+                    }
+
+                </div>
+            }
+
+        </div>
+
+        <div class="col-md-5">
+
+            <h1>@Model.Modelo</h1>
+
+            <h3 class="text-success">
+                @Model.Valor.ToString("C")
+            </h3>
+
+            <hr />
+
+            <p>
+                <strong>Marca:</strong>
+                @Model.Marca?.Nome
+            </p>
+
+            <p>
+                <strong>Categoria:</strong>
+                @Model.Categoria?.Nome
+            </p>
+
+            <p>
+                <strong>Ano:</strong>
+                @Model.Ano
+            </p>
+
+            <p>
+                <strong>Cor:</strong>
+                @Model.Cor
+            </p>
+
+            <p>
+                <strong>KM:</strong>
+                @Model.Quilometragem
+            </p>
+
+            <p>
+                <strong>Combustível:</strong>
+                @Model.Combustivel?.Nome
+            </p>
+
+            <hr />
+
+            <h5>Descrição</h5>
+
+            <p>
+                @Model.Descricao
+            </p>
+
+            <a asp-action="Index"
+               class="btn btn-secondary">
+                Voltar
+            </a>
+
+        </div>
+
+    </div>
+
+</div>

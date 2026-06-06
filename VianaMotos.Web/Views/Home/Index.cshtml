@@ -1,48 +1,73 @@
 ﻿@model IEnumerable<VianaMotos.Web.Models.Moto>
 
-<h1 class="mb-4">🏍️ Viana Motos</h1>
+<div class="container">
 
-<div class="row">
+    <div class="text-center mb-5 py-5">
 
-    @foreach (var moto in Model)
-    {
-        var foto = moto.Fotos?
-            .OrderBy(x => x.Ordem)
-            .FirstOrDefault();
+        <h1 class="display-3 fw-bold">
+            VIANA <span style="color:#c40000;">MOTOS</span>
+        </h1>
 
-        <div class="col-md-4 mb-4">
+        <p class="lead text-light">
+            As melhores motocicletas em um só lugar
+        </p>
 
-            <div class="card shadow h-100">
+    </div>
 
-                @if (foto != null)
-                {
-                    <img src="~/uploads/motos/@foto.CaminhoImagem"
-                         class="card-img-top"
-                         style="height:250px;object-fit:cover;" />
-                }
+    <div class="row g-4">
 
-                <div class="card-body">
+        @foreach (var moto in Model)
+        {
+            var fotoPrincipal = moto.Fotos?
+                .FirstOrDefault(x => x.Principal);
 
-                    <h5>@moto.Modelo</h5>
+            <div class="col-lg-4 col-md-6">
 
-                    <p class="text-muted">
-                        @moto.Marca?.Nome
-                    </p>
+                <div class="card shadow h-100">
 
-                    <h4 class="text-success">
-                        @moto.Valor.ToString("C")
-                    </h4>
+                    @if (fotoPrincipal != null)
+                    {
+                        <img src="~/uploads/motos/@fotoPrincipal.CaminhoImagem"
+                             class="card-img-top"
+                             style="height:250px;object-fit:cover;">
+                    }
 
-                    <a href="#"
-                       class="btn btn-primary w-100">
-                        Ver Detalhes
-                    </a>
+                    <div class="card-body d-flex flex-column">
+
+                        <h5 class="card-title fw-bold">
+                            @moto.Modelo
+                        </h5>
+
+                        <p class="text-muted mb-1">
+                            @moto.Marca?.Nome
+                        </p>
+
+                        <p class="mb-1">
+                            <strong>Ano:</strong> @moto.Ano
+                        </p>
+
+                        <p class="mb-3">
+                            <strong>KM:</strong> @moto.Quilometragem
+                        </p>
+
+                        <h4 class="text-success mb-3">
+                            @moto.Valor.ToString("C")
+                        </h4>
+
+                        <a asp-controller="Home"
+                           asp-action="Details"
+                           asp-route-id="@moto.Id"
+                           class="btn btn-primary mt-auto">
+                            Ver Detalhes
+                        </a>
+
+                    </div>
 
                 </div>
 
             </div>
+        }
 
-        </div>
-    }
+    </div>
 
 </div>

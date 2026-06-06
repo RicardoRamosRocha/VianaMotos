@@ -25,4 +25,19 @@ public class HomeController : Controller
 
         return View(motos);
     }
+
+    public async Task<IActionResult> Details(int id)
+    {
+        var moto = await _context.Motos
+            .Include(x => x.Marca)
+            .Include(x => x.Categoria)
+            .Include(x => x.Combustivel)
+            .Include(x => x.Fotos)
+            .FirstOrDefaultAsync(x => x.Id == id);
+
+        if (moto == null)
+            return NotFound();
+
+        return View(moto);
+    }
 }
