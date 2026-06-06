@@ -1,8 +1,48 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model IEnumerable<VianaMotos.Web.Models.Moto>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<h1 class="mb-4">🏍️ Viana Motos</h1>
+
+<div class="row">
+
+    @foreach (var moto in Model)
+    {
+        var foto = moto.Fotos?
+            .OrderBy(x => x.Ordem)
+            .FirstOrDefault();
+
+        <div class="col-md-4 mb-4">
+
+            <div class="card shadow h-100">
+
+                @if (foto != null)
+                {
+                    <img src="~/uploads/motos/@foto.CaminhoImagem"
+                         class="card-img-top"
+                         style="height:250px;object-fit:cover;" />
+                }
+
+                <div class="card-body">
+
+                    <h5>@moto.Modelo</h5>
+
+                    <p class="text-muted">
+                        @moto.Marca?.Nome
+                    </p>
+
+                    <h4 class="text-success">
+                        @moto.Valor.ToString("C")
+                    </h4>
+
+                    <a href="#"
+                       class="btn btn-primary w-100">
+                        Ver Detalhes
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+    }
+
 </div>

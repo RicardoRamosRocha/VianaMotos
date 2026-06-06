@@ -29,3 +29,83 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
+
+body {
+    background: #f5f6fa;
+}
+
+.card {
+    border: none;
+    border-radius: 15px;
+}
+
+.table {
+    background: white;
+}
+
+.navbar-brand {
+    font-size: 1.4rem;
+}
+
+.btn {
+    border-radius: 10px;
+}
+
+/* Cards */
+.card {
+    box-shadow: 0 3px 15px rgba(0,0,0,.08);
+}
+
+/* Tabelas */
+.table {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+    .table thead {
+        background: #212529;
+        color: white;
+    }
+
+/* Botões */
+.btn-primary {
+    background: #0d6efd;
+    border: none;
+}
+
+.btn-success {
+    border: none;
+}
+
+.btn-danger {
+    border: none;
+}
+
+.btn-warning {
+    border: none;
+}
+
+/* Inputs */
+.form-control,
+.form-select {
+    border-radius: 10px;
+}
+
+/* Imagens */
+.img-thumbnail {
+    border-radius: 12px;
+}
+
+/* Títulos */
+h1 {
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+/* Área administrativa */
+.admin-container {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 3px 15px rgba(0,0,0,.08);
+}

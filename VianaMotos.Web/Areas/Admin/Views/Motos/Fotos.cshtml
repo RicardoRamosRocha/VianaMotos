@@ -1,0 +1,109 @@
+﻿@model VianaMotos.Web.Models.Moto
+
+<div class="card shadow">
+    <div class="card-body">
+
+<h2>Fotos da Moto</h2>
+
+<h4>@Model.Modelo</h4>
+
+<hr />
+
+<form asp-action="AdicionarFotos"
+      asp-route-id="@Model.Id"
+      method="post"
+      enctype="multipart/form-data">
+
+    @Html.AntiForgeryToken()
+
+    <div class="mb-3">
+        <label class="form-label">
+            Adicionar Novas Fotos
+        </label>
+
+        <input name="arquivos"
+               type="file"
+               class="form-control"
+               multiple
+               accept="image/*" />
+    </div>
+
+    <button type="submit"
+            class="btn btn-success">
+        Enviar Fotos
+    </button>
+
+</form>
+
+<hr />
+
+<div class="row g-4">
+
+    @foreach (var foto in Model.Fotos.OrderBy(x => x.Ordem))
+    {
+        <div class="col-lg-3 col-md-4 col-sm-6">
+
+            <div class="card shadow-sm border-0 h-100">
+
+                <img src="~/uploads/motos/@foto.CaminhoImagem"
+                     class="card-img-top"
+                     style="height:220px;object-fit:cover;" />
+
+                <div class="card-body">
+
+                    @if (foto.Principal)
+                    {
+                        <span class="badge bg-success mb-2">
+                            ⭐ Principal
+                        </span>
+                    }
+
+                    @if (!foto.Principal)
+                    {
+                        <form asp-action="DefinirPrincipal"
+                              method="post">
+
+                            @Html.AntiForgeryToken()
+
+                            <input type="hidden" name="fotoId" value="@foto.Id" />
+                            <input type="hidden" name="motoId" value="@Model.Id" />
+
+                            <button type="submit"
+                                    class="btn btn-primary btn-sm w-100 mb-2">
+                                Definir Principal
+                            </button>
+
+                        </form>
+                    }
+
+                    <form asp-action="ExcluirFoto"
+                          method="post">
+
+                        @Html.AntiForgeryToken()
+
+                        <input type="hidden" name="fotoId" value="@foto.Id" />
+                        <input type="hidden" name="motoId" value="@Model.Id" />
+
+                        <button type="submit"
+                                class="btn btn-outline-danger btn-sm w-100">
+                            Excluir Foto
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+    }
+
+</div>
+
+        <a asp-action="Edit"
+           asp-route-id="@Model.Id"
+           class="btn btn-secondary mt-4">
+            ← Voltar para edição
+        </a>
+    </div>
+</div>

@@ -1,6 +1,8 @@
 ﻿@model IEnumerable<VianaMotos.Web.Models.Moto>
 
-<h1>Motos</h1>
+<div class="admin-container">
+
+    <h1>Motos</h1>
 
 <p>
     <a asp-action="Create"
@@ -27,17 +29,20 @@
         {
             <tr>
                 <td>
-                    @if (!string.IsNullOrEmpty(moto.FotoPrincipal))
-                    {
-                        <img src="~/uploads/motos/@moto.FotoPrincipal"
-                             width="100"
-                             class="img-thumbnail" />
-                    }
-                    else
-                    {
-                        <span>Sem Foto</span>
-                    }
-                </td>
+                   @if (moto.Fotos != null && moto.Fotos.Any())
+                   {
+                      var foto = moto.Fotos.OrderBy(x => x.Ordem).First();
+
+                      <img src="~/uploads/motos/@foto.CaminhoImagem"
+                      width="100"
+                      class="img-thumbnail" />
+                   }
+                   else
+                   {
+                   <span>Sem fotos</span>
+                   }
+                  </td>
+                   
                 <td>@moto.Modelo</td>
                 <td>@moto.Marca?.Nome</td>
                 <td>@moto.Categoria?.Nome</td>
@@ -45,10 +50,22 @@
                 <td>@moto.Valor.ToString("C")</td>
                 <td>@(moto.Disponivel ? "Sim" : "Não")</td>
                 <td>
+                    <a asp-action="Details"
+                       asp-route-id="@moto.Id"
+                       class="btn btn-info btn-sm">
+                        Detalhes
+                    </a>
+
                     <a asp-action="Edit"
                        asp-route-id="@moto.Id"
                        class="btn btn-warning btn-sm">
                         Editar
+                    </a>
+
+                    <a asp-action="Fotos"
+                       asp-route-id="@moto.Id"
+                       class="btn btn-secondary btn-sm">
+                        Fotos
                     </a>
 
                     <a asp-action="Delete"
@@ -61,3 +78,5 @@
         }
     </tbody>
 </table>
+</div>
+

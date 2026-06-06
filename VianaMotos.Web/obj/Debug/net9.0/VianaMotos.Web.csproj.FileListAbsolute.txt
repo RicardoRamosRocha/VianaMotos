@@ -143,7 +143,6 @@ C:\Projetos\VianaMotos\VianaMotos.Web\obj\Debug\net9.0\rjsmcshtml.dswa.cache.jso
 C:\Projetos\VianaMotos\VianaMotos.Web\obj\Debug\net9.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
 C:\Projetos\VianaMotos\VianaMotos.Web\obj\Debug\net9.0\scopedcss\bundle\VianaMotos.Web.styles.css
 C:\Projetos\VianaMotos\VianaMotos.Web\obj\Debug\net9.0\scopedcss\projectbundle\VianaMotos.Web.bundle.scp.css
-C:\Projetos\VianaMotos\VianaMotos.Web\obj\Debug\net9.0\compressed\dvsj3a6hkd-{0}-b9sayid5wm-b9sayid5wm.gz
 C:\Projetos\VianaMotos\VianaMotos.Web\obj\Debug\net9.0\compressed\jvikb33acm-{0}-61n19gt1b8-61n19gt1b8.gz
 C:\Projetos\VianaMotos\VianaMotos.Web\obj\Debug\net9.0\compressed\kcntc5rw4e-{0}-xtxxf3hu2r-xtxxf3hu2r.gz
 C:\Projetos\VianaMotos\VianaMotos.Web\obj\Debug\net9.0\compressed\son73094hm-{0}-c2jlpeoesf-c2jlpeoesf.gz
@@ -219,3 +218,4 @@ C:\Projetos\VianaMotos\VianaMotos.Web\obj\Debug\net9.0\compressed\yathhuflkx-{0}
 C:\Projetos\VianaMotos\VianaMotos.Web\obj\Debug\net9.0\compressed\gl1tmryvgd-{0}-jjsuc0puko-jjsuc0puko.gz
 C:\Projetos\VianaMotos\VianaMotos.Web\obj\Debug\net9.0\compressed\u3rh3t44ra-{0}-9vr69e8ynj-9vr69e8ynj.gz
 C:\Projetos\VianaMotos\VianaMotos.Web\obj\Debug\net9.0\VianaMotos.Web.sourcelink.json
+C:\Projetos\VianaMotos\VianaMotos.Web\obj\Debug\net9.0\compressed\dvsj3a6hkd-{0}-v61r8n8roe-v61r8n8roe.gz

@@ -1,31 +1,28 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using VianaMotos.Web.Models;
+using Microsoft.EntityFrameworkCore;
+using VianaMotos.Web.Data;
 
 namespace VianaMotos.Web.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
+    private readonly AppDbContext _context;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(AppDbContext context)
     {
-        _logger = logger;
+        _context = context;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        return View();
-    }
+        var motos = await _context.Motos
+            .Include(x => x.Marca)
+            .Include(x => x.Categoria)
+            .Include(x => x.Fotos)
+            .Where(x => x.Disponivel)
+            .OrderByDescending(x => x.DataCadastro)
+            .ToListAsync();
 
-    public IActionResult Privacy()
-    {
-        return View();
-    }
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        return View(motos);
     }
 }

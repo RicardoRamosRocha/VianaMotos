@@ -1,44 +1,57 @@
 ﻿@model VianaMotos.Web.Models.Moto
 
-<h1>Excluir Moto</h1>
+<div class="card shadow border-0">
 
-<div class="alert alert-danger">
-    Tem certeza que deseja excluir esta moto?
+    <div class="card-header bg-danger text-white">
+        <h3 class="mb-0">Excluir Moto</h3>
+    </div>
+
+    <div class="card-body">
+
+        <div class="alert alert-danger">
+            <strong>Atenção!</strong><br />
+            Esta ação não poderá ser desfeita.
+        </div>
+
+        <dl class="row">
+
+            <dt class="col-sm-3">Modelo</dt>
+            <dd class="col-sm-9">@Model.Modelo</dd>
+
+            <dt class="col-sm-3">Marca</dt>
+            <dd class="col-sm-9">@Model.Marca?.Nome</dd>
+
+            <dt class="col-sm-3">Categoria</dt>
+            <dd class="col-sm-9">@Model.Categoria?.Nome</dd>
+
+            <dt class="col-sm-3">Ano</dt>
+            <dd class="col-sm-9">@Model.Ano</dd>
+
+            <dt class="col-sm-3">Valor</dt>
+            <dd class="col-sm-9">
+                @Model.Valor.ToString("C")
+            </dd>
+
+        </dl>
+
+        <form asp-action="Delete" method="post">
+
+            @Html.AntiForgeryToken()
+
+            <input type="hidden" asp-for="Id" />
+
+            <button type="submit"
+                    class="btn btn-danger">
+                🗑 Confirmar Exclusão
+            </button>
+
+            <a asp-action="Index"
+               class="btn btn-secondary">
+                Voltar
+            </a>
+
+        </form>
+
+    </div>
+
 </div>
-
-<dl class="row">
-
-    <dt class="col-sm-2">Modelo</dt>
-    <dd class="col-sm-10">@Model.Modelo</dd>
-
-    <dt class="col-sm-2">Marca</dt>
-    <dd class="col-sm-10">@Model.Marca?.Nome</dd>
-
-    <dt class="col-sm-2">Categoria</dt>
-    <dd class="col-sm-10">@Model.Categoria?.Nome</dd>
-
-    <dt class="col-sm-2">Ano</dt>
-    <dd class="col-sm-10">@Model.Ano</dd>
-
-    <dt class="col-sm-2">Valor</dt>
-    <dd class="col-sm-10">@Model.Valor.ToString("C")</dd>
-
-</dl>
-
-<form asp-action="Delete" method="post">
-
-    @Html.AntiForgeryToken()
-
-    <input type="hidden" asp-for="Id" />
-
-    <button type="submit"
-            class="btn btn-danger">
-        Confirmar Exclusão
-    </button>
-
-    <a asp-action="Index"
-       class="btn btn-secondary">
-        Cancelar
-    </a>
-
-</form>

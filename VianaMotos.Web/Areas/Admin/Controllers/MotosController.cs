@@ -12,36 +12,35 @@ namespace VianaMotos.Web.Areas.Admin.Controllers;
 public class MotosController : Controller
 {
     private readonly IWebHostEnvironment _environment;
-
     private readonly AppDbContext _context;
 
-    public MotosController(
-    AppDbContext context,
-    IWebHostEnvironment environment)
+    public MotosController(AppDbContext context, IWebHostEnvironment environment)
     {
         _context = context;
         _environment = environment;
     }
 
+    // LISTA
     public async Task<IActionResult> Index()
     {
         var motos = await _context.Motos
-            .Include(x => x.Marca)
-            .Include(x => x.Categoria)
-            .Include(x => x.Combustivel)
-            .OrderByDescending(x => x.DataCadastro)
-            .ToListAsync();
-
+          .Include(x => x.Marca)
+          .Include(x => x.Categoria)
+          .Include(x => x.Combustivel)
+          .Include(x => x.Fotos)
+          .OrderByDescending(x => x.DataCadastro)
+          .ToListAsync();
         return View(motos);
     }
 
+    // CREATE GET
     public async Task<IActionResult> Create()
     {
         var vm = await CarregarViewModelAsync();
-
         return View(vm);
     }
 
+    // CREATE POST
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(MotoViewModel vm)
@@ -57,11 +56,15 @@ public class MotosController : Controller
             return View(vm);
         }
 
-        if (vm.ArquivoFoto != null && vm.ArquivoFoto.Length > 0)
-        {
-            var nomeArquivo =
-                $"{Guid.NewGuid()}{Path.GetExtension(vm.ArquivoFoto.FileName)}";
+        vm.Moto.DataCadastro = DateTime.Now;
 
+        // 1. SALVA MOTO PRIMEIRO (para gerar ID)
+        _context.Motos.Add(vm.Moto);
+        await _context.SaveChangesAsync();
+
+        // 2. UPLOAD MÚLTIPLO DE FOTOS
+        if (vm.ArquivosFotos != null && vm.ArquivosFotos.Count > 0)
+        {
             var pastaUploads = Path.Combine(
                 _environment.WebRootPath,
                 "uploads",
@@ -69,47 +72,57 @@ public class MotosController : Controller
 
             Directory.CreateDirectory(pastaUploads);
 
-            var caminhoArquivo = Path.Combine(
-                pastaUploads,
-                nomeArquivo);
+            int ordem = 1;
 
-            using (var stream = new FileStream(
-                caminhoArquivo,
-                FileMode.Create))
+            foreach (var foto in vm.ArquivosFotos)
             {
-                await vm.ArquivoFoto.CopyToAsync(stream);
+                var nomeArquivo =
+                    $"{Guid.NewGuid()}{Path.GetExtension(foto.FileName)}";
+
+                var caminhoArquivo = Path.Combine(pastaUploads, nomeArquivo);
+
+                using (var stream = new FileStream(caminhoArquivo, FileMode.Create))
+                {
+                    await foto.CopyToAsync(stream);
+                }
+
+                _context.FotosMoto.Add(new FotoMoto
+                {
+                    MotoId = vm.Moto.Id,
+                    CaminhoImagem = nomeArquivo,
+                    Principal = ordem == 1,
+                    Ordem = ordem++
+                });
             }
 
-            vm.Moto.FotoPrincipal = nomeArquivo;
+            await _context.SaveChangesAsync();
         }
-
-        vm.Moto.DataCadastro = DateTime.Now;
-
-        _context.Motos.Add(vm.Moto);
-
-        await _context.SaveChangesAsync();
 
         return RedirectToAction(nameof(Index));
     }
 
+    // EDIT GET
     public async Task<IActionResult> Edit(int id)
     {
-        var moto = await _context.Motos.FindAsync(id);
+        var moto = await _context.Motos
+          .Include(x => x.Fotos)
+          .FirstOrDefaultAsync(x => x.Id == id);
 
         if (moto == null)
             return NotFound();
 
         var vm = await CarregarViewModelAsync();
-
         vm.Moto = moto;
 
         return View(vm);
     }
 
+    // EDIT POST
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int id, MotoViewModel vm)
     {
+        Console.WriteLine("EDIT EXECUTOU");
         if (id != vm.Moto.Id)
             return NotFound();
 
@@ -124,13 +137,89 @@ public class MotosController : Controller
             return View(vm);
         }
 
-        _context.Update(vm.Moto);
+        var motoBanco = await _context.Motos
+            .Include(x => x.Fotos)
+            .FirstOrDefaultAsync(x => x.Id == id);
+
+        if (motoBanco == null)
+            return NotFound();
+
+        // Atualiza dados
+        motoBanco.Modelo = vm.Moto.Modelo;
+        motoBanco.MarcaId = vm.Moto.MarcaId;
+        motoBanco.CategoriaId = vm.Moto.CategoriaId;
+        motoBanco.CombustivelId = vm.Moto.CombustivelId;
+        motoBanco.Ano = vm.Moto.Ano;
+        motoBanco.Cor = vm.Moto.Cor;
+        motoBanco.Quilometragem = vm.Moto.Quilometragem;
+        motoBanco.Valor = vm.Moto.Valor;
+        motoBanco.Descricao = vm.Moto.Descricao;
+        motoBanco.Disponivel = vm.Moto.Disponivel;
+
+        Console.WriteLine("EDIT EXECUTOU");
+
+        Console.WriteLine(
+            vm.ArquivosFotos == null
+                ? "ArquivosFotos = NULL"
+                : $"ArquivosFotos = {vm.ArquivosFotos.Count}");
+
+
+            // Upload múltiplo
+            if (vm.ArquivosFotos != null && vm.ArquivosFotos.Count > 0)
+        {
+            var pastaUploads = Path.Combine(
+                _environment.WebRootPath,
+                "uploads",
+                "motos");
+
+            Directory.CreateDirectory(pastaUploads);
+
+            int ordem = (motoBanco.Fotos?.Count ?? 0) + 1;
+
+            foreach (var foto in vm.ArquivosFotos)
+            {
+                var nomeArquivo =
+                    $"{Guid.NewGuid()}{Path.GetExtension(foto.FileName)}";
+
+                var caminhoArquivo = Path.Combine(pastaUploads, nomeArquivo);
+
+                using (var stream = new FileStream(caminhoArquivo, FileMode.Create))
+                {
+                    await foto.CopyToAsync(stream);
+                }
+
+                _context.FotosMoto.Add(new FotoMoto
+                {
+                    MotoId = motoBanco.Id,
+                    CaminhoImagem = nomeArquivo,
+                    Principal = false,
+                    Ordem = ordem++
+                });
+            }
+        }
 
         await _context.SaveChangesAsync();
 
         return RedirectToAction(nameof(Index));
     }
 
+    // DETAILS
+    public async Task<IActionResult> Details(int id)
+    {
+        var moto = await _context.Motos
+            .Include(x => x.Marca)
+            .Include(x => x.Categoria)
+            .Include(x => x.Combustivel)
+            .Include(x => x.Fotos.OrderBy(f => f.Ordem))
+            .FirstOrDefaultAsync(x => x.Id == id);
+
+        if (moto == null)
+            return NotFound();
+
+        return View(moto);
+    }
+
+    // DELETE GET
     public async Task<IActionResult> Delete(int id)
     {
         var moto = await _context.Motos
@@ -144,6 +233,7 @@ public class MotosController : Controller
         return View(moto);
     }
 
+    // DELETE POST
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
@@ -159,6 +249,7 @@ public class MotosController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    // CARREGAR DROPDOWNS
     private async Task<MotoViewModel> CarregarViewModelAsync()
     {
         return new MotoViewModel
@@ -193,5 +284,168 @@ public class MotosController : Controller
                 })
                 .ToListAsync()
         };
+
+    }
+
+    public async Task<IActionResult> Fotos(int id)
+    {
+        var moto = await _context.Motos
+            .Include(x => x.Fotos)
+            .FirstOrDefaultAsync(x => x.Id == id);
+
+        if (moto == null)
+            return NotFound();
+
+        return View(moto);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> AdicionarFotos(
+    int id,
+    List<IFormFile> arquivos)
+    {
+        var moto = await _context.Motos
+            .Include(x => x.Fotos)
+            .FirstOrDefaultAsync(x => x.Id == id);
+
+        if (moto == null)
+            return NotFound();
+
+        if (arquivos != null && arquivos.Count > 0)
+        {
+            var pastaUploads = Path.Combine(
+                _environment.WebRootPath,
+                "uploads",
+                "motos");
+
+            Directory.CreateDirectory(pastaUploads);
+
+            int ordem = moto.Fotos.Count + 1;
+
+            foreach (var arquivo in arquivos)
+            {
+                var nomeArquivo =
+                    $"{Guid.NewGuid()}{Path.GetExtension(arquivo.FileName)}";
+
+                var caminhoArquivo =
+                    Path.Combine(pastaUploads, nomeArquivo);
+
+                using (var stream = new FileStream(
+                    caminhoArquivo,
+                    FileMode.Create))
+                {
+                    await arquivo.CopyToAsync(stream);
+                }
+
+                _context.FotosMoto.Add(new FotoMoto
+                {
+                    MotoId = moto.Id,
+                    CaminhoImagem = nomeArquivo,
+                    Principal = false,
+                    Ordem = ordem++
+                });
+            }
+
+            await _context.SaveChangesAsync();
+        }
+
+        return RedirectToAction(nameof(Fotos), new { id });
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DefinirPrincipal(
+    int fotoId,
+    int motoId)
+    {
+        var fotos = await _context.FotosMoto
+            .Where(x => x.MotoId == motoId)
+            .ToListAsync();
+
+        foreach (var foto in fotos)
+        {
+            foto.Principal = false;
+        }
+
+        var fotoPrincipal = fotos
+            .FirstOrDefault(x => x.Id == fotoId);
+
+        if (fotoPrincipal != null)
+        {
+            fotoPrincipal.Principal = true;
+
+            var moto = await _context.Motos
+                .FirstOrDefaultAsync(x => x.Id == motoId);
+
+            if (moto != null)
+            {
+                moto.FotoPrincipal =
+                    fotoPrincipal.CaminhoImagem;
+            }
+        }
+
+        await _context.SaveChangesAsync();
+
+        return RedirectToAction(nameof(Fotos),
+            new { id = motoId });
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ExcluirFoto(
+    int fotoId,
+    int motoId)
+    {
+        var foto = await _context.FotosMoto
+            .FirstOrDefaultAsync(x => x.Id == fotoId);
+
+        if (foto == null)
+            return RedirectToAction(nameof(Fotos),
+                new { id = motoId });
+
+        // Apagar arquivo físico
+        var caminhoArquivo = Path.Combine(
+            _environment.WebRootPath,
+            "uploads",
+            "motos",
+            foto.CaminhoImagem);
+
+        if (System.IO.File.Exists(caminhoArquivo))
+            System.IO.File.Delete(caminhoArquivo);
+
+        bool eraPrincipal = foto.Principal;
+
+        _context.FotosMoto.Remove(foto);
+
+        await _context.SaveChangesAsync();
+
+        // Se excluiu a principal, escolhe outra
+        if (eraPrincipal)
+        {
+            var novaPrincipal = await _context.FotosMoto
+                .Where(x => x.MotoId == motoId)
+                .OrderBy(x => x.Ordem)
+                .FirstOrDefaultAsync();
+
+            if (novaPrincipal != null)
+            {
+                novaPrincipal.Principal = true;
+
+                var moto = await _context.Motos
+                    .FindAsync(motoId);
+
+                if (moto != null)
+                {
+                    moto.FotoPrincipal =
+                        novaPrincipal.CaminhoImagem;
+                }
+
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        return RedirectToAction(nameof(Fotos),
+            new { id = motoId });
     }
 }

@@ -1,12 +1,30 @@
 ﻿@model VianaMotos.Web.ViewModels.MotoViewModel
 
-<h1>Editar Moto</h1>
+<div asp-validation-summary="All" class="text-danger"></div>
 
-<form asp-action="Edit" method="post">
+<div class="card shadow-sm">
+    <div class="card-body">
+
+        <h1 class="mb-4">Editar Moto</h1>
+
+
+<form asp-action="Edit"
+      method="post"
+      enctype="multipart/form-data">
 
     @Html.AntiForgeryToken()
 
     <input type="hidden" asp-for="Moto.Id" />
+    <input type="hidden" asp-for="Moto.FotoPrincipal" />
+
+    @if (!string.IsNullOrEmpty(Model.Moto.FotoPrincipal))
+    {
+        <div class="mb-3">
+            <img src="~/uploads/motos/@Model.Moto.FotoPrincipal"
+                 width="200"
+                 class="img-thumbnail" />
+        </div>
+    }
 
     <div class="mb-3">
         <label asp-for="Moto.Modelo"></label>
@@ -74,6 +92,48 @@
                class="form-check-label"></label>
     </div>
 
+    <div class="mb-3">
+        <label class="form-label">
+            Fotos da Moto
+        </label>
+
+        <input asp-for="ArquivosFotos"
+               type="file"
+               class="form-control"
+               accept="image/*"
+               multiple />
+    </div>
+
+    @if (Model.Moto.Fotos != null && Model.Moto.Fotos.Any())
+    {
+        <hr />
+
+        <h4>Fotos Cadastradas</h4>
+
+        <div class="row">
+            @foreach (var foto in Model.Moto.Fotos.OrderBy(x => x.Ordem))
+            {
+                <div class="col-md-3 mb-3">
+
+                    @if (foto.Principal)
+                    {
+                        <span class="badge bg-success mb-2">
+                            Principal
+                        </span>
+                    }
+
+                    <img src="~/uploads/motos/@foto.CaminhoImagem"
+                         class="img-thumbnail"
+                         style="height:180px;width:100%;object-fit:cover;" />
+
+                </div>
+            }
+        </div>
+    }
+
+   
+    
+
     <button type="submit"
             class="btn btn-success">
         Salvar
@@ -85,3 +145,5 @@
     </a>
 
 </form>
+    </div>
+</div>

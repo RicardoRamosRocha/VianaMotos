@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using VianaMotos.Web.Models;
 using Microsoft.AspNetCore.Http;
+using VianaMotos.Web.Models;
 
 namespace VianaMotos.Web.ViewModels;
 
@@ -8,7 +8,8 @@ public class MotoViewModel
 {
     public Moto Moto { get; set; } = new();
 
-    public IFormFile? ArquivoFoto { get; set; }
+    // 🔥 MÚLTIPLAS FOTOS
+    public List<IFormFile>? ArquivosFotos { get; set; }
 
     public IEnumerable<SelectListItem> Marcas { get; set; }
         = Enumerable.Empty<SelectListItem>();
@@ -18,5 +19,4 @@ public class MotoViewModel
 
     public IEnumerable<SelectListItem> Combustiveis { get; set; }
         = Enumerable.Empty<SelectListItem>();
-    
 }

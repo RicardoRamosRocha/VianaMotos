@@ -1,0 +1,72 @@
+﻿@model VianaMotos.Web.Models.Moto
+
+<h1>@Model.Modelo</h1>
+
+<div class="row">
+
+    <!-- FOTO PRINCIPAL -->
+    <div class="col-md-8">
+
+        @if (Model.Fotos != null && Model.Fotos.Any())
+        {
+            var fotoPrincipal = Model.Fotos.FirstOrDefault(x => x.Principal)
+                                ?? Model.Fotos.OrderBy(x => x.Ordem).First();
+
+            <img id="mainImage"
+                 src="~/uploads/motos/@fotoPrincipal.CaminhoImagem"
+                 class="img-fluid rounded mb-3"
+                 style="max-height: 450px; object-fit: cover;" />
+
+            <!-- MINIATURAS -->
+            <div class="d-flex gap-2 flex-wrap">
+
+                @foreach (var foto in Model.Fotos.OrderBy(x => x.Ordem))
+                {
+                    <img src="~/uploads/motos/@foto.CaminhoImagem"
+                         class="img-thumbnail"
+                         style="width: 100px; height: 80px; object-fit: cover; cursor: pointer;"
+                         onclick="trocarImagem('@foto.CaminhoImagem')" />
+                }
+
+            </div>
+        }
+        else
+        {
+            <p>Sem imagens cadastradas.</p>
+        }
+
+    </div>
+
+    <!-- DADOS DA MOTO -->
+    <div class="col-md-4">
+
+        <h3>Detalhes</h3>
+
+        <p><strong>Marca:</strong> @Model.Marca?.Nome</p>
+        <p><strong>Categoria:</strong> @Model.Categoria?.Nome</p>
+        <p><strong>Combustível:</strong> @Model.Combustivel?.Nome</p>
+        <p><strong>Ano:</strong> @Model.Ano</p>
+        <p><strong>Cor:</strong> @Model.Cor</p>
+        <p><strong>KM:</strong> @Model.Quilometragem</p>
+
+        <h2 class="text-success">
+            @Model.Valor.ToString("C")
+        </h2>
+
+        <p>@Model.Descricao</p>
+
+        <a asp-action="Index"
+           class="btn btn-secondary">
+            Voltar
+        </a>
+
+    </div>
+
+</div>
+
+<!-- SCRIPT TROCA IMAGEM -->
+<script>
+    function trocarImagem(imagem) {
+        document.getElementById("mainImage").src = "/uploads/motos/" + imagem;
+    }
+</script>
