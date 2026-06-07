@@ -6,31 +6,41 @@
 
 /* Fundo geral */
 body {
-    background-color: var(--viana-black);
+    background-color: #000;
     color: var(--viana-white);
 }
 
-/* Navbar */
-.navbar {
-    background-color: var(--viana-red) !important;
+/* Navbar pública */
+.viana-navbar {
+    background: var(--viana-red);
+    border-bottom: 3px solid var(--viana-white);
 }
 
-    .navbar .nav-link,
-    .navbar .navbar-brand {
+    .viana-navbar .navbar-brand {
         color: var(--viana-white) !important;
-        font-weight: 600;
+        font-weight: 700;
     }
 
-/* Título principal */
+    .viana-navbar .nav-link {
+        color: var(--viana-white) !important;
+        font-weight: 600;
+        transition: .3s;
+    }
+
+        .viana-navbar .nav-link:hover {
+            color: #000 !important;
+        }
+
+/* Hero */
 .display-4 {
     color: var(--viana-white);
     font-weight: 700;
 }
 
-/* Cards */
+/* Cards das motos */
 .card {
-    background-color: #1a1a1a;
-    border: 1px solid #2a2a2a;
+    background-color: #111;
+    border: 1px solid #222;
     color: var(--viana-white);
     transition: .3s;
 }
@@ -40,87 +50,50 @@ body {
         border-color: var(--viana-red);
     }
 
+.card-title {
+    color: var(--viana-white);
+}
+
+.card-img-top {
+    border-bottom: 3px solid var(--viana-red);
+}
+
 /* Textos */
 .text-muted {
-    color: #b5b5b5 !important;
+    color: #cfcfcf !important;
 }
 
-/* Preço */
+/* Preços */
 .text-success {
     color: var(--viana-red) !important;
+    font-weight: 700;
 }
 
-/* Botão */
+/* Botões */
 .btn-primary {
     background-color: var(--viana-red);
     border-color: var(--viana-red);
 }
 
     .btn-primary:hover {
-        background-color: #a30000;
-        border-color: #a30000;
+        background-color: #a00000;
+        border-color: #a00000;
     }
 
-/* Imagens */
-.card-img-top {
-    border-bottom: 3px solid var(--viana-red);
+/* Galeria de fotos */
+.img-thumbnail {
+    border-radius: 12px;
+    transition: .3s;
 }
+
+    .img-thumbnail:hover {
+        transform: scale(1.03);
+    }
 
 /* Rodapé */
 footer {
     background-color: #111;
     color: white;
     border-top: 2px solid var(--viana-red);
+    padding: 20px 0;
 }
-
-.viana-navbar {
-    background: #c40000;
-    border-bottom: 3px solid #ffffff;
-}
-
-    .viana-navbar .navbar-brand {
-        color: #fff !important;
-    }
-
-    .viana-navbar .nav-link {
-        color: #fff !important;
-        font-weight: 600;
-        transition: .3s;
-    }
-
-        .viana-navbar .nav-link:hover {
-            color: #000 !important;
-        }
-
-    .viana-navbar .navbar-toggler {
-        border-color: rgba(255,255,255,.5);
-    }
-
-body {
-    background-color: #000;
-    color: #fff;
-}
-
-.card {
-    background-color: #111;
-    color: #fff;
-    border: 1px solid #222;
-}
-
-.card-title {
-    color: #fff;
-}
-
-.text-muted {
-    color: #cfcfcf !important;
-}
-
-.btn-primary {
-    background-color: #c40000;
-    border-color: #c40000;
-}
-
-    .btn-primary:hover {
-        background-color: #a00000;
-        border-color: #a00000;
-    }

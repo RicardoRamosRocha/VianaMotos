@@ -1,0 +1,91 @@
+﻿@model VianaMotos.Web.Models.Cliente
+
+<div class="card shadow-lg border-0">
+    <div class="card-body p-4">
+
+        <h2 class="fw-bold mb-4">
+            Cadastro de Cliente
+        </h2>
+
+        <form asp-action="Create" method="post">
+
+            @Html.AntiForgeryToken()
+
+            <div asp-validation-summary="All"
+                 class="text-danger mb-3">
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Nome" class="form-label"></label>
+                    <input asp-for="Nome"
+                           class="form-control form-control-lg" />
+                    <span asp-validation-for="Nome" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Cpf" class="form-label"></label>
+                    <input asp-for="Cpf"
+                           class="form-control form-control-lg" />
+                    <span asp-validation-for="Cpf" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Telefone" class="form-label"></label>
+                    <input asp-for="Telefone"
+                           class="form-control form-control-lg" />
+                    <span asp-validation-for="Telefone" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email"
+                           class="form-control form-control-lg" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-8 mb-3">
+                    <label asp-for="Endereco" class="form-label"></label>
+                    <input asp-for="Endereco"
+                           class="form-control form-control-lg" />
+                </div>
+
+                <div class="col-md-3 mb-3">
+                    <label asp-for="Cidade" class="form-label"></label>
+                    <input asp-for="Cidade"
+                           class="form-control form-control-lg" />
+                </div>
+
+                <div class="col-md-1 mb-3">
+                    <label asp-for="Estado" class="form-label"></label>
+                    <input asp-for="Estado"
+                           class="form-control form-control-lg text-uppercase"
+                           maxlength="2" />
+                </div>
+
+            </div>
+
+            <div class="mt-4">
+
+                <button type="submit"
+                        class="btn btn-success btn-lg">
+                    Salvar Cliente
+                </button>
+
+                <a asp-action="Index"
+                   class="btn btn-outline-secondary btn-lg">
+                    Voltar
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+

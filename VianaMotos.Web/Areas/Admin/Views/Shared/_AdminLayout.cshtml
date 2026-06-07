@@ -8,11 +8,9 @@
     <title>@ViewData["Title"] - Teste</title>
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-
-    <link rel="stylesheet"
-          href="~/css/painel.css"
-          asp-append-version="true" />
-
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/painel.css" asp-append-version="true" />
+    
 </head>
 
 <body>
@@ -34,6 +32,15 @@
             <div class="collapse navbar-collapse">
 
                 <ul class="navbar-nav ms-auto">
+
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           asp-area="Admin"
+                           asp-controller="Clientes"
+                           asp-action="Index">
+                            Clientes
+                        </a>
+                    </li>
 
                     <li class="nav-item">
                         <a class="nav-link"

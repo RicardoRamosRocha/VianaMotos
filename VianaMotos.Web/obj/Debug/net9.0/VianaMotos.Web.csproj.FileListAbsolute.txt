@@ -219,5 +219,5 @@ C:\Projetos\VianaMotos\VianaMotos.Web\obj\Debug\net9.0\compressed\gl1tmryvgd-{0}
 C:\Projetos\VianaMotos\VianaMotos.Web\obj\Debug\net9.0\compressed\u3rh3t44ra-{0}-9vr69e8ynj-9vr69e8ynj.gz
 C:\Projetos\VianaMotos\VianaMotos.Web\obj\Debug\net9.0\VianaMotos.Web.sourcelink.json
 C:\Projetos\VianaMotos\VianaMotos.Web\obj\Debug\net9.0\compressed\dvsj3a6hkd-{0}-6osqmaskgw-6osqmaskgw.gz
-C:\Projetos\VianaMotos\VianaMotos.Web\obj\Debug\net9.0\compressed\db22i3hsax-{0}-p4d9p1qy3i-p4d9p1qy3i.gz
-C:\Projetos\VianaMotos\VianaMotos.Web\obj\Debug\net9.0\compressed\z4zdfa20jg-{0}-on8wr69wq4-on8wr69wq4.gz
+C:\Projetos\VianaMotos\VianaMotos.Web\obj\Debug\net9.0\compressed\z4zdfa20jg-{0}-4v4veynw6x-4v4veynw6x.gz
+C:\Projetos\VianaMotos\VianaMotos.Web\obj\Debug\net9.0\compressed\db22i3hsax-{0}-rl06xt03wo-rl06xt03wo.gz

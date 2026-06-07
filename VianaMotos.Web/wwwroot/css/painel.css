@@ -1,18 +1,19 @@
-﻿
-
-.admin-navbar {
-    background: #c40000 !important;
-    min-height: 80px;
+﻿:root {
+    --viana-black: #0d0d0d;
+    --viana-red: #c40000;
+    --viana-white: #ffffff;
 }
 
-
+/* Layout */
 body {
     background: #111;
     color: #fff;
 }
 
+/* Navbar Admin */
 .admin-navbar {
-    background: #c40000;
+    background: #c40000 !important;
+    min-height: 80px;
 }
 
     .admin-navbar .nav-link {
@@ -24,18 +25,33 @@ body {
             color: #ffdede !important;
         }
 
+/* Conteúdo */
 .admin-container {
     background: #1a1a1a;
     padding: 25px;
     border-radius: 12px;
 }
 
+/* Cards */
+.card {
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    color: white;
+    transition: .3s;
+}
+
+    .card:hover {
+        transform: translateY(-3px);
+        border-color: var(--viana-red);
+    }
+
+/* Tabelas */
 .admin-table {
     color: white;
 }
 
     .admin-table thead {
-        background: #c40000;
+        background: var(--viana-red);
     }
 
     .admin-table th {
@@ -51,8 +67,9 @@ body {
         background: #222;
     }
 
+/* Botões */
 .btn-viana {
-    background: #c40000;
+    background: var(--viana-red);
     color: white;
     border: none;
 }
@@ -61,130 +78,3 @@ body {
         background: #a00000;
         color: white;
     }
-
-:root {
-    --viana-black: #0d0d0d;
-    --viana-red: #c40000;
-    --viana-white: #ffffff;
-}
-
-/* Fundo geral */
-body {
-    background-image: url('/images/planodefundo.png');
-    background-size: cover;
-    color: var(--viana-white);
-}
-
-/* Navbar */
-.navbar {
-    background-color: var(--viana-black) !important;
-}
-
-    .navbar .nav-link,
-    .navbar .navbar-brand {
-        color: var(--viana-white) !important;
-        font-weight: 600;
-    }
-
-/* Título principal */
-.display-4 {
-    color: var(--viana-white);
-    font-weight: 700;
-}
-
-/* Cards */
-.card {
-    background-color: #1a1a1a;
-    border: 1px solid #2a2a2a;
-    color: var(--viana-white);
-    transition: .3s;
-}
-
-    .card:hover {
-        transform: translateY(-5px);
-        border-color: var(--viana-red);
-    }
-
-/* Textos */
-.text-muted {
-    color: #b5b5b5 !important;
-}
-
-/* Preço */
-.text-success {
-    color: var(--viana-red) !important;
-}
-
-/* Botão */
-.btn-primary {
-    background-color: var(--viana-red);
-    border-color: var(--viana-red);
-}
-
-    .btn-primary:hover {
-        background-color: #a30000;
-        border-color: #a30000;
-    }
-
-/* Imagens */
-.card-img-top {
-    border-bottom: 3px solid var(--viana-red);
-}
-
-/* Rodapé */
-footer {
-    background-color: #111;
-    color: white;
-    border-top: 2px solid var(--viana-red);
-}
-
-.viana-navbar {
-    background: #c40000;
-    border-bottom: 3px solid #ffffff;
-}
-
-    .viana-navbar .navbar-brand {
-        color: #fff !important;
-    }
-
-    .viana-navbar .nav-link {
-        color: #fff !important;
-        font-weight: 600;
-        transition: .3s;
-    }
-
-        .viana-navbar .nav-link:hover {
-            color: #000 !important;
-        }
-
-    .viana-navbar .navbar-toggler {
-        border-color: rgba(255,255,255,.5);
-    }
-
-body {
-    background-color: #000;
-    color: #fff;
-}
-
-.card {
-    background-color: #111;
-    color: #fff;
-    border: 1px solid #222;
-}
-
-.card-title {
-    color: #fff;
-}
-
-.text-muted {
-    color: #cfcfcf !important;
-}
-
-.btn-primary {
-    background-color: #c40000;
-    border-color: #c40000;
-}
-
-    .btn-primary:hover {
-        background-color: #a00000;
-        border-color: #a00000;

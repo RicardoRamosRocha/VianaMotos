@@ -1,0 +1,74 @@
+﻿@model IEnumerable<VianaMotos.Web.Models.Cliente>
+
+<h1>Clientes</h1>
+
+<p>
+    <a asp-action="Create"
+       class="btn btn-primary">
+        Novo Cliente
+    </a>
+</p>
+
+<table class="table table-striped">
+
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>CPF</th>
+            <th>Telefone</th>
+            <th>Email</th>
+            <th>Cidade</th>
+            <th>Status</th>
+            <th width="180">Ações</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var cliente in Model)
+        {
+            <tr>
+
+                <td>@cliente.Nome</td>
+                <td>@cliente.Cpf</td>
+                <td>@cliente.Telefone</td>
+                <td>@cliente.Email</td>
+                <td>@cliente.Cidade</td>
+
+                <td>
+                    @if (cliente.Ativo)
+                    {
+                        <span class="badge bg-success">
+                            Ativo
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">
+                            Inativo
+                        </span>
+                    }
+                </td>
+
+                <td>
+
+                    <a asp-action="Edit"
+                       asp-route-id="@cliente.Id"
+                       class="btn btn-warning btn-sm">
+                        Editar
+                    </a>
+
+                    <a asp-action="Delete"
+                       asp-route-id="@cliente.Id"
+                       class="btn btn-danger btn-sm">
+                        Excluir
+                    </a>
+
+                </td>
+
+            </tr>
+        }
+
+    </tbody>
+
+</table>
