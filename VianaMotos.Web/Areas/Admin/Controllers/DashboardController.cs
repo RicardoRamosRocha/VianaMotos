@@ -30,6 +30,13 @@ public class DashboardController : Controller
         ViewBag.Marcas =
             await _context.Marcas.CountAsync();
 
+        ViewBag.Faturamento =
+            await _context.Vendas
+           .SumAsync(v => v.ValorVenda);
+       
+        
         return View();
+
+       
     }
 }

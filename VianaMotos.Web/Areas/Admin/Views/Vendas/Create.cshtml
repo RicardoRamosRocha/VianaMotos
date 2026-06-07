@@ -1,0 +1,130 @@
+﻿@model VianaMotos.Web.ViewModels.VendaCreateViewModel
+
+@{
+    ViewData["Title"] = "Nova Venda";
+}
+
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold">Nova Venda</h2>
+
+        <a asp-action="Index" class="btn btn-outline-secondary">
+            Voltar
+        </a>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+
+            <form asp-action="Create" method="post">
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3">
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ClienteId" class="form-label">
+                        Cliente
+                    </label>
+
+                    <select asp-for="ClienteId"
+                            asp-items="ViewBag.Clientes"
+                            class="form-select">
+                        <option value="">
+                            Selecione um cliente
+                        </option>
+                    </select>
+
+                    <span asp-validation-for="ClienteId"
+                          class="text-danger">
+                    </span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">
+                        Valor da Moto
+                    </label>
+
+                    <input id="valorMoto"
+                           class="form-control"
+                           readonly />
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="MotoId" class="form-label">
+                        Moto
+                    </label>
+
+                    <select asp-for="MotoId"
+                            asp-items="ViewBag.Motos"
+                            class="form-select">
+                        <option value="">
+                            Selecione uma moto
+                        </option>
+                    </select>
+
+                    <span asp-validation-for="MotoId"
+                          class="text-danger">
+                    </span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Observacoes"
+                           class="form-label">
+                        Observações
+                    </label>
+
+                    <textarea asp-for="Observacoes"
+                              class="form-control"
+                              rows="4">
+                </textarea>
+                </div>
+
+                <button type="submit"
+                        class="btn btn-danger">
+                    Finalizar Venda
+                </button>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+
+        document
+        .getElementById('MotoId')
+        .addEventListener('change', function () {
+
+            let motoId = this.value;
+
+            if (!motoId)
+                return;
+
+            fetch('/Admin/Vendas/ObterMoto?id=' + motoId)
+                .then(response => response.json())
+                .then(data => {
+
+                    document.getElementById('valorMoto')
+                        .value =
+                        data.valor.toLocaleString(
+                            'pt-BR',
+                            {
+                                style: 'currency',
+                                currency: 'BRL'
+                            });
+
+                });
+
+        });
+
+    </script>
+
+}

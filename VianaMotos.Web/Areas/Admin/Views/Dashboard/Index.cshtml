@@ -2,82 +2,151 @@
     ViewData["Title"] = "Dashboard";
 }
 
-<h1 class="mb-4 fw-bold">
-    Painel Administrativo
-</h1>
+<div class="dashboard-header">
+
+    
+    <div>
+        <h1 class="dashboard-title">
+            Dashboard Viana Motos
+        </h1>
+
+        <p class="dashboard-subtitle">
+            Acompanhe os indicadores do negócio em tempo real
+        </p>
+    </div>
+    
+
+</div>
 
 <div class="row g-4">
 
-    <div class="col-md-3">
-        <div class="card border-0 shadow-sm h-100">
-            <div class="card-body text-center">
+   
+    <div class="col-lg-3 col-md-6">
 
-                <div class="display-4 mb-2">🏍️</div>
+        <div class="metric-card">
 
-                <h2 class="fw-bold">
-                    @ViewBag.TotalMotos
-                </h2>
-
-                <p class="text-muted mb-0">
-                    Total de Motos
-                </p>
-
+            <div class="metric-icon bg-red">
+                <i class="bi bi-bicycle"></i>
             </div>
+
+            <div class="metric-content">
+                <h2>@ViewBag.TotalMotos</h2>
+                <span>Total de Motos</span>
+            </div>
+
         </div>
+
     </div>
 
-    <div class="col-md-3">
-        <div class="card border-0 shadow-sm h-100">
-            <div class="card-body text-center">
+    <div class="col-lg-3 col-md-6">
 
-                <div class="display-4 mb-2">✅</div>
+        <div class="metric-card">
 
-                <h2 class="fw-bold">
-                    @ViewBag.Disponiveis
-                </h2>
-
-                <p class="text-muted mb-0">
-                    Disponíveis
-                </p>
-
+            <div class="metric-icon bg-green">
+                <i class="bi bi-check-circle-fill"></i>
             </div>
+
+            <div class="metric-content">
+                <h2>@ViewBag.Disponiveis</h2>
+                <span>Motos Disponíveis</span>
+            </div>
+
         </div>
+
     </div>
 
-    <div class="col-md-3">
-        <div class="card border-0 shadow-sm h-100">
-            <div class="card-body text-center">
+    <div class="col-lg-3 col-md-6">
 
-                <div class="display-4 mb-2">💰</div>
+        <div class="metric-card">
 
-                <h2 class="fw-bold">
-                    @ViewBag.Vendidas
-                </h2>
-
-                <p class="text-muted mb-0">
-                    Vendidas
-                </p>
-
+            <div class="metric-icon bg-gold">
+                <i class="bi bi-cash-stack"></i>
             </div>
+
+            <div class="metric-content">
+                <h2>@ViewBag.Vendidas</h2>
+                <span>Motos Vendidas</span>
+            </div>
+
         </div>
+
     </div>
 
-    <div class="col-md-3">
-        <div class="card border-0 shadow-sm h-100">
-            <div class="card-body text-center">
+    <div class="col-lg-3 col-md-6">
 
-                <div class="display-4 mb-2">🏢</div>
+        <div class="metric-card">
 
-                <h2 class="fw-bold">
-                    @ViewBag.Marcas
-                </h2>
-
-                <p class="text-muted mb-0">
-                    Marcas
-                </p>
-
+            <div class="metric-icon bg-blue">
+                <i class="bi bi-buildings"></i>
             </div>
+
+            <div class="metric-content">
+                <h2>@ViewBag.Marcas</h2>
+                <span>Marcas</span>
+            </div>
+
         </div>
+
     </div>
+
+</div>
+
+<div class="col-lg-3 col-md-6">
+
+    <div class="metric-card">
+
+        <div class="metric-icon bg-gold">
+            <i class="bi bi-cash-stack"></i>
+        </div>
+
+        <div class="metric-content">
+            <h2>
+                @(((decimal)ViewBag.Faturamento).ToString("C"))
+            </h2>
+            <span>Faturamento Total</span>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="row mt-5 g-4">
+
+    
+    <div class="col-lg-8">
+
+        <div class="panel-card">
+
+            <h4 class="panel-title">
+                Visão Geral
+            </h4>
+
+            <div class="dashboard-placeholder">
+                Área reservada para gráficos futuros
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-4">
+
+        <div class="panel-card">
+
+            <h4 class="panel-title">
+                Resumo Rápido
+            </h4>
+
+            <ul class="summary-list">
+                <li>Total de motos cadastradas</li>
+                <li>Motos disponíveis para venda</li>
+                <li>Marcas cadastradas</li>
+                <li>Indicadores comerciais</li>
+            </ul>
+
+        </div>
+
+    </div>
+    
 
 </div>
