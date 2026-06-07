@@ -221,3 +221,9 @@ C:\Projetos\VianaMotos\VianaMotos.Web\obj\Debug\net9.0\VianaMotos.Web.sourcelink
 C:\Projetos\VianaMotos\VianaMotos.Web\obj\Debug\net9.0\compressed\dvsj3a6hkd-{0}-6osqmaskgw-6osqmaskgw.gz
 C:\Projetos\VianaMotos\VianaMotos.Web\obj\Debug\net9.0\compressed\z4zdfa20jg-{0}-4v4veynw6x-4v4veynw6x.gz
 C:\Projetos\VianaMotos\VianaMotos.Web\obj\Debug\net9.0\compressed\db22i3hsax-{0}-rl06xt03wo-rl06xt03wo.gz
+C:\Projetos\VianaMotos\VianaMotos.Web\bin\Debug\net9.0\publish\web.config
+C:\Projetos\VianaMotos\VianaMotos.Web\bin\Debug\net9.0\publish\appsettings.Development.json
+C:\Projetos\VianaMotos\VianaMotos.Web\bin\Debug\net9.0\publish\appsettings.json
+C:\Projetos\VianaMotos\VianaMotos.Web\bin\Debug\net9.0\publish\VianaMotos.Web.deps.json
+C:\Projetos\VianaMotos\VianaMotos.Web\bin\Debug\net9.0\publish\VianaMotos.Web.runtimeconfig.json
+C:\Projetos\VianaMotos\VianaMotos.Web\bin\Debug\net9.0\publish\VianaMotos.Web.staticwebassets.endpoints.json

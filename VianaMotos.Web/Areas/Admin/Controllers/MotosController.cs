@@ -319,6 +319,12 @@ public class MotosController : Controller
                 "uploads",
                 "motos");
 
+            Console.WriteLine("WEBROOT:");
+            Console.WriteLine(_environment.WebRootPath);
+
+            Console.WriteLine("UPLOAD:");
+            Console.WriteLine(pastaUploads);
+
             Directory.CreateDirectory(pastaUploads);
 
             int ordem = moto.Fotos.Count + 1;
