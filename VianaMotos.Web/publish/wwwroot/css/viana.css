@@ -1,0 +1,99 @@
+﻿:root {
+    --viana-black: #0d0d0d;
+    --viana-red: #c40000;
+    --viana-white: #ffffff;
+}
+
+/* Fundo geral */
+body {
+    background-color: #000;
+    color: var(--viana-white);
+}
+
+/* Navbar pública */
+.viana-navbar {
+    background: var(--viana-red);
+    border-bottom: 3px solid var(--viana-white);
+}
+
+    .viana-navbar .navbar-brand {
+        color: var(--viana-white) !important;
+        font-weight: 700;
+    }
+
+    .viana-navbar .nav-link {
+        color: var(--viana-white) !important;
+        font-weight: 600;
+        transition: .3s;
+    }
+
+        .viana-navbar .nav-link:hover {
+            color: #000 !important;
+        }
+
+/* Hero */
+.display-4 {
+    color: var(--viana-white);
+    font-weight: 700;
+}
+
+/* Cards das motos */
+.card {
+    background-color: #111;
+    border: 1px solid #222;
+    color: var(--viana-white);
+    transition: .3s;
+}
+
+    .card:hover {
+        transform: translateY(-5px);
+        border-color: var(--viana-red);
+    }
+
+.card-title {
+    color: var(--viana-white);
+}
+
+.card-img-top {
+    border-bottom: 3px solid var(--viana-red);
+}
+
+/* Textos */
+.text-muted {
+    color: #cfcfcf !important;
+}
+
+/* Preços */
+.text-success {
+    color: var(--viana-red) !important;
+    font-weight: 700;
+}
+
+/* Botões */
+.btn-primary {
+    background-color: var(--viana-red);
+    border-color: var(--viana-red);
+}
+
+    .btn-primary:hover {
+        background-color: #a00000;
+        border-color: #a00000;
+    }
+
+/* Galeria de fotos */
+.img-thumbnail {
+    border-radius: 12px;
+    transition: .3s;
+}
+
+    .img-thumbnail:hover {
+        transform: scale(1.03);
+    }
+
+/* Rodapé */
+footer {
+    background-color: #111;
+    color: white;
+    border-top: 2px solid var(--viana-red);
+    padding: 20px 0;
+}
