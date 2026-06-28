@@ -1,0 +1,197 @@
+@model VianaMotos.Web.ViewModels.SimuladorViewModel
+
+@{
+    ViewData["Title"] = "Simulador de Parcelas";
+    var exibirResultado = ViewContext.ModelState.IsValid
+        && Model.MotoId.HasValue
+        && Model.Parcelas > 0
+        && Model.ValorMoto > 0;
+}
+
+<div class="admin-container">
+
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-4">
+        <div>
+            <h1 class="h2 fw-bold mb-1">Simulador de Parcelas</h1>
+            <p class="text-secondary mb-0">
+                Escolha uma moto disponível e calcule as condições do financiamento.
+            </p>
+        </div>
+    </div>
+
+    <div class="row g-4">
+
+        <div class="col-lg-5">
+            <div class="card shadow-sm">
+                <div class="card-body">
+
+                    <h2 class="h5 fw-bold mb-3">Dados da simulação</h2>
+
+                    <form asp-action="Index" method="post">
+
+                        <div asp-validation-summary="ModelOnly"
+                             class="text-danger mb-3">
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="MotoId" class="form-label">
+                                Moto
+                            </label>
+
+                            <select asp-for="MotoId"
+                                    asp-items="Model.Motos"
+                                    class="form-select">
+                                <option value="">
+                                    Selecione uma moto
+                                </option>
+                            </select>
+
+                            <span asp-validation-for="MotoId"
+                                  class="text-danger">
+                            </span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Entrada" class="form-label">
+                                    Entrada
+                                </label>
+
+                                <input asp-for="Entrada"
+                                       type="number"
+                                       min="0"
+                                       step="0.01"
+                                       class="form-control" />
+
+                                <span asp-validation-for="Entrada"
+                                      class="text-danger">
+                                </span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="TaxaMensal" class="form-label">
+                                    Taxa mensal (%)
+                                </label>
+
+                                <input asp-for="TaxaMensal"
+                                       type="number"
+                                       min="0"
+                                       step="0.01"
+                                       class="form-control" />
+
+                                <span asp-validation-for="TaxaMensal"
+                                      class="text-danger">
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Parcelas" class="form-label">
+                                Parcelas
+                            </label>
+
+                            <input asp-for="Parcelas"
+                                   type="number"
+                                   min="1"
+                                   step="1"
+                                   class="form-control" />
+
+                            <span asp-validation-for="Parcelas"
+                                  class="text-danger">
+                            </span>
+                        </div>
+
+                        <button type="submit" class="btn btn-viana w-100">
+                            Simular
+                        </button>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-7">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+
+                    <div class="d-flex flex-column flex-md-row justify-content-between gap-3 mb-3">
+                        <div>
+                            <h2 class="h5 fw-bold mb-1">Resultado</h2>
+                            <span class="text-secondary">
+                                Resumo financeiro da simulação
+                            </span>
+                        </div>
+
+                        @if (exibirResultado)
+                        {
+                            <div class="text-md-end">
+                                <span class="d-block text-secondary">
+                                    Parcela
+                                </span>
+                                <strong class="fs-3 text-success">
+                                    @Model.ValorParcela.ToString("C")
+                                </strong>
+                            </div>
+                        }
+                    </div>
+
+                    @if (exibirResultado)
+                    {
+                        <div class="table-responsive">
+                            <table class="table admin-table align-middle mb-0">
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">Valor da moto</th>
+                                        <td class="text-end">@Model.ValorMoto.ToString("C")</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Valor da entrada</th>
+                                        <td class="text-end">@Model.Entrada.ToString("C")</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Valor financiado</th>
+                                        <td class="text-end">@Model.ValorFinanciado.ToString("C")</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Parcelas</th>
+                                        <td class="text-end">@Model.Parcelas x</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Taxa mensal</th>
+                                        <td class="text-end">@Model.TaxaMensal.ToString("N2")%</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Valor da parcela</th>
+                                        <td class="text-end">@Model.ValorParcela.ToString("C")</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Total pago</th>
+                                        <td class="text-end">@Model.TotalPago.ToString("C")</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Total de juros</th>
+                                        <td class="text-end">@Model.TotalJuros.ToString("C")</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="border rounded p-4 text-center text-secondary">
+                            Informe os dados ao lado para visualizar a simulação.
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
