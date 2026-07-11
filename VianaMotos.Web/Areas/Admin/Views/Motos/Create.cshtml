@@ -1,99 +1,141 @@
-﻿@model VianaMotos.Web.ViewModels.MotoViewModel
+@model VianaMotos.Web.ViewModels.MotoViewModel
+
+@{
+    ViewData["Title"] = "Nova Moto";
+}
 
 <div class="admin-container">
-<h1>Nova Moto</h1>
 
-<form asp-action="Create"
-      method="post"
-      enctype="multipart/form-data">
+    <header class="page-header">
+        <div>
+            <h1 class="page-title">Nova Moto</h1>
+            <p class="page-subtitle">
+                Cadastre o veiculo com informacoes completas para manter o estoque comercial impecavel.
+            </p>
+        </div>
 
-    @Html.AntiForgeryToken()
+        <div class="page-actions">
+            <a asp-action="Index"
+               class="btn btn-outline-secondary">
+                Voltar
+            </a>
+        </div>
+    </header>
 
-    <div class="mb-3">
-        <label asp-for="Moto.Modelo"></label>
-        <input asp-for="Moto.Modelo" class="form-control" />
-    </div>
+    <section class="form-card">
+        <form asp-action="Create"
+              method="post"
+              enctype="multipart/form-data">
 
-    <div class="mb-3">
-        <label asp-for="Moto.MarcaId"></label>
-        <select asp-for="Moto.MarcaId"
-                asp-items="Model.Marcas"
-                class="form-select">
-            <option value="">Selecione</option>
-        </select>
-    </div>
+            @Html.AntiForgeryToken()
 
-    <div class="mb-3">
-        <label asp-for="Moto.CategoriaId"></label>
-        <select asp-for="Moto.CategoriaId"
-                asp-items="Model.Categorias"
-                class="form-select">
-            <option value="">Selecione</option>
-        </select>
-    </div>
+            <div asp-validation-summary="All"
+                 class="text-danger mb-4">
+            </div>
 
-    <div class="mb-3">
-        <label asp-for="Moto.CombustivelId"></label>
-        <select asp-for="Moto.CombustivelId"
-                asp-items="Model.Combustiveis"
-                class="form-select">
-            <option value="">Selecione</option>
-        </select>
-    </div>
+            <h2 class="section-title">Dados do veiculo</h2>
 
-    <div class="mb-3">
-        <label asp-for="Moto.Ano"></label>
-        <input asp-for="Moto.Ano" class="form-control" />
-    </div>
+            <div class="row g-4">
 
-    <div class="mb-3">
-        <label asp-for="Moto.Cor"></label>
-        <input asp-for="Moto.Cor" class="form-control" />
-    </div>
+                <div class="col-lg-6">
+                    <label asp-for="Moto.Modelo" class="form-label"></label>
+                    <input asp-for="Moto.Modelo" class="form-control" />
+                </div>
 
-    <div class="mb-3">
-        <label asp-for="Moto.Quilometragem"></label>
-        <input asp-for="Moto.Quilometragem" class="form-control" />
-    </div>
+                <div class="col-lg-6">
+                    <label asp-for="Moto.MarcaId" class="form-label"></label>
+                    <select asp-for="Moto.MarcaId"
+                            asp-items="Model.Marcas"
+                            class="form-select">
+                        <option value="">Selecione</option>
+                    </select>
+                </div>
 
-    <div class="mb-3">
-        <label asp-for="Moto.Valor"></label>
-        <input asp-for="Moto.Valor" class="form-control" />
-    </div>
+                <div class="col-lg-6">
+                    <label asp-for="Moto.CategoriaId" class="form-label"></label>
+                    <select asp-for="Moto.CategoriaId"
+                            asp-items="Model.Categorias"
+                            class="form-select">
+                        <option value="">Selecione</option>
+                    </select>
+                </div>
 
-    <div class="mb-3">
-        <label asp-for="Moto.Descricao"></label>
-        <textarea asp-for="Moto.Descricao"
-                  class="form-control"
-                  rows="4"></textarea>
-    </div>
+                <div class="col-lg-6">
+                    <label asp-for="Moto.CombustivelId" class="form-label"></label>
+                    <select asp-for="Moto.CombustivelId"
+                            asp-items="Model.Combustiveis"
+                            class="form-select">
+                        <option value="">Selecione</option>
+                    </select>
+                </div>
 
-    <div class="form-check mb-3">
-        <input asp-for="Moto.Disponivel"
-               class="form-check-input" />
-        <label asp-for="Moto.Disponivel"
-               class="form-check-label"></label>
-    </div>
+                <div class="col-md-3">
+                    <label asp-for="Moto.Ano" class="form-label"></label>
+                    <input asp-for="Moto.Ano" class="form-control" />
+                </div>
 
-    <div class="mb-3">
-        <label class="form-label">Fotos da Moto</label>
+                <div class="col-md-3">
+                    <label asp-for="Moto.Cor" class="form-label"></label>
+                    <input asp-for="Moto.Cor" class="form-control" />
+                </div>
 
-        <input asp-for="ArquivosFotos"
-               type="file"
-               multiple
-               class="form-control"
-               accept="image/*" />
-    </div>
+                <div class="col-md-3">
+                    <label asp-for="Moto.Quilometragem" class="form-label"></label>
+                    <input asp-for="Moto.Quilometragem" class="form-control" />
+                </div>
 
-    <button type="submit"
-            class="btn btn-success">
-        Salvar
-    </button>
+                <div class="col-md-3">
+                    <label asp-for="Moto.Valor" class="form-label"></label>
+                    <input asp-for="Moto.Valor" class="form-control" />
+                </div>
 
-    <a asp-action="Index"
-       class="btn btn-secondary">
-        Voltar
-    </a>
+                <div class="col-12">
+                    <label asp-for="Moto.Descricao" class="form-label"></label>
+                    <textarea asp-for="Moto.Descricao"
+                              class="form-control"
+                              rows="4"></textarea>
+                </div>
 
-</form>
+            </div>
+
+            <div class="row g-4 mt-1">
+                <div class="col-lg-8">
+                    <label class="form-label">Fotos da Moto</label>
+                    <input asp-for="ArquivosFotos"
+                           type="file"
+                           multiple
+                           class="form-control"
+                           accept="image/*" />
+                </div>
+
+                <div class="col-lg-4 d-flex align-items-end">
+                    <div class="form-check">
+                        <input asp-for="Moto.Disponivel"
+                               class="form-check-input" />
+                        <label asp-for="Moto.Disponivel"
+                               class="form-check-label">
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="toolbar mt-4 pt-2">
+                <button type="submit"
+                        class="btn btn-primary">
+                    Salvar Moto
+                </button>
+
+                <a asp-action="Index"
+                   class="btn btn-outline-secondary">
+                    Cancelar
+                </a>
+            </div>
+
+        </form>
+    </section>
+
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,44 +1,49 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="pt-br">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - VianaMotos.Web</title>
+    <title>@ViewData["Title"] | Viana Motos</title>
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" /> 
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/VianaMotos.Web.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/viana.css" asp-append-version="true" />
 </head>
-<body>
+<body class="public-site">
 
-    <nav class="navbar navbar-expand-lg navbar-dark viana-navbar shadow">
+    <nav class="navbar navbar-expand-lg navbar-dark viana-navbar">
         <div class="container">
 
-            <a class="navbar-brand fw-bold"
+            <a class="navbar-brand"
                asp-area=""
                asp-controller="Home"
                asp-action="Index">
 
                 <img src="~/images/VianaLogo.png"
                      alt="Viana Motos"
-                     height="50"
-                     class="me-2" />
+                     height="50" />
+
+                <span class="brand-copy">
+                    <strong>Viana Motos</strong>
+                    <span>Concessionária premium</span>
+                </span>
 
             </a>
 
             <button class="navbar-toggler"
                     type="button"
                     data-bs-toggle="collapse"
-                    data-bs-target="#menu">
-
+                    data-bs-target="#menu"
+                    aria-controls="menu"
+                    aria-expanded="false"
+                    aria-label="Abrir menu">
                 <span class="navbar-toggler-icon"></span>
-
             </button>
 
             <div class="collapse navbar-collapse" id="menu">
 
-                <ul class="navbar-nav ms-auto">
+                <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
 
                     <li class="nav-item">
                         <a class="nav-link" asp-controller="Home" asp-action="Index">
@@ -47,17 +52,17 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="btn btn-outline-light ms-2"
-                           asp-area="Admin"
-                           asp-controller="Dashboard"
-                           asp-action="Index">
-                            Painel Administrativo
+                        <a class="nav-link" href="/#estoque">
+                            Estoque
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" asp-controller="Home" asp-action="Contato">
-                            Contato
+                        <a class="nav-admin-link"
+                           asp-area="Admin"
+                           asp-controller="Dashboard"
+                           asp-action="Index">
+                            Painel Administrativo
                         </a>
                     </li>
 
@@ -68,13 +73,21 @@
         </div>
     </nav>
 
-    <main class="container py-4">
+    <main class="public-main">
         @RenderBody()
     </main>
 
-    <footer class="bg-dark text-white py-3 mt-5">
-        <div class="container text-center">
-            © @DateTime.Now.Year - Viana Motos
+    <footer class="public-footer">
+        <div class="container">
+            <div class="row g-4 align-items-center">
+                <div class="col-lg-8">
+                    <strong>Viana Motos</strong>
+                    <p>Motocicletas selecionadas com qualidade, procedência e atendimento especializado.</p>
+                </div>
+                <div class="col-lg-4 text-lg-end">
+                    <p>© @DateTime.Now.Year Viana Motos. Todos os direitos reservados.</p>
+                </div>
+            </div>
         </div>
     </footer>
 

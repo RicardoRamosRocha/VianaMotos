@@ -1,83 +1,124 @@
-﻿@model IEnumerable<VianaMotos.Web.Models.Moto>
+@model IEnumerable<VianaMotos.Web.Models.Moto>
+
+@{
+    ViewData["Title"] = "Motos";
+}
 
 <div class="admin-container">
 
-    <h1>Motos</h1>
+    <header class="page-header">
+        <div>
+            <h1 class="page-title">Motos</h1>
+            <p class="page-subtitle">
+                Estoque visual, organizado e pronto para apoiar uma experiencia premium de venda.
+            </p>
+        </div>
 
-    <p class="mb-4">
-        <a asp-action="Create"
-           class="btn btn-primary">
-            <i class="bi bi-plus-circle"></i>
-            Nova Moto
-        </a>
-    </p>
+        <div class="page-actions">
+            <a asp-action="Create"
+               class="btn btn-primary">
+                <i class="bi bi-plus-lg me-2"></i>
+                Nova Moto
+            </a>
+        </div>
+    </header>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Foto</th>
-            <th>Modelo</th>
-            <th>Marca</th>
-            <th>Categoria</th>
-            <th>Ano</th>
-            <th>Valor</th>
-            <th>Disponível</th>
-            <th>Ações</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var moto in Model)
-        {
-            <tr>
-                <td>
-                   @if (moto.Fotos != null && moto.Fotos.Any())
-                   {
-                      var foto = moto.Fotos.OrderBy(x => x.Ordem).First();
+    <section class="table-card">
+        <div class="table-card-header">
+            <div>
+                <h2 class="section-title mb-1">Estoque cadastrado</h2>
+                <span class="text-secondary">@Model.Count() motos encontradas</span>
+            </div>
+        </div>
 
-                      <img src="~/uploads/motos/@foto.CaminhoImagem"
-                      width="100"
-                      class="img-thumbnail" />
-                   }
-                   else
-                   {
-                   <span>Sem fotos</span>
-                   }
-                  </td>
-                   
-                <td>@moto.Modelo</td>
-                <td>@moto.Marca?.Nome</td>
-                <td>@moto.Categoria?.Nome</td>
-                <td>@moto.Ano</td>
-                <td>@moto.Valor.ToString("C")</td>
-                <td>@(moto.Disponivel ? "Sim" : "Não")</td>
-                <td>
-                    <a asp-action="Details"
-                       asp-route-id="@moto.Id"
-                       class="btn btn-info btn-sm">
-                        Detalhes
-                    </a>
+        <div class="table-responsive">
+            <table class="table admin-table">
+                <thead>
+                    <tr>
+                        <th>Foto</th>
+                        <th>Modelo</th>
+                        <th>Marca</th>
+                        <th>Categoria</th>
+                        <th>Ano</th>
+                        <th>Valor</th>
+                        <th>Status</th>
+                        <th class="text-end">Acoes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var moto in Model)
+                    {
+                        <tr>
+                            <td>
+                                @if (moto.Fotos != null && moto.Fotos.Any())
+                                {
+                                    var foto = moto.Fotos
+                                        .OrderByDescending(x => x.Principal)
+                                        .ThenBy(x => x.Ordem)
+                                        .First();
 
-                    <a asp-action="Edit"
-                       asp-route-id="@moto.Id"
-                       class="btn btn-warning btn-sm">
-                        Editar
-                    </a>
+                                    <img src="~/uploads/motos/@foto.CaminhoImagem"
+                                         class="admin-thumb"
+                                         alt="@moto.Modelo" />
+                                }
+                                else
+                                {
+                                    <span class="status-badge is-neutral">Sem foto</span>
+                                }
+                            </td>
 
-                    <a asp-action="Fotos"
-                       asp-route-id="@moto.Id"
-                       class="btn btn-secondary btn-sm">
-                        Fotos
-                    </a>
+                            <td>
+                                <strong class="d-block text-dark">@moto.Modelo</strong>
+                                <span class="text-secondary">@moto.Quilometragem km</span>
+                            </td>
+                            <td>@moto.Marca?.Nome</td>
+                            <td>@moto.Categoria?.Nome</td>
+                            <td>@moto.Ano</td>
+                            <td>
+                                <strong class="text-dark">@moto.Valor.ToString("C")</strong>
+                            </td>
+                            <td>
+                                @if (moto.Disponivel)
+                                {
+                                    <span class="status-badge is-success">Disponível</span>
+                                }
+                                else
+                                {
+                                    <span class="status-badge is-danger">Indisponivel</span>
+                                }
+                            </td>
+                            <td>
+                                <div class="action-buttons justify-content-end">
+                                    <a asp-action="Details"
+                                       asp-route-id="@moto.Id"
+                                       class="btn btn-info btn-sm">
+                                        Detalhes
+                                    </a>
 
-                    <a asp-action="Delete"
-                       asp-route-id="@moto.Id"
-                       class="btn btn-danger btn-sm">
-                        Excluir
-                    </a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                                    <a asp-action="Edit"
+                                       asp-route-id="@moto.Id"
+                                       class="btn btn-warning btn-sm">
+                                        Editar
+                                    </a>
+
+                                    <a asp-action="Fotos"
+                                       asp-route-id="@moto.Id"
+                                       class="btn btn-secondary btn-sm">
+                                        Fotos
+                                    </a>
+
+                                    <a asp-action="Delete"
+                                       asp-route-id="@moto.Id"
+                                       class="btn btn-danger btn-sm">
+                                        Excluir
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+
 </div>
-

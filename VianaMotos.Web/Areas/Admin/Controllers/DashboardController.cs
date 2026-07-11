@@ -32,7 +32,7 @@ public class DashboardController : Controller
 
         ViewBag.Faturamento =
             await _context.Vendas
-           .SumAsync(v => v.ValorVenda);
+                .SumAsync(v => (decimal?)v.ValorVenda) ?? 0;
        
         
         return View();

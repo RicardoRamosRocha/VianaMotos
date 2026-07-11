@@ -1,11 +1,11 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-br">
 <head>
 
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>@ViewData["Title"] Viana Motos</title>
+    <title>@ViewData["Title"] | Viana Motos</title>
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
@@ -16,100 +16,132 @@
 
 <body>
 
-    <nav class="navbar navbar-expand-lg admin-navbar">
+    <div class="admin-shell">
 
-        <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg navbar-dark admin-navbar">
 
-            <a class="navbar-brand"
-               asp-area="Admin"
-               asp-controller="Motos"
-               asp-action="Index">
+            <div class="container-fluid px-3 px-lg-4">
 
-                <img src="~/images/VianaLogo.png"
-                     height="45" />
+                <a class="navbar-brand"
+                   asp-area="Admin"
+                   asp-controller="Dashboard"
+                   asp-action="Index">
 
-            </a>
+                    <span class="admin-brand-mark">
+                        <img src="~/images/VianaLogo.png"
+                             alt="Viana Motos" />
+                    </span>
 
-            <div class="collapse navbar-collapse">
+                    <span class="admin-brand-text">
+                        <span class="admin-brand-name">Viana Motos</span>
+                        <span class="admin-brand-meta">Painel administrativo</span>
+                    </span>
 
-                <ul class="navbar-nav ms-auto">
+                </a>
 
-                    <li class="nav-item">
-                        <a class="nav-link"
-                           asp-area="Admin"
-                           asp-controller="Clientes"
-                           asp-action="Index">
-                            Clientes
-                        </a>
-                    </li>
+                <button class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#adminMenu"
+                        aria-controls="adminMenu"
+                        aria-expanded="false"
+                        aria-label="Abrir menu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-                    <li class="nav-item">
-                        <a class="nav-link"
-                           asp-area="Admin"
-                           asp-controller="Vendas"
-                           asp-action="Index">
-                            Vendas
-                        </a>
-                    </li>
+                <div class="collapse navbar-collapse" id="adminMenu">
 
-                    <li class="nav-item">
-                        <a class="nav-link"
-                           asp-area="Admin"
-                           asp-controller="Motos"
-                           asp-action="Index">
-                            Motos
-                        </a>
-                    </li>
+                    <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
 
-                     <li class="nav-item">
-                        <a class="nav-link"
-                           asp-area="Admin"
-                           asp-controller="Simulador"
-                           asp-action="Index">
-                            Simulador
-                        </a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               asp-area="Admin"
+                               asp-controller="Dashboard"
+                               asp-action="Index">
+                                Painel
+                            </a>
+                        </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link"
-                           asp-area="Admin"
-                           asp-controller="Marcas"
-                           asp-action="Index">
-                            Marcas
-                        </a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               asp-area="Admin"
+                               asp-controller="Clientes"
+                               asp-action="Index">
+                                Clientes
+                            </a>
+                        </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link"
-                           asp-area="Admin"
-                           asp-controller="Categorias"
-                           asp-action="Index">
-                            Categorias
-                        </a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               asp-area="Admin"
+                               asp-controller="Vendas"
+                               asp-action="Index">
+                                Vendas
+                            </a>
+                        </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link"
-                           asp-area=""
-                           asp-controller="Home"
-                           asp-action="Index">
-                            Ver Site
-                        </a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               asp-area="Admin"
+                               asp-controller="Motos"
+                               asp-action="Index">
+                                Motos
+                            </a>
+                        </li>
 
-                </ul>
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               asp-area="Admin"
+                               asp-controller="Simulador"
+                               asp-action="Index">
+                                Simulador
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               asp-area="Admin"
+                               asp-controller="Marcas"
+                               asp-action="Index">
+                                Marcas
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               asp-area="Admin"
+                               asp-controller="Categorias"
+                               asp-action="Index">
+                                Categorias
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link admin-nav-accent"
+                               asp-area=""
+                               asp-controller="Home"
+                               asp-action="Index">
+                                Ver Site
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </div>
 
             </div>
 
-        </div>
+        </nav>
 
-    </nav>
+        <main class="admin-main">
+            @RenderBody()
+        </main>
 
-    <main class="container-fluid py-4">
+        <footer class="admin-footer">
+            Viana Motos Painel Administrativo
+        </footer>
 
-        @RenderBody()
-
-    </main>
+    </div>
 
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 

@@ -1,73 +1,201 @@
-﻿@model IEnumerable<VianaMotos.Web.Models.Moto>
+@model IEnumerable<VianaMotos.Web.Models.Moto>
 
-<div class="container">
+@{
+    ViewData["Title"] = "Início";
+}
 
-    <div class="text-center mb-5 py-5">
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <img src="~/images/VianaLogo.png"
+                 alt="Viana Motos"
+                 class="hero-logo" />
 
-        <h1 class="display-3 fw-bold">
-            VIANA <span style="color:#c40000;">MOTOS</span>
-        </h1>
+            <span class="hero-eyebrow">Motocicletas selecionadas</span>
 
-        <p class="lead text-light">
-            As melhores motocicletas em um só lugar
-        </p>
+            <h1 class="hero-title">
+                Viana Motos
+            </h1>
 
+            <p class="hero-subtitle">
+                Uma vitrine premium para quem busca motocicletas com procedência,
+                apresentação impecável e atendimento consultivo do primeiro contato
+                até a entrega.
+            </p>
+
+            <div class="hero-actions">
+                <a href="#estoque" class="primary-cta">
+                    Ver motos disponíveis
+                </a>
+
+                <a href="#contato" class="secondary-cta">
+                    Falar com a equipe
+                </a>
+            </div>
+        </div>
     </div>
+</section>
 
-    <div class="row g-4">
+<section id="estoque" class="section-block">
+    <div class="container">
 
-        @foreach (var moto in Model)
+        <div class="section-header">
+            <div>
+                <span class="section-eyebrow">Estoque em destaque</span>
+                <h2 class="section-title">Motos disponíveis</h2>
+                <p class="section-subtitle">
+                    Modelos selecionados para oferecer confiança, presença e uma
+                    experiência de compra mais clara.
+                </p>
+            </div>
+        </div>
+
+        @if (Model.Any())
         {
-            var fotoPrincipal = moto.Fotos?
-                .FirstOrDefault(x => x.Principal);
+            <div class="row g-4">
+                @foreach (var moto in Model)
+                {
+                    var fotoPrincipal = moto.Fotos?
+                        .FirstOrDefault(x => x.Principal)
+                        ?? moto.Fotos?.OrderBy(x => x.Ordem).FirstOrDefault();
 
-            <div class="col-lg-4 col-md-6">
+                    <div class="col-xl-4 col-md-6">
+                        <article class="motorcycle-card">
+                            <div class="motorcycle-media">
+                                @if (fotoPrincipal != null)
+                                {
+                                    <img src="~/uploads/motos/@fotoPrincipal.CaminhoImagem"
+                                         alt="@moto.Modelo" />
+                                }
+                                else
+                                {
+                                    <div class="empty-state">
+                                        Foto em breve
+                                    </div>
+                                }
 
-                <div class="card shadow h-100">
+                                <span class="motorcycle-status">Disponível</span>
+                            </div>
 
-                    @if (fotoPrincipal != null)
-                    {
-                        <img src="~/uploads/motos/@fotoPrincipal.CaminhoImagem"
-                             class="card-img-top"
-                             style="height:250px;object-fit:cover;">
-                    }
+                            <div class="motorcycle-body">
+                                <h3 class="motorcycle-title">@moto.Modelo</h3>
+                                <div class="motorcycle-brand">@moto.Marca?.Nome</div>
 
-                    <div class="card-body d-flex flex-column">
+                                <div class="motorcycle-specs">
+                                    <span>
+                                        <strong>Ano</strong>
+                                        @moto.Ano
+                                    </span>
+                                    <span>
+                                        <strong>Quilometragem</strong>
+                                        @moto.Quilometragem km
+                                    </span>
+                                </div>
 
-                        <h5 class="card-title fw-bold">
-                            @moto.Modelo
-                        </h5>
+                                <div class="motorcycle-price">
+                                    @moto.Valor.ToString("C")
+                                </div>
 
-                        <p class="text-muted mb-1">
-                            @moto.Marca?.Nome
-                        </p>
-
-                        <p class="mb-1">
-                            <strong>Ano:</strong> @moto.Ano
-                        </p>
-
-                        <p class="mb-3">
-                            <strong>KM:</strong> @moto.Quilometragem
-                        </p>
-
-                        <h4 class="text-success mb-3">
-                            @moto.Valor.ToString("C")
-                        </h4>
-
-                        <a asp-controller="Home"
-                           asp-action="Details"
-                           asp-route-id="@moto.Id"
-                           class="btn btn-primary mt-auto">
-                            Ver Detalhes
-                        </a>
-
+                                <a asp-controller="Home"
+                                   asp-action="Details"
+                                   asp-route-id="@moto.Id"
+                                   class="primary-cta w-100">
+                                    Ver detalhes
+                                </a>
+                            </div>
+                        </article>
                     </div>
-
-                </div>
-
+                }
+            </div>
+        }
+        else
+        {
+            <div class="empty-state">
+                Nenhuma moto disponível no momento.
             </div>
         }
 
     </div>
+</section>
 
-</div>
+<section class="institutional-section section-block">
+    <div class="container">
+        <div class="row g-5 align-items-center">
+            <div class="col-lg-6">
+                <span class="section-eyebrow">Confiança em cada detalhe</span>
+                <h2 class="section-title">
+                    Compra mais segura, atendimento mais próximo.
+                </h2>
+            </div>
+            <div class="col-lg-6">
+                <p class="section-subtitle">
+                    A Viana Motos organiza o estoque com foco em qualidade,
+                    procedência e clareza. Cada motocicleta é apresentada com
+                    informações essenciais para apoiar uma decisão de compra
+                    rápida, segura e bem orientada.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="institutional-section pb-5">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="feature-card">
+                    <span>01</span>
+                    <h3>Motos selecionadas</h3>
+                    <p>Estoque apresentado com foco em qualidade visual e informações relevantes.</p>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <div class="feature-card">
+                    <span>02</span>
+                    <h3>Atendimento rápido</h3>
+                    <p>Contato objetivo para tirar dúvidas e avançar na negociação.</p>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <div class="feature-card">
+                    <span>03</span>
+                    <h3>Simulação de parcelas</h3>
+                    <p>Ferramentas comerciais preparadas para apoiar o vendedor no atendimento.</p>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <div class="feature-card">
+                    <span>04</span>
+                    <h3>Suporte na compra</h3>
+                    <p>Acompanhamento durante a escolha para facilitar uma decisão segura.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="contato" class="container">
+    <div class="final-cta">
+        <span class="hero-eyebrow">Pronto para escolher sua próxima moto?</span>
+        <h2>Veja o estoque e encontre a melhor oportunidade.</h2>
+        <p>
+            Explore os modelos disponíveis e fale com a equipe para receber um
+            atendimento personalizado.
+        </p>
+
+        <div class="cta-actions">
+            <a href="#estoque" class="primary-cta">
+                Visualizar estoque
+            </a>
+            <a asp-area="Admin"
+               asp-controller="Simulador"
+               asp-action="Index"
+               class="secondary-cta">
+                Simular parcelas
+            </a>
+        </div>
+    </div>
+</section>

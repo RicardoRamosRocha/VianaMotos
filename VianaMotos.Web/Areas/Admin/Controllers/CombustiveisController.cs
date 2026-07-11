@@ -35,12 +35,7 @@ public class CombustiveisController : Controller
     {
         if (!ModelState.IsValid)
         {
-            var erros = ModelState.Values
-                .SelectMany(v => v.Errors)
-                .Select(e => e.ErrorMessage)
-                .ToList();
-
-            return Content(string.Join(" | ", erros));
+            return View(combustivel);
         }
 
         _context.Combustiveis.Add(combustivel);

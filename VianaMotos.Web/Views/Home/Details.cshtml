@@ -1,91 +1,163 @@
-﻿@model VianaMotos.Web.Models.Moto
+@model VianaMotos.Web.Models.Moto
 
-<div class="container">
+@{
+    ViewData["Title"] = Model.Modelo;
+    var fotos = Model.Fotos.OrderByDescending(x => x.Principal).ThenBy(x => x.Ordem).ToList();
+    var principal = fotos.FirstOrDefault();
+}
 
-    <div class="row">
+<section class="details-hero">
+    <div class="container">
+        <div class="row g-5 align-items-start">
 
-        <div class="col-md-7">
-
-            @if (Model.Fotos.Any())
-            {
-                var principal = Model.Fotos
-                    .FirstOrDefault(x => x.Principal)
-                    ?? Model.Fotos.First();
-
-                <img src="~/uploads/motos/@principal.CaminhoImagem"
-                     class="img-fluid rounded shadow"
-                     style="width:100%;height:450px;object-fit:cover;" />
-
-                <div class="row">
-
-                    @foreach (var foto in Model.Fotos)
-                    {
-                        <div class="col-3 mb-3">
-                            <img src="~/uploads/motos/@foto.CaminhoImagem"
-                                 class="img-thumbnail" />
+            <div class="col-lg-7">
+                @if (principal != null)
+                {
+                    <div class="gallery">
+                        <div class="gallery-main">
+                            <img id="mainGalleryImage"
+                                 src="~/uploads/motos/@principal.CaminhoImagem"
+                                 alt="@Model.Modelo" />
                         </div>
+
+                        <div class="gallery-thumbnails">
+                            @foreach (var foto in fotos)
+                            {
+                                <button type="button"
+                                        class="gallery-thumbnail @(foto.Id == principal.Id ? "is-active" : "")"
+                                        data-gallery-src="/uploads/motos/@foto.CaminhoImagem"
+                                        aria-label="Ver foto da moto">
+                                    <img src="~/uploads/motos/@foto.CaminhoImagem"
+                                         alt="@Model.Modelo" />
+                                </button>
+                            }
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="empty-state">
+                        Fotos em breve.
+                    </div>
+                }
+            </div>
+
+            <div class="col-lg-5">
+                <aside class="details-panel">
+                    @if (Model.Disponivel)
+                    {
+                        <span class="motorcycle-status">Disponível</span>
+                    }
+                    else
+                    {
+                        <span class="motorcycle-status is-unavailable">Indisponível</span>
                     }
 
-                </div>
-            }
+                    <h1 class="details-title">@Model.Modelo</h1>
+                    <div class="details-brand">
+                        @Model.Marca?.Nome
+                    </div>
+
+                    <div class="details-price">
+                        @Model.Valor.ToString("C")
+                    </div>
+
+                    <div class="details-spec-grid">
+                        <div class="spec-card">
+                            <strong>Ano</strong>
+                            @Model.Ano
+                        </div>
+
+                        <div class="spec-card">
+                            <strong>Quilometragem</strong>
+                            @Model.Quilometragem km
+                        </div>
+
+                        <div class="spec-card">
+                            <strong>Cor</strong>
+                            @(Model.Cor ?? "Não informada")
+                        </div>
+
+                        <div class="spec-card">
+                            <strong>Combustível</strong>
+                            @Model.Combustivel?.Nome
+                        </div>
+
+                        <div class="spec-card">
+                            <strong>Categoria</strong>
+                            @Model.Categoria?.Nome
+                        </div>
+
+                        <div class="spec-card">
+                            <strong>Status</strong>
+                            @(Model.Disponivel ? "Disponível" : "Indisponível")
+                        </div>
+                    </div>
+
+                    <div class="details-actions">
+                        <a asp-area="Admin"
+                           asp-controller="Simulador"
+                           asp-action="Index"
+                           class="primary-cta">
+                            Simular parcelas
+                        </a>
+
+                        <a href="#interesse"
+                           class="secondary-cta">
+                            Tenho interesse
+                        </a>
+
+                        <a asp-action="Index"
+                           class="secondary-cta">
+                            Voltar ao estoque
+                        </a>
+                    </div>
+                </aside>
+            </div>
 
         </div>
-
-        <div class="col-md-5">
-
-            <h1>@Model.Modelo</h1>
-
-            <h3 class="text-success">
-                @Model.Valor.ToString("C")
-            </h3>
-
-            <hr />
-
-            <p>
-                <strong>Marca:</strong>
-                @Model.Marca?.Nome
-            </p>
-
-            <p>
-                <strong>Categoria:</strong>
-                @Model.Categoria?.Nome
-            </p>
-
-            <p>
-                <strong>Ano:</strong>
-                @Model.Ano
-            </p>
-
-            <p>
-                <strong>Cor:</strong>
-                @Model.Cor
-            </p>
-
-            <p>
-                <strong>KM:</strong>
-                @Model.Quilometragem
-            </p>
-
-            <p>
-                <strong>Combustível:</strong>
-                @Model.Combustivel?.Nome
-            </p>
-
-            <hr />
-
-            <h5>Descrição</h5>
-
-            <p>
-                @Model.Descricao
-            </p>
-
-            <a asp-action="Index"
-               class="btn btn-secondary">
-                Voltar
-            </a>
-
-        </div>
-
     </div>
+</section>
 
-</div>
+<section id="interesse" class="container mb-5">
+    <div class="description-card">
+        <h2>Descrição</h2>
+        <p>
+            @(!string.IsNullOrWhiteSpace(Model.Descricao)
+                ? Model.Descricao
+                : "Esta motocicleta está disponível para consulta. Entre em contato com a equipe para receber mais informações sobre condição, documentação e possibilidades de negociação.")
+        </p>
+
+        <div class="details-actions">
+            <a href="/#estoque" class="primary-cta">
+                Ver outras motos
+            </a>
+            <a asp-action="Index" class="secondary-cta">
+                Voltar ao estoque
+            </a>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        document.querySelectorAll('.gallery-thumbnail').forEach(function (button) {
+            button.addEventListener('click', function () {
+                var mainImage = document.getElementById('mainGalleryImage');
+                var nextSrc = button.getAttribute('data-gallery-src');
+
+                if (!mainImage || !nextSrc) {
+                    return;
+                }
+
+                mainImage.setAttribute('src', nextSrc);
+
+                document.querySelectorAll('.gallery-thumbnail').forEach(function (item) {
+                    item.classList.remove('is-active');
+                });
+
+                button.classList.add('is-active');
+            });
+        });
+    </script>
+}

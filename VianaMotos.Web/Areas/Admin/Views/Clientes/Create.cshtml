@@ -1,91 +1,106 @@
-﻿@model VianaMotos.Web.Models.Cliente
+@model VianaMotos.Web.Models.Cliente
 
-<div class="card shadow-lg border-0">
-    <div class="card-body p-4">
+@{
+    ViewData["Title"] = "Novo Cliente";
+}
 
-        <h2 class="fw-bold mb-4">
-            Cadastro de Cliente
-        </h2>
+<div class="admin-container">
 
+    <header class="page-header">
+        <div>
+            <h1 class="page-title">Novo Cliente</h1>
+            <p class="page-subtitle">
+                Registre os dados essenciais para um atendimento comercial preciso e profissional.
+            </p>
+        </div>
+
+        <div class="page-actions">
+            <a asp-action="Index"
+               class="btn btn-outline-secondary">
+                Voltar
+            </a>
+        </div>
+    </header>
+
+    <section class="form-card">
         <form asp-action="Create" method="post">
 
             @Html.AntiForgeryToken()
 
             <div asp-validation-summary="All"
-                 class="text-danger mb-3">
+                 class="text-danger mb-4">
             </div>
 
-            <div class="row">
+            <h2 class="section-title">Dados do cliente</h2>
 
-                <div class="col-md-6 mb-3">
+            <div class="row g-4">
+
+                <div class="col-lg-6">
                     <label asp-for="Nome" class="form-label"></label>
                     <input asp-for="Nome"
-                           class="form-control form-control-lg" />
+                           class="form-control" />
                     <span asp-validation-for="Nome" class="text-danger"></span>
                 </div>
 
-                <div class="col-md-6 mb-3">
+                <div class="col-lg-6">
                     <label asp-for="Cpf" class="form-label"></label>
                     <input asp-for="Cpf"
-                           class="form-control form-control-lg" />
+                           class="form-control" />
                     <span asp-validation-for="Cpf" class="text-danger"></span>
                 </div>
 
-                <div class="col-md-6 mb-3">
+                <div class="col-lg-6">
                     <label asp-for="Telefone" class="form-label"></label>
                     <input asp-for="Telefone"
-                           class="form-control form-control-lg" />
+                           class="form-control" />
                     <span asp-validation-for="Telefone" class="text-danger"></span>
                 </div>
 
-                <div class="col-md-6 mb-3">
+                <div class="col-lg-6">
                     <label asp-for="Email" class="form-label"></label>
                     <input asp-for="Email"
-                           class="form-control form-control-lg" />
+                           class="form-control" />
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
 
-                <div class="col-md-8 mb-3">
+                <div class="col-lg-8">
                     <label asp-for="Endereco" class="form-label"></label>
                     <input asp-for="Endereco"
-                           class="form-control form-control-lg" />
+                           class="form-control" />
                 </div>
 
-                <div class="col-md-3 mb-3">
+                <div class="col-md-3">
                     <label asp-for="Cidade" class="form-label"></label>
                     <input asp-for="Cidade"
-                           class="form-control form-control-lg" />
+                           class="form-control" />
                 </div>
 
-                <div class="col-md-1 mb-3">
+                <div class="col-md-1">
                     <label asp-for="Estado" class="form-label"></label>
                     <input asp-for="Estado"
-                           class="form-control form-control-lg text-uppercase"
+                           class="form-control text-uppercase"
                            maxlength="2" />
                 </div>
 
             </div>
 
-            <div class="mt-4">
-
+            <div class="toolbar mt-4 pt-2">
                 <button type="submit"
-                        class="btn btn-success btn-lg">
+                        class="btn btn-primary">
                     Salvar Cliente
                 </button>
 
                 <a asp-action="Index"
-                   class="btn btn-outline-secondary btn-lg">
-                    Voltar
+                   class="btn btn-outline-secondary">
+                    Cancelar
                 </a>
-
             </div>
 
         </form>
+    </section>
 
-    </div>
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
-

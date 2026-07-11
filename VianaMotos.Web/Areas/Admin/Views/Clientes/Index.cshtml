@@ -1,74 +1,107 @@
-﻿@model IEnumerable<VianaMotos.Web.Models.Cliente>
+@model IEnumerable<VianaMotos.Web.Models.Cliente>
 
-<h1>Clientes</h1>
+@{
+    ViewData["Title"] = "Clientes";
+}
 
-<p>
-    <a asp-action="Create"
-       class="btn btn-primary">
-        Novo Cliente
-    </a>
-</p>
+<div class="admin-container">
 
-<table class="table table-striped">
+    <header class="page-header">
+        <div>
+            <h1 class="page-title">Clientes</h1>
+            <p class="page-subtitle">
+                Cadastros organizados para atendimento, negociacao e relacionamento comercial.
+            </p>
+        </div>
 
-    <thead>
-        <tr>
-            <th>Nome</th>
-            <th>CPF</th>
-            <th>Telefone</th>
-            <th>Email</th>
-            <th>Cidade</th>
-            <th>Status</th>
-            <th width="180">Ações</th>
-        </tr>
-    </thead>
+        <div class="page-actions">
+            <a asp-action="Create"
+               class="btn btn-primary">
+                <i class="bi bi-plus-lg me-2"></i>
+                Novo Cliente
+            </a>
+        </div>
+    </header>
 
-    <tbody>
+    <section class="table-card">
+        <div class="table-card-header">
+            <div>
+                <h2 class="section-title mb-1">Base de clientes</h2>
+                <span class="text-secondary">@Model.Count() registros encontrados</span>
+            </div>
+        </div>
 
-        @foreach (var cliente in Model)
-        {
-            <tr>
+        <div class="table-responsive">
+            <table class="table admin-table">
+                <thead>
+                    <tr>
+                        <th>Cliente</th>
+                        <th>CPF</th>
+                        <th>Telefone</th>
+                        <th>Email</th>
+                        <th>Cidade</th>
+                        <th>Status</th>
+                        <th class="text-end">Acoes</th>
+                    </tr>
+                </thead>
 
-                <td>@cliente.Nome</td>
-                <td>@cliente.Cpf</td>
-                <td>@cliente.Telefone</td>
-                <td>@cliente.Email</td>
-                <td>@cliente.Cidade</td>
-
-                <td>
-                    @if (cliente.Ativo)
+                <tbody>
+                    @foreach (var cliente in Model)
                     {
-                        <span class="badge bg-success">
-                            Ativo
-                        </span>
+                        var iniciais = string.Join("", cliente.Nome
+                            .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                            .Take(2)
+                            .Select(x => x[0]))
+                            .ToUpper();
+
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center gap-3">
+                                    <span class="avatar">@iniciais</span>
+                                    <div>
+                                        <strong class="d-block text-dark">@cliente.Nome</strong>
+                                        <span class="text-secondary">@cliente.Estado</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>@cliente.Cpf</td>
+                            <td>@cliente.Telefone</td>
+                            <td>@cliente.Email</td>
+                            <td>@cliente.Cidade</td>
+                            <td>
+                                @if (cliente.Ativo)
+                                {
+                                    <span class="status-badge is-success">
+                                        Ativo
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="status-badge is-danger">
+                                        Inativo
+                                    </span>
+                                }
+                            </td>
+                            <td>
+                                <div class="action-buttons justify-content-end">
+                                    <a asp-action="Edit"
+                                       asp-route-id="@cliente.Id"
+                                       class="btn btn-warning btn-sm">
+                                        Editar
+                                    </a>
+
+                                    <a asp-action="Delete"
+                                       asp-route-id="@cliente.Id"
+                                       class="btn btn-danger btn-sm">
+                                        Excluir
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
                     }
-                    else
-                    {
-                        <span class="badge bg-danger">
-                            Inativo
-                        </span>
-                    }
-                </td>
+                </tbody>
+            </table>
+        </div>
+    </section>
 
-                <td>
-
-                    <a asp-action="Edit"
-                       asp-route-id="@cliente.Id"
-                       class="btn btn-warning btn-sm">
-                        Editar
-                    </a>
-
-                    <a asp-action="Delete"
-                       asp-route-id="@cliente.Id"
-                       class="btn btn-danger btn-sm">
-                        Excluir
-                    </a>
-
-                </td>
-
-            </tr>
-        }
-
-    </tbody>
-
-</table>
+</div>

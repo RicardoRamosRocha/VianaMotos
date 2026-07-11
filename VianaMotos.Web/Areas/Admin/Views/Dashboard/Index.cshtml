@@ -1,152 +1,123 @@
-﻿@{
-    ViewData["Title"] = "Dashboard";
+@{
+    ViewData["Title"] = "Painel";
 }
 
-<div class="dashboard-header">
+<div class="admin-container">
 
-    
-    <div>
-        <h1 class="dashboard-title">
-            Dashboard Viana Motos
-        </h1>
+    <header class="page-header">
+        <div>
+            <h1 class="page-title">Painel</h1>
+            <p class="page-subtitle">
+                Indicadores comerciais para acompanhar estoque, vendas e desempenho da concessionaria.
+            </p>
+        </div>
 
-        <p class="dashboard-subtitle">
-            Acompanhe os indicadores do negócio em tempo real
-        </p>
-    </div>
-    
+        <div class="page-actions">
+            <a asp-area="Admin"
+               asp-controller="Motos"
+               asp-action="Create"
+               class="btn btn-primary">
+                <i class="bi bi-plus-lg me-2"></i>
+                Nova Moto
+            </a>
+        </div>
+    </header>
 
-</div>
+    <div class="row g-4">
 
-<div class="row g-4">
-
-   
-    <div class="col-lg-3 col-md-6">
-
-        <div class="metric-card">
-
-            <div class="metric-icon bg-red">
-                <i class="bi bi-bicycle"></i>
+        <div class="col-xl-3 col-md-6">
+            <div class="stats-card">
+                <div class="stats-icon bg-red">
+                    <i class="bi bi-speedometer2"></i>
+                </div>
+                <div class="stats-value">@ViewBag.TotalMotos</div>
+                <div class="stats-label">Total de Motos</div>
             </div>
+        </div>
 
-            <div class="metric-content">
-                <h2>@ViewBag.TotalMotos</h2>
-                <span>Total de Motos</span>
+        <div class="col-xl-3 col-md-6">
+            <div class="stats-card">
+                <div class="stats-icon bg-green">
+                    <i class="bi bi-check2-circle"></i>
+                </div>
+                <div class="stats-value">@ViewBag.Disponiveis</div>
+                <div class="stats-label">Disponiveis</div>
             </div>
+        </div>
 
+        <div class="col-xl-3 col-md-6">
+            <div class="stats-card">
+                <div class="stats-icon bg-gold">
+                    <i class="bi bi-cash-stack"></i>
+                </div>
+                <div class="stats-value">@ViewBag.Vendidas</div>
+                <div class="stats-label">Vendidas</div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="stats-card">
+                <div class="stats-icon bg-blue">
+                    <i class="bi bi-buildings"></i>
+                </div>
+                <div class="stats-value">@ViewBag.Marcas</div>
+                <div class="stats-label">Marcas</div>
+            </div>
         </div>
 
     </div>
 
-    <div class="col-lg-3 col-md-6">
+    <div class="row g-4 mt-1">
 
-        <div class="metric-card">
+        <div class="col-xl-4 col-md-6">
+            <div class="summary-card">
+                <div class="d-flex align-items-start justify-content-between gap-3">
+                    <div>
+                        <h2 class="section-title">Faturamento Total</h2>
+                        <p class="page-subtitle mb-0">
+                            Volume financeiro registrado em vendas.
+                        </p>
+                    </div>
+                    <span class="stats-icon bg-red">
+                        <i class="bi bi-graph-up-arrow"></i>
+                    </span>
+                </div>
 
-            <div class="metric-icon bg-green">
-                <i class="bi bi-check-circle-fill"></i>
+                <div class="stats-value mt-4">
+                    @(((decimal)ViewBag.Faturamento).ToString("C"))
+                </div>
             </div>
+        </div>
 
-            <div class="metric-content">
-                <h2>@ViewBag.Disponiveis</h2>
-                <span>Motos Disponíveis</span>
+        <div class="col-xl-8">
+            <div class="info-card h-100">
+                <div class="d-flex align-items-center justify-content-between gap-3 mb-3">
+                    <h2 class="section-title mb-0">Visao Geral</h2>
+                    <span class="status-badge is-neutral">Painel executivo</span>
+                </div>
+
+                <div class="empty-state">
+                    <i class="bi bi-bar-chart-line fs-2"></i>
+                    <strong>Area reservada para graficos futuros</strong>
+                    <span>O painel ja esta preparado visualmente para evolucao comercial.</span>
+                </div>
             </div>
-
         </div>
 
     </div>
 
-    <div class="col-lg-3 col-md-6">
-
-        <div class="metric-card">
-
-            <div class="metric-icon bg-gold">
-                <i class="bi bi-cash-stack"></i>
+    <div class="row g-4 mt-1">
+        <div class="col-lg-12">
+            <div class="summary-card">
+                <h2 class="section-title">Resumo Rapido</h2>
+                <ul class="summary-list">
+                    <li><i class="bi bi-check-circle"></i> Total de motos cadastradas no estoque</li>
+                    <li><i class="bi bi-check-circle"></i> Motos disponiveis para negociacao</li>
+                    <li><i class="bi bi-check-circle"></i> Marcas cadastradas para organizacao do catalogo</li>
+                    <li><i class="bi bi-check-circle"></i> Indicadores comerciais centralizados</li>
+                </ul>
             </div>
-
-            <div class="metric-content">
-                <h2>@ViewBag.Vendidas</h2>
-                <span>Motos Vendidas</span>
-            </div>
-
         </div>
-
     </div>
-
-    <div class="col-lg-3 col-md-6">
-
-        <div class="metric-card">
-
-            <div class="metric-icon bg-blue">
-                <i class="bi bi-buildings"></i>
-            </div>
-
-            <div class="metric-content">
-                <h2>@ViewBag.Marcas</h2>
-                <span>Marcas</span>
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-<div class="col-lg-3 col-md-6">
-
-    <div class="metric-card">
-
-        <div class="metric-icon bg-gold">
-            <i class="bi bi-cash-stack"></i>
-        </div>
-
-        <div class="metric-content">
-            <h2>
-                @(((decimal)ViewBag.Faturamento).ToString("C"))
-            </h2>
-            <span>Faturamento Total</span>
-        </div>
-
-    </div>
-
-</div>
-
-<div class="row mt-5 g-4">
-
-    
-    <div class="col-lg-8">
-
-        <div class="panel-card">
-
-            <h4 class="panel-title">
-                Visão Geral
-            </h4>
-
-            <div class="dashboard-placeholder">
-                Área reservada para gráficos futuros
-            </div>
-
-        </div>
-
-    </div>
-
-    <div class="col-lg-4">
-
-        <div class="panel-card">
-
-            <h4 class="panel-title">
-                Resumo Rápido
-            </h4>
-
-            <ul class="summary-list">
-                <li>Total de motos cadastradas</li>
-                <li>Motos disponíveis para venda</li>
-                <li>Marcas cadastradas</li>
-                <li>Indicadores comerciais</li>
-            </ul>
-
-        </div>
-
-    </div>
-    
 
 </div>

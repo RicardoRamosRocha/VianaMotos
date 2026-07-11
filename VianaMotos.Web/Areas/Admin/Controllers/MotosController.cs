@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using VianaMotos.Web.Data;
 using VianaMotos.Web.Models;
 using VianaMotos.Web.ViewModels;
-using System.IO;
 
 namespace VianaMotos.Web.Areas.Admin.Controllers;
 
@@ -76,6 +75,7 @@ public class MotosController : Controller
 
             foreach (var foto in vm.ArquivosFotos)
             {
+                bool principal = ordem == 1;
                 var nomeArquivo =
                     $"{Guid.NewGuid()}{Path.GetExtension(foto.FileName)}";
 
@@ -90,9 +90,14 @@ public class MotosController : Controller
                 {
                     MotoId = vm.Moto.Id,
                     CaminhoImagem = nomeArquivo,
-                    Principal = ordem == 1,
+                    Principal = principal,
                     Ordem = ordem++
                 });
+
+                if (principal)
+                {
+                    vm.Moto.FotoPrincipal = nomeArquivo;
+                }
             }
 
             await _context.SaveChangesAsync();
@@ -122,7 +127,6 @@ public class MotosController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int id, MotoViewModel vm)
     {
-        Console.WriteLine("EDIT EXECUTOU");
         if (id != vm.Moto.Id)
             return NotFound();
 
@@ -156,16 +160,7 @@ public class MotosController : Controller
         motoBanco.Descricao = vm.Moto.Descricao;
         motoBanco.Disponivel = vm.Moto.Disponivel;
 
-        Console.WriteLine("EDIT EXECUTOU");
-
-        Console.WriteLine(
-            vm.ArquivosFotos == null
-                ? "ArquivosFotos = NULL"
-                : $"ArquivosFotos = {vm.ArquivosFotos.Count}");
-
-
-            // Upload múltiplo
-            if (vm.ArquivosFotos != null && vm.ArquivosFotos.Count > 0)
+        if (vm.ArquivosFotos != null && vm.ArquivosFotos.Count > 0)
         {
             var pastaUploads = Path.Combine(
                 _environment.WebRootPath,
@@ -175,6 +170,7 @@ public class MotosController : Controller
             Directory.CreateDirectory(pastaUploads);
 
             int ordem = (motoBanco.Fotos?.Count ?? 0) + 1;
+            bool definirPrimeiraComoPrincipal = motoBanco.Fotos == null || !motoBanco.Fotos.Any();
 
             foreach (var foto in vm.ArquivosFotos)
             {
@@ -192,9 +188,15 @@ public class MotosController : Controller
                 {
                     MotoId = motoBanco.Id,
                     CaminhoImagem = nomeArquivo,
-                    Principal = false,
+                    Principal = definirPrimeiraComoPrincipal,
                     Ordem = ordem++
                 });
+
+                if (definirPrimeiraComoPrincipal)
+                {
+                    motoBanco.FotoPrincipal = nomeArquivo;
+                    definirPrimeiraComoPrincipal = false;
+                }
             }
         }
 
@@ -319,15 +321,10 @@ public class MotosController : Controller
                 "uploads",
                 "motos");
 
-            Console.WriteLine("WEBROOT:");
-            Console.WriteLine(_environment.WebRootPath);
-
-            Console.WriteLine("UPLOAD:");
-            Console.WriteLine(pastaUploads);
-
             Directory.CreateDirectory(pastaUploads);
 
             int ordem = moto.Fotos.Count + 1;
+            bool definirPrimeiraComoPrincipal = !moto.Fotos.Any();
 
             foreach (var arquivo in arquivos)
             {
@@ -348,9 +345,15 @@ public class MotosController : Controller
                 {
                     MotoId = moto.Id,
                     CaminhoImagem = nomeArquivo,
-                    Principal = false,
+                    Principal = definirPrimeiraComoPrincipal,
                     Ordem = ordem++
                 });
+
+                if (definirPrimeiraComoPrincipal)
+                {
+                    moto.FotoPrincipal = nomeArquivo;
+                    definirPrimeiraComoPrincipal = false;
+                }
             }
 
             await _context.SaveChangesAsync();
@@ -448,6 +451,17 @@ public class MotosController : Controller
                 }
 
                 await _context.SaveChangesAsync();
+            }
+            else
+            {
+                var moto = await _context.Motos
+                    .FindAsync(motoId);
+
+                if (moto != null)
+                {
+                    moto.FotoPrincipal = null;
+                    await _context.SaveChangesAsync();
+                }
             }
         }
 

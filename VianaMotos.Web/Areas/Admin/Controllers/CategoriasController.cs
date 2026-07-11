@@ -35,12 +35,7 @@ public class CategoriasController : Controller
     {
         if (!ModelState.IsValid)
         {
-            var erros = ModelState.Values
-                .SelectMany(v => v.Errors)
-                .Select(e => e.ErrorMessage)
-                .ToList();
-
-            return Content(string.Join(" | ", erros));
+            return View(categoria);
         }
 
         _context.Categorias.Add(categoria);

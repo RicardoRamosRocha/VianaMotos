@@ -19,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Motoes\" />
     <Folder Include="wwwroot\uploads\motos\" />
   </ItemGroup>
 

@@ -1,7 +1,10 @@
 bin/
 obj/
 .vs/
+.vscode/
+publish/
 *.user
 *.suo
 TestResults/
 wwwroot/uploads/
+**/wwwroot/uploads/

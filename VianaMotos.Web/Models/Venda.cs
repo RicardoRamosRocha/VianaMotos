@@ -7,21 +7,26 @@ public class Venda
 {
     public int Id { get; set; }
 
-    [Required]
+    [Display(Name = "Cliente")]
+    [Required(ErrorMessage = "Selecione um cliente.")]
     public int ClienteId { get; set; }
 
     public Cliente? Cliente { get; set; }
 
-    [Required]
+    [Display(Name = "Moto")]
+    [Required(ErrorMessage = "Selecione uma moto.")]
     public int MotoId { get; set; }
 
     public Moto? Moto { get; set; }
 
+    [Display(Name = "Valor da venda")]
     [Column(TypeName = "decimal(18,2)")]
     public decimal ValorVenda { get; set; }
 
+    [Display(Name = "Data da venda")]
     public DateTime DataVenda { get; set; } = DateTime.Now;
 
-    [StringLength(500)]
+    [Display(Name = "Observações")]
+    [StringLength(500, ErrorMessage = "O campo Observações deve ter no máximo 500 caracteres.")]
     public string? Observacoes { get; set; }
 }
