@@ -1,123 +1,1312 @@
 @{
-    ViewData["Title"] = "Painel";
+    ViewData["Title"] = "Painel Executivo";
+
+    var totalMotos = Convert.ToInt32(ViewBag.TotalMotos ?? 0);
+    var disponiveis = Convert.ToInt32(ViewBag.Disponiveis ?? 0);
+    var vendidas = Convert.ToInt32(ViewBag.Vendidas ?? 0);
+    var totalMarcas = Convert.ToInt32(ViewBag.Marcas ?? 0);
+    var faturamento = Convert.ToDecimal(ViewBag.Faturamento ?? 0);
+
+    var taxaDisponibilidade = totalMotos > 0
+        ? Math.Round((decimal)disponiveis / totalMotos * 100, 0)
+        : 0;
+
+    var taxaVendidas = totalMotos > 0
+        ? Math.Round((decimal)vendidas / totalMotos * 100, 0)
+        : 0;
+
+    var ticketMedio = vendidas > 0
+        ? faturamento / vendidas
+        : 0;
+
+    var insightEstoque = disponiveis switch
+    {
+        0 => "O estoque está sem motocicletas disponíveis. Recomenda-se priorizar novas aquisições para manter a vitrine comercial ativa.",
+        <= 3 => "O estoque disponível está reduzido. Este pode ser um bom momento para planejar novas aquisições e ampliar as opções apresentadas aos clientes.",
+        _ => "O estoque apresenta uma quantidade saudável de motocicletas disponíveis para negociação e divulgação comercial."
+    };
 }
 
-<div class="admin-container">
+<style>
+    .executive-dashboard {
+        --dashboard-red: var(--viana-red, #c40000);
+        --dashboard-red-dark: var(--viana-red-dark, #990000);
+        --dashboard-black: var(--viana-black, #08090b);
+        --dashboard-text: var(--viana-graphite-950, #111317);
+        --dashboard-muted: var(--viana-gray-500, #7d8794);
+        padding-bottom: 35px;
+    }
 
-    <header class="page-header">
-        <div>
-            <h1 class="page-title">Painel</h1>
-            <p class="page-subtitle">
-                Indicadores comerciais para acompanhar estoque, vendas e desempenho da concessionaria.
+    .dashboard-hero {
+        position: relative;
+        isolation: isolate;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 35px;
+        min-height: 230px;
+        margin-bottom: 25px;
+        padding: 35px;
+        overflow: hidden;
+        color: #fff;
+        background:
+            radial-gradient(
+                circle at 85% 20%,
+                rgba(196, 0, 0, .42),
+                transparent 30%
+            ),
+            linear-gradient(135deg, #171a20 0%, #08090b 75%);
+        border: 1px solid rgba(255, 255, 255, .08);
+        border-radius: 25px;
+        box-shadow: 0 25px 60px rgba(8, 9, 11, .2);
+    }
+
+    .dashboard-hero::before {
+        position: absolute;
+        z-index: -1;
+        top: -150px;
+        right: -80px;
+        width: 420px;
+        height: 420px;
+        border: 1px solid rgba(255, 255, 255, .08);
+        border-radius: 50%;
+        content: "";
+        box-shadow:
+            0 0 0 65px rgba(255, 255, 255, .018),
+            0 0 0 130px rgba(255, 255, 255, .012);
+    }
+
+    .dashboard-hero::after {
+        position: absolute;
+        z-index: -1;
+        inset: 0;
+        background-image:
+            linear-gradient(
+                rgba(255, 255, 255, .018) 1px,
+                transparent 1px
+            ),
+            linear-gradient(
+                90deg,
+                rgba(255, 255, 255, .018) 1px,
+                transparent 1px
+            );
+        background-size: 44px 44px;
+        content: "";
+        mask-image: linear-gradient(to right, #000, transparent 90%);
+    }
+
+    .dashboard-hero-content {
+        max-width: 760px;
+    }
+
+    .dashboard-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        margin-bottom: 13px;
+        color: #ff3b49;
+        font-size: .7rem;
+        font-weight: 850;
+        letter-spacing: .15em;
+        text-transform: uppercase;
+    }
+
+    .dashboard-eyebrow::before {
+        width: 28px;
+        height: 2px;
+        background: currentColor;
+        content: "";
+    }
+
+    .dashboard-hero h1 {
+        margin: 0;
+        color: #fff;
+        font-size: clamp(2.3rem, 5vw, 4rem);
+        font-weight: 900;
+        line-height: .98;
+        letter-spacing: -.055em;
+    }
+
+    .dashboard-hero p {
+        max-width: 650px;
+        margin: 16px 0 0;
+        color: rgba(255, 255, 255, .65);
+        font-size: .95rem;
+        line-height: 1.7;
+    }
+
+    .dashboard-hero-actions {
+        display: flex;
+        flex-shrink: 0;
+        flex-direction: column;
+        gap: 10px;
+        min-width: 190px;
+    }
+
+    .dashboard-hero-actions .btn {
+        width: 100%;
+    }
+
+    .dashboard-outline-light {
+        color: #fff;
+        background: rgba(255, 255, 255, .06);
+        border: 1px solid rgba(255, 255, 255, .18);
+    }
+
+    .dashboard-outline-light:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, .12);
+        border-color: rgba(255, 255, 255, .3);
+    }
+
+    .dashboard-metrics {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 18px;
+        margin-bottom: 25px;
+    }
+
+    .dashboard-metric {
+        position: relative;
+        min-height: 175px;
+        padding: 23px;
+        overflow: hidden;
+        background: #fff;
+        border: 1px solid rgba(17, 24, 39, .08);
+        border-radius: 19px;
+        box-shadow: 0 14px 36px rgba(17, 24, 39, .07);
+        transition:
+            transform .2s ease,
+            box-shadow .2s ease,
+            border-color .2s ease;
+    }
+
+    .dashboard-metric:hover {
+        border-color: rgba(196, 0, 0, .2);
+        box-shadow: 0 20px 45px rgba(17, 24, 39, .11);
+        transform: translateY(-4px);
+    }
+
+    .dashboard-metric::after {
+        position: absolute;
+        right: -40px;
+        bottom: -50px;
+        width: 130px;
+        height: 130px;
+        background: rgba(196, 0, 0, .035);
+        border-radius: 50%;
+        content: "";
+    }
+
+    .dashboard-metric-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+    }
+
+    .dashboard-metric-icon {
+        display: inline-flex;
+        width: 49px;
+        height: 49px;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        background: #111317;
+        border-radius: 14px;
+        font-size: 1.25rem;
+    }
+
+    .dashboard-metric-change {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 5px 8px;
+        color: #138a54;
+        background: rgba(19, 138, 84, .09);
+        border-radius: 999px;
+        font-size: .65rem;
+        font-weight: 850;
+    }
+
+    .dashboard-metric-change.neutral {
+        color: #3f4752;
+        background: #f1f3f5;
+    }
+
+    .dashboard-metric-value {
+        position: relative;
+        z-index: 1;
+        margin-top: 20px;
+        color: var(--dashboard-text);
+        font-size: 2rem;
+        font-weight: 900;
+        line-height: 1;
+        letter-spacing: -.04em;
+    }
+
+    .dashboard-metric-label {
+        position: relative;
+        z-index: 1;
+        margin-top: 7px;
+        color: var(--dashboard-muted);
+        font-size: .72rem;
+        font-weight: 800;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+    }
+
+    .dashboard-main-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.65fr) minmax(310px, .75fr);
+        gap: 22px;
+        margin-bottom: 22px;
+    }
+
+    .dashboard-panel {
+        background: #fff;
+        border: 1px solid rgba(17, 24, 39, .08);
+        border-radius: 21px;
+        box-shadow: 0 16px 42px rgba(17, 24, 39, .07);
+    }
+
+    .dashboard-panel-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 25px 26px 0;
+    }
+
+    .dashboard-panel-eyebrow {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--dashboard-red);
+        font-size: .67rem;
+        font-weight: 850;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+    }
+
+    .dashboard-panel-title {
+        margin: 0;
+        color: var(--dashboard-text);
+        font-size: 1.15rem;
+        font-weight: 850;
+    }
+
+    .dashboard-panel-subtitle {
+        margin: 6px 0 0;
+        color: var(--dashboard-muted);
+        font-size: .77rem;
+    }
+
+    .dashboard-demo-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 9px;
+        color: #3f4752;
+        background: #f3f4f6;
+        border: 1px solid #e7e9ed;
+        border-radius: 999px;
+        font-size: .62rem;
+        font-weight: 850;
+        letter-spacing: .04em;
+        text-transform: uppercase;
+    }
+
+    .dashboard-demo-badge::before {
+        width: 6px;
+        height: 6px;
+        background: #b98111;
+        border-radius: 50%;
+        content: "";
+    }
+
+    .commercial-chart {
+        position: relative;
+        padding: 28px 27px 24px;
+    }
+
+    .chart-summary {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 28px;
+        margin-bottom: 28px;
+    }
+
+    .chart-summary-item span {
+        display: block;
+        color: var(--dashboard-muted);
+        font-size: .66rem;
+        font-weight: 800;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+    }
+
+    .chart-summary-item strong {
+        display: block;
+        margin-top: 4px;
+        color: var(--dashboard-text);
+        font-size: 1.25rem;
+        font-weight: 900;
+    }
+
+    .chart-summary-item strong.positive {
+        color: #138a54;
+    }
+
+    .chart-area {
+        position: relative;
+        height: 255px;
+        padding-left: 46px;
+        border-bottom: 1px solid #e8ebef;
+    }
+
+    .chart-grid-line {
+        position: absolute;
+        right: 0;
+        left: 46px;
+        height: 1px;
+        background: #edf0f3;
+    }
+
+    .chart-grid-line span {
+        position: absolute;
+        top: -8px;
+        left: -46px;
+        width: 38px;
+        color: #9aa2ad;
+        font-size: .61rem;
+        text-align: right;
+    }
+
+    .chart-grid-line.line-100 {
+        top: 0;
+    }
+
+    .chart-grid-line.line-75 {
+        top: 25%;
+    }
+
+    .chart-grid-line.line-50 {
+        top: 50%;
+    }
+
+    .chart-grid-line.line-25 {
+        top: 75%;
+    }
+
+    .chart-grid-line.line-0 {
+        bottom: 0;
+    }
+
+    .chart-bars {
+        position: absolute;
+        inset: 0 0 0 46px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-around;
+        gap: 14px;
+        padding: 0 12px;
+    }
+
+    .chart-column {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    .chart-bar-group {
+        display: flex;
+        width: 100%;
+        height: calc(100% - 28px);
+        align-items: flex-end;
+        justify-content: center;
+        gap: 5px;
+    }
+
+    .chart-bar {
+        position: relative;
+        width: min(24px, 34%);
+        min-height: 8px;
+        border-radius: 7px 7px 2px 2px;
+        transform-origin: bottom;
+        animation: chartGrow .8s ease both;
+    }
+
+    .chart-bar.sales {
+        background: linear-gradient(180deg, #f12b3b, #b80000);
+        box-shadow: 0 8px 18px rgba(196, 0, 0, .18);
+    }
+
+    .chart-bar.leads {
+        background: linear-gradient(180deg, #343a46, #111317);
+    }
+
+    .chart-column-label {
+        margin-top: 10px;
+        color: var(--dashboard-muted);
+        font-size: .66rem;
+        font-weight: 750;
+    }
+
+    .chart-legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 18px;
+        margin-top: 20px;
+    }
+
+    .chart-legend-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        color: var(--dashboard-muted);
+        font-size: .69rem;
+        font-weight: 750;
+    }
+
+    .chart-legend-dot {
+        width: 8px;
+        height: 8px;
+        background: var(--dashboard-red);
+        border-radius: 50%;
+    }
+
+    .chart-legend-dot.dark {
+        background: #232832;
+    }
+
+    .ai-panel {
+        position: relative;
+        isolation: isolate;
+        height: 100%;
+        min-height: 100%;
+        padding: 26px;
+        overflow: hidden;
+        color: #fff;
+        background:
+            radial-gradient(
+                circle at 95% 5%,
+                rgba(196, 0, 0, .42),
+                transparent 32%
+            ),
+            linear-gradient(145deg, #171a20, #08090b);
+        border-color: rgba(255, 255, 255, .06);
+    }
+
+    .ai-panel::after {
+        position: absolute;
+        z-index: -1;
+        right: -80px;
+        bottom: -100px;
+        width: 240px;
+        height: 240px;
+        border: 1px solid rgba(255, 255, 255, .08);
+        border-radius: 50%;
+        content: "";
+        box-shadow:
+            0 0 0 42px rgba(255, 255, 255, .018),
+            0 0 0 84px rgba(255, 255, 255, .012);
+    }
+
+    .ai-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+    .ai-identity {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .ai-icon {
+        position: relative;
+        display: flex;
+        width: 47px;
+        height: 47px;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        background: linear-gradient(135deg, #ee2638, #990000);
+        border-radius: 15px;
+        font-size: 1.25rem;
+        box-shadow: 0 12px 25px rgba(196, 0, 0, .28);
+    }
+
+    .ai-icon::after {
+        position: absolute;
+        top: -3px;
+        right: -3px;
+        width: 11px;
+        height: 11px;
+        background: #38d582;
+        border: 3px solid #111317;
+        border-radius: 50%;
+        content: "";
+    }
+
+    .ai-name {
+        display: block;
+        color: #fff;
+        font-size: .91rem;
+        font-weight: 850;
+    }
+
+    .ai-status {
+        display: block;
+        margin-top: 2px;
+        color: rgba(255, 255, 255, .52);
+        font-size: .67rem;
+    }
+
+    .ai-demo {
+        padding: 5px 8px;
+        color: #ffbdc3;
+        background: rgba(196, 0, 0, .15);
+        border: 1px solid rgba(255, 65, 82, .2);
+        border-radius: 999px;
+        font-size: .58rem;
+        font-weight: 850;
+        letter-spacing: .07em;
+        text-transform: uppercase;
+    }
+
+    .ai-greeting {
+        margin: 0;
+        color: #fff;
+        font-size: 1.35rem;
+        font-weight: 850;
+        line-height: 1.25;
+    }
+
+    .ai-description {
+        margin: 11px 0 0;
+        color: rgba(255, 255, 255, .62);
+        font-size: .78rem;
+        line-height: 1.65;
+    }
+
+    .ai-insight {
+        margin-top: 21px;
+        padding: 18px;
+        background: rgba(255, 255, 255, .065);
+        border: 1px solid rgba(255, 255, 255, .1);
+        border-radius: 15px;
+        backdrop-filter: blur(10px);
+    }
+
+    .ai-insight-label {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        color: #ff5361;
+        font-size: .64rem;
+        font-weight: 850;
+        letter-spacing: .09em;
+        text-transform: uppercase;
+    }
+
+    .ai-insight p {
+        margin: 10px 0 0;
+        color: rgba(255, 255, 255, .74);
+        font-size: .78rem;
+        line-height: 1.7;
+    }
+
+    .ai-recommendations {
+        display: grid;
+        gap: 9px;
+        margin-top: 14px;
+    }
+
+    .ai-recommendation {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        padding: 11px;
+        color: rgba(255, 255, 255, .68);
+        background: rgba(255, 255, 255, .035);
+        border-radius: 11px;
+        font-size: .7rem;
+        line-height: 1.5;
+    }
+
+    .ai-recommendation i {
+        margin-top: 2px;
+        color: #ff4857;
+    }
+
+    .ai-action {
+        width: 100%;
+        margin-top: 20px;
+        color: #fff;
+        background: linear-gradient(135deg, #e21a2c, #a70000);
+        border: 0;
+        box-shadow: 0 12px 24px rgba(196, 0, 0, .22);
+    }
+
+    .ai-action:hover {
+        color: #fff;
+        background: linear-gradient(135deg, #c40000, #890000);
+    }
+
+    .dashboard-bottom-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.2fr) minmax(300px, .8fr);
+        gap: 22px;
+    }
+
+    .performance-panel,
+    .quick-actions-panel {
+        padding: 25px;
+    }
+
+    .performance-list {
+        display: grid;
+        gap: 17px;
+        margin-top: 23px;
+    }
+
+    .performance-item {
+        display: grid;
+        grid-template-columns: 145px minmax(0, 1fr) 55px;
+        gap: 14px;
+        align-items: center;
+    }
+
+    .performance-label {
+        color: var(--dashboard-muted);
+        font-size: .74rem;
+        font-weight: 750;
+    }
+
+    .performance-track {
+        height: 8px;
+        overflow: hidden;
+        background: #eceff3;
+        border-radius: 999px;
+    }
+
+    .performance-progress {
+        height: 100%;
+        background: linear-gradient(
+            90deg,
+            var(--dashboard-red-dark),
+            #ef2638
+        );
+        border-radius: inherit;
+        animation: progressReveal .8s ease both;
+    }
+
+    .performance-value {
+        color: var(--dashboard-text);
+        font-size: .74rem;
+        font-weight: 850;
+        text-align: right;
+    }
+
+    .quick-actions {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 11px;
+        margin-top: 22px;
+    }
+
+    .quick-action {
+        display: flex;
+        min-height: 105px;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: space-between;
+        padding: 16px;
+        color: var(--dashboard-text);
+        background: #f7f8fa;
+        border: 1px solid #eceff3;
+        border-radius: 14px;
+        transition:
+            color .2s ease,
+            background .2s ease,
+            border-color .2s ease,
+            transform .2s ease;
+    }
+
+    .quick-action:hover {
+        color: var(--dashboard-red);
+        background: #fffafa;
+        border-color: rgba(196, 0, 0, .25);
+        transform: translateY(-3px);
+    }
+
+    .quick-action i {
+        font-size: 1.15rem;
+    }
+
+    .quick-action strong {
+        font-size: .76rem;
+    }
+
+    @@keyframes chartGrow {
+        from {
+            transform: scaleY(0);
+            opacity: .3;
+        }
+
+        to {
+            transform: scaleY(1);
+            opacity: 1;
+        }
+    }
+
+    @@keyframes progressReveal {
+        from {
+            width: 0;
+        }
+    }
+
+    @@media (max-width: 1199.98px) {
+        .dashboard-metrics {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .dashboard-main-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @@media (max-width: 991.98px) {
+        .dashboard-hero {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .dashboard-hero-actions {
+            width: 100%;
+            flex-direction: row;
+        }
+
+        .dashboard-bottom-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @@media (max-width: 767.98px) {
+        .dashboard-hero {
+            padding: 27px;
+            border-radius: 20px;
+        }
+
+        .dashboard-hero-actions {
+            flex-direction: column;
+        }
+
+        .dashboard-metrics {
+            grid-template-columns: 1fr;
+        }
+
+        .dashboard-panel-header {
+            flex-direction: column;
+        }
+
+        .chart-area {
+            height: 220px;
+            padding-left: 35px;
+        }
+
+        .chart-grid-line {
+            left: 35px;
+        }
+
+        .chart-grid-line span {
+            left: -38px;
+            width: 30px;
+        }
+
+        .chart-bars {
+            left: 35px;
+            gap: 5px;
+            padding: 0 4px;
+        }
+
+        .performance-item {
+            grid-template-columns: 1fr;
+            gap: 7px;
+        }
+
+        .performance-value {
+            text-align: left;
+        }
+    }
+
+    @@media (max-width: 420px) {
+        .quick-actions {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="admin-container executive-dashboard">
+
+    <section class="dashboard-hero">
+        <div class="dashboard-hero-content">
+            <span class="dashboard-eyebrow">
+                Central de gestão
+            </span>
+
+            <h1>Painel executivo</h1>
+
+            <p>
+                Uma visão estratégica do estoque, das vendas e do desempenho
+                comercial da Viana Motos.
             </p>
         </div>
 
-        <div class="page-actions">
+        <div class="dashboard-hero-actions">
             <a asp-area="Admin"
                asp-controller="Motos"
                asp-action="Create"
                class="btn btn-primary">
                 <i class="bi bi-plus-lg me-2"></i>
-                Nova Moto
+                Nova motocicleta
+            </a>
+
+            <a asp-area="Admin"
+               asp-controller="Motos"
+               asp-action="Index"
+               class="btn dashboard-outline-light">
+                <i class="bi bi-grid me-2"></i>
+                Consultar estoque
             </a>
         </div>
-    </header>
+    </section>
 
-    <div class="row g-4">
-
-        <div class="col-xl-3 col-md-6">
-            <div class="stats-card">
-                <div class="stats-icon bg-red">
+    <section class="dashboard-metrics">
+        <article class="dashboard-metric">
+            <div class="dashboard-metric-top">
+                <span class="dashboard-metric-icon">
                     <i class="bi bi-speedometer2"></i>
-                </div>
-                <div class="stats-value">@ViewBag.TotalMotos</div>
-                <div class="stats-label">Total de Motos</div>
-            </div>
-        </div>
+                </span>
 
-        <div class="col-xl-3 col-md-6">
-            <div class="stats-card">
-                <div class="stats-icon bg-green">
+                <span class="dashboard-metric-change neutral">
+                    Estoque
+                </span>
+            </div>
+
+            <div class="dashboard-metric-value">@totalMotos</div>
+            <div class="dashboard-metric-label">Total de motos</div>
+        </article>
+
+        <article class="dashboard-metric">
+            <div class="dashboard-metric-top">
+                <span class="dashboard-metric-icon"
+                      style="background:#138a54;">
                     <i class="bi bi-check2-circle"></i>
-                </div>
-                <div class="stats-value">@ViewBag.Disponiveis</div>
-                <div class="stats-label">Disponiveis</div>
-            </div>
-        </div>
+                </span>
 
-        <div class="col-xl-3 col-md-6">
-            <div class="stats-card">
-                <div class="stats-icon bg-gold">
+                <span class="dashboard-metric-change">
+                    @taxaDisponibilidade%
+                </span>
+            </div>
+
+            <div class="dashboard-metric-value">@disponiveis</div>
+            <div class="dashboard-metric-label">Disponíveis</div>
+        </article>
+
+        <article class="dashboard-metric">
+            <div class="dashboard-metric-top">
+                <span class="dashboard-metric-icon"
+                      style="background:#b98111;">
                     <i class="bi bi-cash-stack"></i>
-                </div>
-                <div class="stats-value">@ViewBag.Vendidas</div>
-                <div class="stats-label">Vendidas</div>
-            </div>
-        </div>
+                </span>
 
-        <div class="col-xl-3 col-md-6">
-            <div class="stats-card">
-                <div class="stats-icon bg-blue">
+                <span class="dashboard-metric-change">
+                    @taxaVendidas%
+                </span>
+            </div>
+
+            <div class="dashboard-metric-value">@vendidas</div>
+            <div class="dashboard-metric-label">Vendidas</div>
+        </article>
+
+        <article class="dashboard-metric">
+            <div class="dashboard-metric-top">
+                <span class="dashboard-metric-icon"
+                      style="background:#2563eb;">
                     <i class="bi bi-buildings"></i>
-                </div>
-                <div class="stats-value">@ViewBag.Marcas</div>
-                <div class="stats-label">Marcas</div>
+                </span>
+
+                <span class="dashboard-metric-change neutral">
+                    Catálogo
+                </span>
             </div>
-        </div>
 
-    </div>
+            <div class="dashboard-metric-value">@totalMarcas</div>
+            <div class="dashboard-metric-label">Marcas cadastradas</div>
+        </article>
+    </section>
 
-    <div class="row g-4 mt-1">
+    <section class="dashboard-main-grid">
+        <article class="dashboard-panel">
+            <header class="dashboard-panel-header">
+                <div>
+                    <span class="dashboard-panel-eyebrow">
+                        Desempenho comercial
+                    </span>
 
-        <div class="col-xl-4 col-md-6">
-            <div class="summary-card">
-                <div class="d-flex align-items-start justify-content-between gap-3">
-                    <div>
-                        <h2 class="section-title">Faturamento Total</h2>
-                        <p class="page-subtitle mb-0">
-                            Volume financeiro registrado em vendas.
-                        </p>
+                    <h2 class="dashboard-panel-title">
+                        Evolução de oportunidades
+                    </h2>
+
+                    <p class="dashboard-panel-subtitle">
+                        Comparativo mensal de contatos e vendas.
+                    </p>
+                </div>
+
+                <span class="dashboard-demo-badge">
+                    Dados demonstrativos
+                </span>
+            </header>
+
+            <div class="commercial-chart">
+                <div class="chart-summary">
+                    <div class="chart-summary-item">
+                        <span>Faturamento registrado</span>
+                        <strong>@faturamento.ToString("C")</strong>
                     </div>
-                    <span class="stats-icon bg-red">
-                        <i class="bi bi-graph-up-arrow"></i>
+
+                    <div class="chart-summary-item">
+                        <span>Ticket médio</span>
+                        <strong>@ticketMedio.ToString("C")</strong>
+                    </div>
+
+                    <div class="chart-summary-item">
+                        <span>Tendência demonstrativa</span>
+                        <strong class="positive">
+                            <i class="bi bi-arrow-up-right"></i>
+                            18,4%
+                        </strong>
+                    </div>
+                </div>
+
+                <div class="chart-area"
+                     role="img"
+                     aria-label="Gráfico demonstrativo de contatos e vendas">
+
+                    <div class="chart-grid-line line-100">
+                        <span>100</span>
+                    </div>
+
+                    <div class="chart-grid-line line-75">
+                        <span>75</span>
+                    </div>
+
+                    <div class="chart-grid-line line-50">
+                        <span>50</span>
+                    </div>
+
+                    <div class="chart-grid-line line-25">
+                        <span>25</span>
+                    </div>
+
+                    <div class="chart-grid-line line-0">
+                        <span>0</span>
+                    </div>
+
+                    <div class="chart-bars">
+                        <div class="chart-column">
+                            <div class="chart-bar-group">
+                                <span class="chart-bar leads"
+                                      style="height:42%;"></span>
+                                <span class="chart-bar sales"
+                                      style="height:25%;"></span>
+                            </div>
+                            <span class="chart-column-label">Jan</span>
+                        </div>
+
+                        <div class="chart-column">
+                            <div class="chart-bar-group">
+                                <span class="chart-bar leads"
+                                      style="height:55%;"></span>
+                                <span class="chart-bar sales"
+                                      style="height:34%;"></span>
+                            </div>
+                            <span class="chart-column-label">Fev</span>
+                        </div>
+
+                        <div class="chart-column">
+                            <div class="chart-bar-group">
+                                <span class="chart-bar leads"
+                                      style="height:49%;"></span>
+                                <span class="chart-bar sales"
+                                      style="height:39%;"></span>
+                            </div>
+                            <span class="chart-column-label">Mar</span>
+                        </div>
+
+                        <div class="chart-column">
+                            <div class="chart-bar-group">
+                                <span class="chart-bar leads"
+                                      style="height:68%;"></span>
+                                <span class="chart-bar sales"
+                                      style="height:48%;"></span>
+                            </div>
+                            <span class="chart-column-label">Abr</span>
+                        </div>
+
+                        <div class="chart-column">
+                            <div class="chart-bar-group">
+                                <span class="chart-bar leads"
+                                      style="height:76%;"></span>
+                                <span class="chart-bar sales"
+                                      style="height:57%;"></span>
+                            </div>
+                            <span class="chart-column-label">Mai</span>
+                        </div>
+
+                        <div class="chart-column">
+                            <div class="chart-bar-group">
+                                <span class="chart-bar leads"
+                                      style="height:91%;"></span>
+                                <span class="chart-bar sales"
+                                      style="height:72%;"></span>
+                            </div>
+                            <span class="chart-column-label">Jun</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-legend">
+                    <span class="chart-legend-item">
+                        <span class="chart-legend-dot dark"></span>
+                        Oportunidades
+                    </span>
+
+                    <span class="chart-legend-item">
+                        <span class="chart-legend-dot"></span>
+                        Vendas
+                    </span>
+                </div>
+            </div>
+        </article>
+
+        <aside class="dashboard-panel ai-panel">
+            <div class="ai-header">
+                <div class="ai-identity">
+                    <span class="ai-icon">
+                        <i class="bi bi-stars"></i>
+                    </span>
+
+                    <span>
+                        <strong class="ai-name">
+                            Viana Intelligence
+                        </strong>
+
+                        <small class="ai-status">
+                            Assistente comercial ativo
+                        </small>
                     </span>
                 </div>
 
-                <div class="stats-value mt-4">
-                    @(((decimal)ViewBag.Faturamento).ToString("C"))
+                <span class="ai-demo">
+                    Demonstração
+                </span>
+            </div>
+
+            <h2 class="ai-greeting">
+                Olá! Analisei o cenário atual da operação.
+            </h2>
+
+            <p class="ai-description">
+                A inteligência comercial interpreta os indicadores para ajudar
+                o gestor a identificar oportunidades e tomar decisões.
+            </p>
+
+            <div class="ai-insight">
+                <span class="ai-insight-label">
+                    <i class="bi bi-lightbulb"></i>
+                    Análise do estoque
+                </span>
+
+                <p>@insightEstoque</p>
+            </div>
+
+            <div class="ai-recommendations">
+                <div class="ai-recommendation">
+                    <i class="bi bi-check2-circle"></i>
+                    <span>
+                        Divulgar as motos disponíveis com maior apelo visual.
+                    </span>
+                </div>
+
+                <div class="ai-recommendation">
+                    <i class="bi bi-check2-circle"></i>
+                    <span>
+                        Acompanhar contatos originados pela vitrine pública.
+                    </span>
+                </div>
+
+                <div class="ai-recommendation">
+                    <i class="bi bi-check2-circle"></i>
+                    <span>
+                        Priorizar anúncios com fotos completas e descrição detalhada.
+                    </span>
                 </div>
             </div>
-        </div>
 
-        <div class="col-xl-8">
-            <div class="info-card h-100">
-                <div class="d-flex align-items-center justify-content-between gap-3 mb-3">
-                    <h2 class="section-title mb-0">Visao Geral</h2>
-                    <span class="status-badge is-neutral">Painel executivo</span>
+            <button type="button"
+                    class="btn ai-action"
+                    onclick="mostrarDemoIA()">
+                <i class="bi bi-stars me-2"></i>
+                Gerar nova análise
+            </button>
+        </aside>
+    </section>
+
+    <section class="dashboard-bottom-grid">
+        <article class="dashboard-panel performance-panel">
+            <header>
+                <span class="dashboard-panel-eyebrow">
+                    Indicadores operacionais
+                </span>
+
+                <h2 class="dashboard-panel-title">
+                    Saúde comercial
+                </h2>
+
+                <p class="dashboard-panel-subtitle">
+                    Visão resumida da composição atual do estoque.
+                </p>
+            </header>
+
+            <div class="performance-list">
+                <div class="performance-item">
+                    <span class="performance-label">
+                        Disponibilidade
+                    </span>
+
+                    <div class="performance-track">
+                        <div class="performance-progress"
+                             style="width:@taxaDisponibilidade%;"></div>
+                    </div>
+
+                    <span class="performance-value">
+                        @taxaDisponibilidade%
+                    </span>
                 </div>
 
-                <div class="empty-state">
-                    <i class="bi bi-bar-chart-line fs-2"></i>
-                    <strong>Area reservada para graficos futuros</strong>
-                    <span>O painel ja esta preparado visualmente para evolucao comercial.</span>
+                <div class="performance-item">
+                    <span class="performance-label">
+                        Conversão em vendas
+                    </span>
+
+                    <div class="performance-track">
+                        <div class="performance-progress"
+                             style="width:@taxaVendidas%;"></div>
+                    </div>
+
+                    <span class="performance-value">
+                        @taxaVendidas%
+                    </span>
+                </div>
+
+                <div class="performance-item">
+                    <span class="performance-label">
+                        Diversidade de marcas
+                    </span>
+
+                    <div class="performance-track">
+                        <div class="performance-progress"
+                             style="width:@Math.Min(totalMarcas * 10, 100)%;"></div>
+                    </div>
+
+                    <span class="performance-value">
+                        @totalMarcas
+                    </span>
                 </div>
             </div>
-        </div>
+        </article>
 
-    </div>
+        <article class="dashboard-panel quick-actions-panel">
+            <header>
+                <span class="dashboard-panel-eyebrow">
+                    Acesso rápido
+                </span>
 
-    <div class="row g-4 mt-1">
-        <div class="col-lg-12">
-            <div class="summary-card">
-                <h2 class="section-title">Resumo Rapido</h2>
-                <ul class="summary-list">
-                    <li><i class="bi bi-check-circle"></i> Total de motos cadastradas no estoque</li>
-                    <li><i class="bi bi-check-circle"></i> Motos disponiveis para negociacao</li>
-                    <li><i class="bi bi-check-circle"></i> Marcas cadastradas para organizacao do catalogo</li>
-                    <li><i class="bi bi-check-circle"></i> Indicadores comerciais centralizados</li>
-                </ul>
+                <h2 class="dashboard-panel-title">
+                    Operações frequentes
+                </h2>
+            </header>
+
+            <div class="quick-actions">
+                <a asp-area="Admin"
+                   asp-controller="Motos"
+                   asp-action="Create"
+                   class="quick-action">
+                    <i class="bi bi-plus-circle"></i>
+                    <strong>Nova motocicleta</strong>
+                </a>
+
+                <a asp-area="Admin"
+                   asp-controller="Motos"
+                   asp-action="Index"
+                   class="quick-action">
+                    <i class="bi bi-bicycle"></i>
+                    <strong>Gerenciar estoque</strong>
+                </a>
+
+                <a asp-area="Admin"
+                   asp-controller="Marcas"
+                   asp-action="Index"
+                   class="quick-action">
+                    <i class="bi bi-buildings"></i>
+                    <strong>Gerenciar marcas</strong>
+                </a>
+
+                <a asp-area="Admin"
+                   asp-controller="Vendas"
+                   asp-action="Index"
+                   class="quick-action">
+                    <i class="bi bi-cash-coin"></i>
+                    <strong>Consultar vendas</strong>
+                </a>
             </div>
-        </div>
-    </div>
+        </article>
+    </section>
 
 </div>
+
+<script>
+    function mostrarDemoIA() {
+        const button = event.currentTarget;
+        const originalContent = button.innerHTML;
+        const insight = document.querySelector(".ai-insight p");
+
+        button.disabled = true;
+        button.innerHTML =
+            '<span class="spinner-border spinner-border-sm me-2"></span>Analisando indicadores...';
+
+        window.setTimeout(function () {
+            if (insight) {
+                insight.textContent =
+                    "Análise concluída: o catálogo público, as fotos e a disponibilidade estão alinhados para a apresentação comercial. O próximo passo recomendado é acompanhar os contatos gerados por cada motocicleta.";
+            }
+
+            button.innerHTML =
+                '<i class="bi bi-check2-circle me-2"></i>Análise atualizada';
+
+            window.setTimeout(function () {
+                button.disabled = false;
+                button.innerHTML = originalContent;
+            }, 1800);
+        }, 1300);
+    }
+</script>

@@ -1,149 +1,856 @@
 ﻿@model VianaMotos.Web.ViewModels.MotoViewModel
 
-<div asp-validation-summary="All" class="text-danger"></div>
+@{
+    ViewData["Title"] = "Editar motocicleta";
 
-<div class="card shadow-sm">
-    <div class="card-body">
+    var fotos = Model.Moto.Fotos?
+        .OrderByDescending(x => x.Principal)
+        .ThenBy(x => x.Ordem)
+        .ToList() ?? new();
+}
 
-        <h1 class="mb-4">Editar Moto</h1>
-
-
-<form asp-action="Edit"
-      method="post"
-      enctype="multipart/form-data">
-
-    @Html.AntiForgeryToken()
-
-    <input type="hidden" asp-for="Moto.Id" />
-    <input type="hidden" asp-for="Moto.FotoPrincipal" />
-
-    @if (!string.IsNullOrEmpty(Model.Moto.FotoPrincipal))
-    {
-        <div class="mb-3">
-            <img src="~/uploads/motos/@Model.Moto.FotoPrincipal"
-                 width="200"
-                 class="img-thumbnail" />
-        </div>
+<style>
+    .moto-form-page {
+        padding-bottom: 32px;
     }
 
-    <div class="mb-3">
-        <label asp-for="Moto.Modelo"></label>
-        <input asp-for="Moto.Modelo" class="form-control" />
-    </div>
+    .moto-form-header {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 24px;
+        margin-bottom: 26px;
+    }
 
-    <div class="mb-3">
-        <label asp-for="Moto.MarcaId"></label>
-        <select asp-for="Moto.MarcaId"
-                asp-items="Model.Marcas"
-                class="form-select">
-            <option value="">Selecione</option>
-        </select>
-    </div>
+    .moto-form-eyebrow {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--viana-red, #c40000);
+        font-size: .72rem;
+        font-weight: 850;
+        letter-spacing: .14em;
+        text-transform: uppercase;
+    }
 
-    <div class="mb-3">
-        <label asp-for="Moto.CategoriaId"></label>
-        <select asp-for="Moto.CategoriaId"
-                asp-items="Model.Categorias"
-                class="form-select">
-            <option value="">Selecione</option>
-        </select>
-    </div>
+    .moto-form-title {
+        margin: 0;
+        color: var(--viana-graphite-950, #111317);
+        font-size: clamp(2rem, 4vw, 3rem);
+        font-weight: 850;
+        line-height: 1;
+    }
 
-    <div class="mb-3">
-        <label asp-for="Moto.CombustivelId"></label>
-        <select asp-for="Moto.CombustivelId"
-                asp-items="Model.Combustiveis"
-                class="form-select">
-            <option value="">Selecione</option>
-        </select>
-    </div>
+    .moto-form-subtitle {
+        max-width: 700px;
+        margin: 11px 0 0;
+        color: var(--viana-gray-500, #7d8794);
+        line-height: 1.6;
+    }
 
-    <div class="mb-3">
-        <label asp-for="Moto.Ano"></label>
-        <input asp-for="Moto.Ano" class="form-control" />
-    </div>
+    .moto-form-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 340px;
+        gap: 24px;
+        align-items: start;
+    }
 
-    <div class="mb-3">
-        <label asp-for="Moto.Cor"></label>
-        <input asp-for="Moto.Cor" class="form-control" />
-    </div>
+    .moto-form-card {
+        padding: 28px;
+        background: #fff;
+        border: 1px solid rgba(17, 24, 39, .08);
+        border-radius: 20px;
+        box-shadow: 0 18px 50px rgba(17, 24, 39, .08);
+    }
 
-    <div class="mb-3">
-        <label asp-for="Moto.Quilometragem"></label>
-        <input asp-for="Moto.Quilometragem" class="form-control" />
-    </div>
+    .moto-form-section + .moto-form-section {
+        margin-top: 30px;
+        padding-top: 28px;
+        border-top: 1px solid #eceff3;
+    }
 
-    <div class="mb-3">
-        <label asp-for="Moto.Valor"></label>
-        <input asp-for="Moto.Valor" class="form-control" />
-    </div>
+    .moto-form-section-header {
+        margin-bottom: 22px;
+    }
 
-    <div class="mb-3">
-        <label asp-for="Moto.Descricao"></label>
-        <textarea asp-for="Moto.Descricao"
-                  class="form-control"
-                  rows="4"></textarea>
-    </div>
+    .moto-form-section-title {
+        margin: 0;
+        color: #111317;
+        font-size: 1.08rem;
+        font-weight: 850;
+    }
 
-    <div class="form-check mb-3">
-        <input asp-for="Moto.Disponivel"
-               class="form-check-input" />
-        <label asp-for="Moto.Disponivel"
-               class="form-check-label"></label>
-    </div>
+    .moto-form-section-description {
+        margin: 6px 0 0;
+        color: var(--viana-gray-500, #7d8794);
+        font-size: .84rem;
+    }
 
-    <div class="mb-3">
-        <label class="form-label">
-            Fotos da Moto
-        </label>
+    .moto-form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
+    }
 
-        <input asp-for="ArquivosFotos"
-               type="file"
-               class="form-control"
-               accept="image/*"
-               multiple />
-    </div>
+    .moto-form-field.full-width {
+        grid-column: 1 / -1;
+    }
 
-    @if (Model.Moto.Fotos != null && Model.Moto.Fotos.Any())
-    {
-        <hr />
+    .moto-form-field .form-label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--viana-gray-700, #3f4752);
+        font-size: .74rem;
+        font-weight: 850;
+        letter-spacing: .05em;
+        text-transform: uppercase;
+    }
 
-        <h4>Fotos Cadastradas</h4>
+    .moto-form-field .form-control,
+    .moto-form-field .form-select {
+        width: 100%;
+        min-height: 50px;
+        padding: .78rem .95rem;
+        background: #fff;
+        border: 1px solid #d7dce4;
+        border-radius: 13px;
+        color: #111317;
+    }
 
-        <div class="row">
-            @foreach (var foto in Model.Moto.Fotos.OrderBy(x => x.Ordem))
-            {
-                <div class="col-md-3 mb-3">
+    .moto-form-field textarea.form-control {
+        min-height: 140px;
+        resize: vertical;
+    }
 
-                    @if (foto.Principal)
-                    {
-                        <span class="badge bg-success mb-2">
-                            Principal
+    .moto-form-field .form-control:focus,
+    .moto-form-field .form-select:focus {
+        border-color: rgba(196, 0, 0, .5);
+        box-shadow: 0 0 0 .22rem rgba(196, 0, 0, .1);
+    }
+
+    .moto-form-field .text-danger {
+        display: block;
+        margin-top: 6px;
+        font-size: .76rem;
+    }
+
+    .moto-availability {
+        display: flex;
+        gap: 14px;
+        align-items: center;
+        padding: 17px;
+        background: #f6f7f9;
+        border: 1px solid #eceff3;
+        border-radius: 14px;
+    }
+
+    .moto-availability .form-check-input {
+        width: 21px;
+        height: 21px;
+        margin: 0;
+        flex: 0 0 21px;
+    }
+
+    .moto-availability-text {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .moto-availability-text strong {
+        color: #111317;
+        font-size: .88rem;
+    }
+
+    .moto-availability-text span {
+        margin-top: 2px;
+        color: var(--viana-gray-500, #7d8794);
+        font-size: .76rem;
+    }
+
+    .moto-upload-area {
+        position: relative;
+        padding: 28px;
+        background: #fafbfc;
+        border: 1px dashed #c7cdd6;
+        border-radius: 16px;
+        text-align: center;
+        transition:
+            border-color .2s ease,
+            background .2s ease;
+    }
+
+    .moto-upload-area:hover {
+        background: #fffafa;
+        border-color: rgba(196, 0, 0, .45);
+    }
+
+    .moto-upload-icon {
+        display: flex;
+        width: 54px;
+        height: 54px;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 13px;
+        color: #fff;
+        background: #111317;
+        border-radius: 16px;
+        font-size: 1.35rem;
+        font-weight: 850;
+    }
+
+    .moto-upload-area strong {
+        display: block;
+        color: #111317;
+        font-size: .94rem;
+    }
+
+    .moto-upload-area p {
+        margin: 5px 0 17px;
+        color: var(--viana-gray-500, #7d8794);
+        font-size: .78rem;
+    }
+
+    .moto-upload-area .form-control {
+        max-width: 520px;
+        margin: 0 auto;
+    }
+
+    .new-images-preview {
+        display: none;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 18px;
+    }
+
+    .new-images-preview.is-visible {
+        display: grid;
+    }
+
+    .new-image-item {
+        position: relative;
+        height: 130px;
+        overflow: hidden;
+        background: #eef0f3;
+        border-radius: 13px;
+    }
+
+    .new-image-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .new-image-item span {
+        position: absolute;
+        right: 7px;
+        bottom: 7px;
+        left: 7px;
+        overflow: hidden;
+        padding: 5px 8px;
+        color: #fff;
+        background: rgba(8, 9, 11, .72);
+        border-radius: 8px;
+        font-size: .65rem;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .registered-photos {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+    }
+
+    .registered-photo {
+        position: relative;
+        height: 180px;
+        overflow: hidden;
+        background: #eef0f3;
+        border: 1px solid #eceff3;
+        border-radius: 14px;
+    }
+
+    .registered-photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .registered-photo-badge {
+        position: absolute;
+        z-index: 2;
+        top: 10px;
+        left: 10px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 10px;
+        color: #fff;
+        background: #138a54;
+        border-radius: 999px;
+        font-size: .65rem;
+        font-weight: 850;
+        letter-spacing: .05em;
+        text-transform: uppercase;
+        box-shadow: 0 6px 18px rgba(19, 138, 84, .28);
+    }
+
+    .registered-photo-badge::before {
+        width: 6px;
+        height: 6px;
+        background: #fff;
+        border-radius: 50%;
+        content: "";
+    }
+
+    .moto-form-sidebar {
+        position: sticky;
+        top: 100px;
+    }
+
+    .moto-summary-image {
+        height: 215px;
+        overflow: hidden;
+        margin-bottom: 20px;
+        background: #eef0f3;
+        border-radius: 15px;
+    }
+
+    .moto-summary-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .moto-summary-placeholder {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: var(--viana-gray-500, #7d8794);
+        text-align: center;
+    }
+
+    .moto-summary-placeholder strong {
+        color: #111317;
+    }
+
+    .moto-summary-title {
+        margin: 0;
+        color: #111317;
+        font-size: 1.25rem;
+        font-weight: 850;
+    }
+
+    .moto-summary-value {
+        margin: 8px 0 0;
+        color: var(--viana-red, #c40000);
+        font-size: 1.45rem;
+        font-weight: 900;
+    }
+
+    .moto-summary-list {
+        margin: 22px 0 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .moto-summary-list li {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 11px 0;
+        color: var(--viana-gray-500, #7d8794);
+        border-bottom: 1px solid #eceff3;
+        font-size: .8rem;
+    }
+
+    .moto-summary-list li:last-child {
+        border-bottom: 0;
+    }
+
+    .moto-summary-list strong {
+        color: #111317;
+        text-align: right;
+    }
+
+    .moto-form-actions {
+        display: grid;
+        gap: 10px;
+        margin-top: 24px;
+    }
+
+    .moto-form-actions .btn {
+        width: 100%;
+    }
+
+    .moto-validation-summary {
+        margin-bottom: 22px;
+        padding: 16px 18px;
+        color: #b42318;
+        background: rgba(180, 35, 24, .07);
+        border: 1px solid rgba(180, 35, 24, .15);
+        border-radius: 13px;
+    }
+
+    .moto-validation-summary:empty,
+    .moto-validation-summary.validation-summary-valid {
+        display: none;
+    }
+
+    .moto-validation-summary ul {
+        margin: 0;
+        padding-left: 20px;
+    }
+
+    @@media (max-width: 991.98px) {
+        .moto-form-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .moto-form-sidebar {
+            position: static;
+        }
+
+        .registered-photos {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @@media (max-width: 767.98px) {
+        .moto-form-header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .moto-form-card {
+            padding: 21px;
+        }
+
+        .moto-form-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .moto-form-field.full-width {
+            grid-column: auto;
+        }
+
+        .new-images-preview {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @@media (max-width: 480px) {
+        .registered-photos,
+        .new-images-preview {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="moto-form-page">
+
+    <header class="moto-form-header">
+        <div>
+            <span class="moto-form-eyebrow">
+                Gestão de estoque
+            </span>
+
+            <h1 class="moto-form-title">
+                Editar motocicleta
+            </h1>
+
+            <p class="moto-form-subtitle">
+                Atualize as informações comerciais, a disponibilidade e as fotos
+                de @Model.Moto.Modelo.
+            </p>
+        </div>
+
+        <a asp-action="Details"
+           asp-route-id="@Model.Moto.Id"
+           class="btn btn-outline-secondary">
+            Voltar aos detalhes
+        </a>
+    </header>
+
+    <div asp-validation-summary="All"
+         class="moto-validation-summary"></div>
+
+    <form asp-action="Edit"
+          method="post"
+          enctype="multipart/form-data">
+
+        @Html.AntiForgeryToken()
+
+        <input type="hidden" asp-for="Moto.Id" />
+        <input type="hidden" asp-for="Moto.FotoPrincipal" />
+
+        <div class="moto-form-layout">
+
+            <main class="moto-form-card">
+
+                <section class="moto-form-section">
+                    <div class="moto-form-section-header">
+                        <h2 class="moto-form-section-title">
+                            Identificação
+                        </h2>
+
+                        <p class="moto-form-section-description">
+                            Informe o modelo, a marca e a classificação da motocicleta.
+                        </p>
+                    </div>
+
+                    <div class="moto-form-grid">
+                        <div class="moto-form-field full-width">
+                            <label asp-for="Moto.Modelo" class="form-label">
+                                Modelo
+                            </label>
+
+                            <input asp-for="Moto.Modelo"
+                                   class="form-control"
+                                   placeholder="Ex.: Honda CB 500F" />
+
+                            <span asp-validation-for="Moto.Modelo"
+                                  class="text-danger"></span>
+                        </div>
+
+                        <div class="moto-form-field">
+                            <label asp-for="Moto.MarcaId" class="form-label">
+                                Marca
+                            </label>
+
+                            <select asp-for="Moto.MarcaId"
+                                    asp-items="Model.Marcas"
+                                    class="form-select">
+                                <option value="">Selecione uma marca</option>
+                            </select>
+
+                            <span asp-validation-for="Moto.MarcaId"
+                                  class="text-danger"></span>
+                        </div>
+
+                        <div class="moto-form-field">
+                            <label asp-for="Moto.CategoriaId" class="form-label">
+                                Categoria
+                            </label>
+
+                            <select asp-for="Moto.CategoriaId"
+                                    asp-items="Model.Categorias"
+                                    class="form-select">
+                                <option value="">Selecione uma categoria</option>
+                            </select>
+
+                            <span asp-validation-for="Moto.CategoriaId"
+                                  class="text-danger"></span>
+                        </div>
+
+                        <div class="moto-form-field">
+                            <label asp-for="Moto.CombustivelId" class="form-label">
+                                Combustível
+                            </label>
+
+                            <select asp-for="Moto.CombustivelId"
+                                    asp-items="Model.Combustiveis"
+                                    class="form-select">
+                                <option value="">Selecione o combustível</option>
+                            </select>
+
+                            <span asp-validation-for="Moto.CombustivelId"
+                                  class="text-danger"></span>
+                        </div>
+
+                        <div class="moto-form-field">
+                            <label asp-for="Moto.Cor" class="form-label">
+                                Cor
+                            </label>
+
+                            <input asp-for="Moto.Cor"
+                                   class="form-control"
+                                   placeholder="Ex.: Vermelha" />
+
+                            <span asp-validation-for="Moto.Cor"
+                                  class="text-danger"></span>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="moto-form-section">
+                    <div class="moto-form-section-header">
+                        <h2 class="moto-form-section-title">
+                            Informações comerciais
+                        </h2>
+
+                        <p class="moto-form-section-description">
+                            Atualize o ano, a quilometragem e o valor anunciado.
+                        </p>
+                    </div>
+
+                    <div class="moto-form-grid">
+                        <div class="moto-form-field">
+                            <label asp-for="Moto.Ano" class="form-label">
+                                Ano
+                            </label>
+
+                            <input asp-for="Moto.Ano"
+                                   class="form-control"
+                                   placeholder="Ex.: 2024" />
+
+                            <span asp-validation-for="Moto.Ano"
+                                  class="text-danger"></span>
+                        </div>
+
+                        <div class="moto-form-field">
+                            <label asp-for="Moto.Quilometragem" class="form-label">
+                                Quilometragem
+                            </label>
+
+                            <input asp-for="Moto.Quilometragem"
+                                   class="form-control"
+                                   placeholder="Ex.: 15000" />
+
+                            <span asp-validation-for="Moto.Quilometragem"
+                                  class="text-danger"></span>
+                        </div>
+
+                        <div class="moto-form-field">
+                            <label asp-for="Moto.Valor" class="form-label">
+                                Valor
+                            </label>
+
+                            <input asp-for="Moto.Valor"
+                                   class="form-control"
+                                   placeholder="Ex.: 35000,00" />
+
+                            <span asp-validation-for="Moto.Valor"
+                                  class="text-danger"></span>
+                        </div>
+
+                        <div class="moto-form-field">
+                            <label class="form-label">
+                                Disponibilidade
+                            </label>
+
+                            <label class="moto-availability">
+                                <input asp-for="Moto.Disponivel"
+                                       class="form-check-input" />
+
+                                <span class="moto-availability-text">
+                                    <strong>Disponível para venda</strong>
+                                    <span>
+                                        Exibir esta moto no estoque público.
+                                    </span>
+                                </span>
+                            </label>
+                        </div>
+
+                        <div class="moto-form-field full-width">
+                            <label asp-for="Moto.Descricao" class="form-label">
+                                Descrição
+                            </label>
+
+                            <textarea asp-for="Moto.Descricao"
+                                      class="form-control"
+                                      rows="5"
+                                      placeholder="Descreva o estado, os diferenciais e outras informações importantes da motocicleta."></textarea>
+
+                            <span asp-validation-for="Moto.Descricao"
+                                  class="text-danger"></span>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="moto-form-section">
+                    <div class="moto-form-section-header">
+                        <h2 class="moto-form-section-title">
+                            Adicionar novas fotos
+                        </h2>
+
+                        <p class="moto-form-section-description">
+                            Selecione uma ou mais imagens para complementar o anúncio.
+                        </p>
+                    </div>
+
+                    <div class="moto-upload-area">
+                        <span class="moto-upload-icon" aria-hidden="true">
+                            +
                         </span>
+
+                        <strong>Selecione as imagens da motocicleta</strong>
+
+                        <p>
+                            Formatos recomendados: JPG, JPEG, PNG ou WEBP.
+                        </p>
+
+                        <input asp-for="ArquivosFotos"
+                               id="motoPhotoInput"
+                               type="file"
+                               class="form-control"
+                               accept="image/*"
+                               multiple />
+                    </div>
+
+                    <div id="newImagesPreview"
+                         class="new-images-preview"></div>
+                </section>
+
+                @if (fotos.Any())
+                {
+                    <section class="moto-form-section">
+                        <div class="moto-form-section-header">
+                            <h2 class="moto-form-section-title">
+                                Fotos cadastradas
+                            </h2>
+
+                            <p class="moto-form-section-description">
+                                Estas imagens já fazem parte do anúncio da motocicleta.
+                            </p>
+                        </div>
+
+                        <div class="registered-photos">
+                            @foreach (var foto in fotos)
+                            {
+                                <article class="registered-photo">
+                                    @if (foto.Principal)
+                                    {
+                                        <span class="registered-photo-badge">
+                                            Principal
+                                        </span>
+                                    }
+
+                                    <img src="~/uploads/motos/@foto.CaminhoImagem"
+                                         alt="Foto de @Model.Moto.Modelo"
+                                         loading="lazy" />
+                                </article>
+                            }
+                        </div>
+                    </section>
+                }
+
+            </main>
+
+            <aside class="moto-form-card moto-form-sidebar">
+
+                <div class="moto-summary-image">
+                    @if (fotos.FirstOrDefault() is { } primeiraFoto)
+                    {
+                        <img src="~/uploads/motos/@primeiraFoto.CaminhoImagem"
+                             alt="@Model.Moto.Modelo" />
                     }
-
-                    <img src="~/uploads/motos/@foto.CaminhoImagem"
-                         class="img-thumbnail"
-                         style="height:180px;width:100%;object-fit:cover;" />
-
+                    else if (!string.IsNullOrWhiteSpace(Model.Moto.FotoPrincipal))
+                    {
+                        <img src="~/uploads/motos/@Model.Moto.FotoPrincipal"
+                             alt="@Model.Moto.Modelo" />
+                    }
+                    else
+                    {
+                        <div class="moto-summary-placeholder">
+                            <strong>Sem imagem</strong>
+                            <span>Adicione uma foto ao anúncio.</span>
+                        </div>
+                    }
                 </div>
-            }
+
+                <h2 class="moto-summary-title">
+                    @Model.Moto.Modelo
+                </h2>
+
+                <p class="moto-summary-value">
+                    @Model.Moto.Valor.ToString("C")
+                </p>
+
+                <ul class="moto-summary-list">
+                    <li>
+                        <span>Ano</span>
+                        <strong>@Model.Moto.Ano</strong>
+                    </li>
+
+                    <li>
+                        <span>Quilometragem</span>
+                        <strong>
+                            @Model.Moto.Quilometragem.ToString("N0") km
+                        </strong>
+                    </li>
+
+                    <li>
+                        <span>Status</span>
+                        <strong>
+                            @(Model.Moto.Disponivel
+                                ? "Disponível"
+                                : "Indisponível")
+                        </strong>
+                    </li>
+
+                    <li>
+                        <span>Fotos cadastradas</span>
+                        <strong>@fotos.Count</strong>
+                    </li>
+                </ul>
+
+                <div class="moto-form-actions">
+                    <button type="submit"
+                            class="btn btn-primary">
+                        Salvar alterações
+                    </button>
+
+                    <a asp-action="Details"
+                       asp-route-id="@Model.Moto.Id"
+                       class="btn btn-outline-secondary">
+                        Cancelar e voltar
+                    </a>
+                </div>
+
+            </aside>
+
         </div>
-    }
-
-   
-    
-
-    <button type="submit"
-            class="btn btn-success">
-        Salvar
-    </button>
-
-    <a asp-action="Index"
-       class="btn btn-secondary">
-        Voltar
-    </a>
-
-</form>
-    </div>
+    </form>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const photoInput = document.getElementById("motoPhotoInput");
+        const preview = document.getElementById("newImagesPreview");
+
+        if (!photoInput || !preview) {
+            return;
+        }
+
+        photoInput.addEventListener("change", function () {
+            preview.innerHTML = "";
+
+            const files = Array.from(photoInput.files || []);
+
+            if (files.length === 0) {
+                preview.classList.remove("is-visible");
+                return;
+            }
+
+            preview.classList.add("is-visible");
+
+            files.forEach(function (file) {
+                if (!file.type.startsWith("image/")) {
+                    return;
+                }
+
+                const item = document.createElement("div");
+                const image = document.createElement("img");
+                const name = document.createElement("span");
+                const reader = new FileReader();
+
+                item.className = "new-image-item";
+                name.textContent = file.name;
+
+                reader.addEventListener("load", function (event) {
+                    image.src = event.target.result;
+                });
+
+                reader.readAsDataURL(file);
+
+                item.appendChild(image);
+                item.appendChild(name);
+                preview.appendChild(item);
+            });
+        });
+    });
+</script>

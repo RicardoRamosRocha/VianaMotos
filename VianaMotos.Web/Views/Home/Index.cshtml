@@ -7,15 +7,13 @@
 <section class="hero">
     <div class="container">
         <div class="hero-content">
-            <img src="~/images/VianaLogo.png"
-                 alt="Viana Motos"
-                 class="hero-logo" />
-
-            <span class="hero-eyebrow">Motocicletas selecionadas</span>
-
             <h1 class="hero-title">
                 Viana Motos
             </h1>
+
+            <span class="hero-eyebrow">
+                Motocicletas selecionadas
+            </span>
 
             <p class="hero-subtitle">
                 Uma vitrine premium para quem busca motocicletas com procedência,
@@ -36,6 +34,22 @@
     </div>
 </section>
 
+<section class="speed-transition" aria-hidden="true">
+    <div class="speed-road">
+        <span class="speed-line speed-line-one"></span>
+        <span class="speed-line speed-line-two"></span>
+        <span class="speed-line speed-line-three"></span>
+
+        <div class="speed-motorcycle">
+            <span class="motorcycle-trail"></span>
+
+            <img src="~/images/moto-animada.png"
+                 alt=""
+                 class="speed-motorcycle-image" />
+        </div>
+    </div>
+</section>
+
 <section id="estoque" class="section-block">
     <div class="container">
 
@@ -50,7 +64,7 @@
             </div>
         </div>
 
-        @if (Model.Any())
+       @if (Model?.Any() == true)
         {
             <div class="row g-4">
                 @foreach (var moto in Model)
