@@ -1,9 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>e537b131-b0a6-4ceb-8317-0369ac25a9a5</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,15 +12,22 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0" />
+
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\uploads\motos\" />
+    <Folder Include="wwwroot/uploads/motos/" />
   </ItemGroup>
+
+  <ItemGroup>
+  <Compile Remove="Migrations.SqlServer\**\*.cs" />
+  <None Include="Migrations.SqlServer\**\*.cs" />
+</ItemGroup>
 
 </Project>
