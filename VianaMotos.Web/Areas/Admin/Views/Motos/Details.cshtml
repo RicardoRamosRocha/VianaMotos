@@ -67,19 +67,22 @@
         position: relative;
         height: 520px;
         overflow: hidden;
-        background: #111317;
+        background: #f3f5f7;
+        border: 1px solid #e4e7ec;
         border-radius: 16px;
     }
 
     .moto-gallery-main img {
         width: 100%;
         height: 100%;
-        object-fit: cover;
-        transition: opacity .2s ease, transform .4s ease;
+        padding: 14px;
+        object-fit: contain;
+        object-position: center;
+        transition: opacity .2s ease;
     }
 
     .moto-gallery-main:hover img {
-        transform: scale(1.015);
+        transform: none;
     }
 
     .moto-gallery-main img.is-changing {
@@ -138,7 +141,10 @@
     .moto-thumbnail img {
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        padding: 4px;
+        background: #fff;
+        object-fit: contain;
+        object-position: center;
     }
 
     .moto-empty-gallery {

@@ -44,14 +44,20 @@
 
             <div class="col-lg-5">
                 <aside class="details-panel">
-                    @if (Model.Disponivel)
-                    {
-                        <span class="motorcycle-status">Disponível</span>
-                    }
-                    else
-                    {
-                        <span class="motorcycle-status is-unavailable">Indisponível</span>
-                    }
+                    <div class="details-panel-top">
+                        @if (Model.Disponivel)
+                        {
+                            <span class="details-status is-available">
+                                Disponível
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="details-status is-unavailable">
+                                Indisponível
+                            </span>
+                        }
+                    </div>
 
                     <h1 class="details-title">@Model.Modelo</h1>
                     <div class="details-brand">
