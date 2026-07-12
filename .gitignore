@@ -8,3 +8,18 @@ publish/
 TestResults/
 wwwroot/uploads/
 **/wwwroot/uploads/
+# Compilação
+bin/
+obj/
+publish/
+publish-test/
+
+# Visual Studio e VS Code
+.vs/
+.vscode/
+*.user
+*.suo
+
+# Arquivos temporários
+*.tmp
+*.log
