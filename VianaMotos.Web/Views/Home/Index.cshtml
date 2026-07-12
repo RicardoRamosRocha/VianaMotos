@@ -78,7 +78,7 @@
                             <div class="motorcycle-media">
                                 @if (fotoPrincipal != null)
                                 {
-                                    <img src="~/uploads/motos/@fotoPrincipal.CaminhoImagem"
+                                    <img src="@ImageUrlHelper.ObterUrl(fotoPrincipal.CaminhoImagem)"
                                          alt="@moto.Modelo" />
                                 }
                                 else

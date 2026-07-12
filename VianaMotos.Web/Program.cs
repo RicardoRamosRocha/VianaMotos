@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using VianaMotos.Web.Data;
+using VianaMotos.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddSingleton<IImageStorageService, CloudinaryImageStorageService>();
 
 var connectionString =
     builder.Configuration.GetConnectionString("DefaultConnection");

@@ -16,7 +16,7 @@
                     <div class="gallery">
                         <div class="gallery-main">
                             <img id="mainGalleryImage"
-                                 src="~/uploads/motos/@principal.CaminhoImagem"
+                                 src="@ImageUrlHelper.ObterUrl(principal.CaminhoImagem)"
                                  alt="@Model.Modelo" />
                         </div>
 
@@ -25,9 +25,9 @@
                             {
                                 <button type="button"
                                         class="gallery-thumbnail @(foto.Id == principal.Id ? "is-active" : "")"
-                                        data-gallery-src="/uploads/motos/@foto.CaminhoImagem"
+                                        data-gallery-src="@ImageUrlHelper.ObterUrl(foto.CaminhoImagem)"
                                         aria-label="Ver foto da moto">
-                                    <img src="~/uploads/motos/@foto.CaminhoImagem"
+                                    <img src="@ImageUrlHelper.ObterUrl(foto.CaminhoImagem)"
                                          alt="@Model.Modelo" />
                                 </button>
                             }

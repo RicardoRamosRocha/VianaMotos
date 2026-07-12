@@ -719,7 +719,7 @@
                                         </span>
                                     }
 
-                                    <img src="~/uploads/motos/@foto.CaminhoImagem"
+                                    <img src="@ImageUrlHelper.ObterUrl(foto.CaminhoImagem)"
                                          alt="Foto de @Model.Moto.Modelo"
                                          loading="lazy" />
                                 </article>
@@ -735,12 +735,12 @@
                 <div class="moto-summary-image">
                     @if (fotos.FirstOrDefault() is { } primeiraFoto)
                     {
-                        <img src="~/uploads/motos/@primeiraFoto.CaminhoImagem"
+                        <img src="@ImageUrlHelper.ObterUrl(primeiraFoto.CaminhoImagem)"
                              alt="@Model.Moto.Modelo" />
                     }
                     else if (!string.IsNullOrWhiteSpace(Model.Moto.FotoPrincipal))
                     {
-                        <img src="~/uploads/motos/@Model.Moto.FotoPrincipal"
+                        <img src="@ImageUrlHelper.ObterUrl(Model.Moto.FotoPrincipal)"
                              alt="@Model.Moto.Modelo" />
                     }
                     else

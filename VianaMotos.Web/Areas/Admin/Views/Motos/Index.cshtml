@@ -57,7 +57,7 @@
                                         .ThenBy(x => x.Ordem)
                                         .First();
 
-                                    <img src="~/uploads/motos/@foto.CaminhoImagem"
+                                    <img src="@ImageUrlHelper.ObterUrl(foto.CaminhoImagem)"
                                          class="admin-thumb"
                                          alt="@moto.Modelo" />
                                 }
