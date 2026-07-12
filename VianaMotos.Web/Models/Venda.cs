@@ -24,7 +24,7 @@ public class Venda
     public decimal ValorVenda { get; set; }
 
     [Display(Name = "Data da venda")]
-    public DateTime DataVenda { get; set; } = DateTime.Now;
+    public DateTime DataVenda { get; set; } = DateTime.UtcNow;
 
     [Display(Name = "Observações")]
     [StringLength(500, ErrorMessage = "O campo Observações deve ter no máximo 500 caracteres.")]

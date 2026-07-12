@@ -38,7 +38,7 @@ public class ClientesController : Controller
         if (!ModelState.IsValid)
             return View(cliente);
 
-        cliente.DataCadastro = DateTime.Now;
+        cliente.DataCadastro = DateTime.UtcNow;
 
         _context.Clientes.Add(cliente);
 
@@ -67,7 +67,20 @@ public class ClientesController : Controller
         if (!ModelState.IsValid)
             return View(cliente);
 
-        _context.Update(cliente);
+        var clienteBanco = await _context.Clientes
+            .FirstOrDefaultAsync(x => x.Id == id);
+
+        if (clienteBanco == null)
+            return NotFound();
+
+        clienteBanco.Nome = cliente.Nome;
+        clienteBanco.Cpf = cliente.Cpf;
+        clienteBanco.Telefone = cliente.Telefone;
+        clienteBanco.Email = cliente.Email;
+        clienteBanco.Endereco = cliente.Endereco;
+        clienteBanco.Cidade = cliente.Cidade;
+        clienteBanco.Estado = cliente.Estado;
+        clienteBanco.Ativo = cliente.Ativo;
 
         await _context.SaveChangesAsync();
 

@@ -70,7 +70,7 @@ public class VendasController : Controller
             ClienteId = model.ClienteId,
             MotoId = model.MotoId,
             ValorVenda = moto.Valor,
-            DataVenda = DateTime.Now,
+            DataVenda = DateTime.UtcNow,
             Observacoes = model.Observacoes
         };
 

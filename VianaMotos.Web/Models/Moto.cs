@@ -39,7 +39,7 @@ public class Moto
     public bool Disponivel { get; set; } = true;
 
     [Display(Name = "Data de cadastro")]
-    public DateTime DataCadastro { get; set; } = DateTime.Now;
+    public DateTime DataCadastro { get; set; } = DateTime.UtcNow;
 
     // Relacionamentos
 

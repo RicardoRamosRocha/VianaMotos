@@ -40,7 +40,7 @@ public class Cliente
     public bool Ativo { get; set; } = true;
 
     [Display(Name = "Data de cadastro")]
-    public DateTime DataCadastro { get; set; } = DateTime.Now;
+    public DateTime DataCadastro { get; set; } = DateTime.UtcNow;
 
     public ICollection<Venda> Vendas { get; set; } = new List<Venda>();
 }
