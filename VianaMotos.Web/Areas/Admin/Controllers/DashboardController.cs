@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using VianaMotos.Web.Data;
 
 namespace VianaMotos.Web.Areas.Admin.Controllers;
 
 [Area("Admin")]
+[Authorize(Roles = IdentitySeeder.AdministratorRole)]
 public class DashboardController : Controller
 {
     private readonly AppDbContext _context;

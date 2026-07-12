@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using VianaMotos.Web.Data;
@@ -9,6 +10,7 @@ using VianaMotos.Web.ViewModels;
 namespace VianaMotos.Web.Areas.Admin.Controllers;
 
 [Area("Admin")]
+[Authorize(Roles = IdentitySeeder.AdministratorRole)]
 public class MotosController : Controller
 {
     private readonly AppDbContext _context;

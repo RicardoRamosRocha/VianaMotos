@@ -1,0 +1,197 @@
+@model VianaMotos.Web.ViewModels.LoginViewModel
+
+@{
+    ViewData["Title"] = "Acesso administrativo";
+}
+
+<style>
+    .login-page {
+        display: grid;
+        min-height: calc(100vh - 150px);
+        place-items: center;
+        padding: 48px 20px;
+        background:
+            radial-gradient(circle at 15% 10%, rgba(196, 0, 0, .12), transparent 34%),
+            linear-gradient(135deg, #f5f6f8 0%, #fff 55%, #f3f4f6 100%);
+    }
+
+    .login-card {
+        width: min(100%, 460px);
+        padding: 38px;
+        background: rgba(255, 255, 255, .96);
+        border: 1px solid rgba(17, 24, 39, .08);
+        border-radius: 24px;
+        box-shadow: 0 28px 80px rgba(17, 24, 39, .14);
+    }
+
+    .login-brand {
+        display: flex;
+        gap: 14px;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+    .login-brand img {
+        width: 58px;
+        height: 58px;
+        padding: 7px;
+        background: #0f1114;
+        border-radius: 16px;
+        object-fit: contain;
+    }
+
+    .login-brand strong,
+    .login-brand span {
+        display: block;
+    }
+
+    .login-brand strong {
+        color: #111317;
+        font-size: 1.05rem;
+        font-weight: 900;
+    }
+
+    .login-brand span {
+        margin-top: 3px;
+        color: #7d8794;
+        font-size: .78rem;
+    }
+
+    .login-title {
+        margin: 0;
+        color: #111317;
+        font-size: clamp(1.85rem, 5vw, 2.45rem);
+        font-weight: 900;
+        letter-spacing: -.045em;
+    }
+
+    .login-subtitle {
+        margin: 10px 0 28px;
+        color: #6b7280;
+        line-height: 1.6;
+    }
+
+    .login-field + .login-field {
+        margin-top: 18px;
+    }
+
+    .login-field label {
+        display: block;
+        margin-bottom: 8px;
+        color: #3f4752;
+        font-size: .72rem;
+        font-weight: 850;
+        letter-spacing: .07em;
+        text-transform: uppercase;
+    }
+
+    .login-field .form-control {
+        min-height: 52px;
+        padding: .85rem 1rem;
+        border: 1px solid #d7dce4;
+        border-radius: 13px;
+    }
+
+    .login-field .form-control:focus {
+        border-color: rgba(196, 0, 0, .55);
+        box-shadow: 0 0 0 .22rem rgba(196, 0, 0, .1);
+    }
+
+    .login-options {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 20px 0;
+    }
+
+    .login-submit {
+        width: 100%;
+        min-height: 52px;
+        color: #fff;
+        background: linear-gradient(135deg, #e00000, #a90000);
+        border: 0;
+        border-radius: 13px;
+        font-weight: 850;
+        box-shadow: 0 14px 28px rgba(196, 0, 0, .22);
+    }
+
+    .login-back {
+        display: block;
+        margin-top: 20px;
+        color: #596271;
+        font-size: .84rem;
+        font-weight: 700;
+        text-align: center;
+        text-decoration: none;
+    }
+
+    @@media (max-width: 575.98px) {
+        .login-card {
+            padding: 28px 22px;
+            border-radius: 20px;
+        }
+    }
+</style>
+
+<section class="login-page">
+    <div class="login-card">
+        <div class="login-brand">
+            <img src="~/images/VianaLogo.png" alt="Viana Motos" />
+            <div>
+                <strong>Viana Motos</strong>
+                <span>Ambiente administrativo seguro</span>
+            </div>
+        </div>
+
+        <h1 class="login-title">Bem-vindo de volta</h1>
+        <p class="login-subtitle">
+            Entre com sua conta administrativa para gerenciar estoque,
+            clientes e vendas.
+        </p>
+
+        <form asp-action="Login" method="post">
+            <input asp-for="ReturnUrl" type="hidden" />
+
+            <div asp-validation-summary="ModelOnly"
+                 class="alert alert-danger py-2"></div>
+
+            <div class="login-field">
+                <label asp-for="Email"></label>
+                <input asp-for="Email"
+                       class="form-control"
+                       autocomplete="username"
+                       autofocus />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="login-field">
+                <label asp-for="Password"></label>
+                <input asp-for="Password"
+                       class="form-control"
+                       autocomplete="current-password" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <div class="login-options">
+                <div class="form-check">
+                    <input asp-for="RememberMe" class="form-check-input" />
+                    <label asp-for="RememberMe" class="form-check-label"></label>
+                </div>
+            </div>
+
+            <button type="submit" class="login-submit">
+                Entrar no painel
+            </button>
+        </form>
+
+        <a asp-controller="Home"
+           asp-action="Index"
+           class="login-back">
+            Voltar para o site
+        </a>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using VianaMotos.Web.Data;
+using VianaMotos.Web.Models;
 using VianaMotos.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +21,35 @@ if (string.IsNullOrWhiteSpace(connectionString))
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString));
+
+builder.Services
+    .AddIdentity<ApplicationUser, IdentityRole>(options =>
+    {
+        options.Password.RequiredLength = 10;
+        options.Password.RequireDigit = true;
+        options.Password.RequireLowercase = true;
+        options.Password.RequireUppercase = true;
+        options.Password.RequireNonAlphanumeric = true;
+
+        options.Lockout.MaxFailedAccessAttempts = 5;
+        options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
+        options.User.RequireUniqueEmail = true;
+        options.SignIn.RequireConfirmedAccount = false;
+    })
+    .AddEntityFrameworkStores<AppDbContext>()
+    .AddDefaultTokenProviders();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Cookie.Name = "VianaMotos.Admin";
+    options.Cookie.HttpOnly = true;
+    options.Cookie.SameSite = SameSiteMode.Lax;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+    options.LoginPath = "/Conta/Login";
+    options.AccessDeniedPath = "/Conta/AcessoNegado";
+    options.ExpireTimeSpan = TimeSpan.FromHours(8);
+    options.SlidingExpiration = true;
+});
 
 builder.Services.Configure<ForwardedHeadersOptions>(options =>
 {
@@ -43,6 +74,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();
@@ -62,10 +94,20 @@ app.MapControllerRoute(
  */
 using (var scope = app.Services.CreateScope())
 {
+    var services = scope.ServiceProvider;
     var dbContext =
-        scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        services.GetRequiredService<AppDbContext>();
 
     await dbContext.Database.MigrateAsync();
+
+    var logger = services
+        .GetRequiredService<ILoggerFactory>()
+        .CreateLogger("IdentitySeeder");
+
+    await IdentitySeeder.SeedAdministratorAsync(
+        services,
+        builder.Configuration,
+        logger);
 }
 
 app.Run();
