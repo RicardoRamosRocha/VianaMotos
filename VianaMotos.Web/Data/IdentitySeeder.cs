@@ -30,20 +30,49 @@ public static class IdentitySeeder
 
         var email = configuration["ADMIN_EMAIL"];
         var password = configuration["ADMIN_PASSWORD"];
+        var resetPassword = configuration["ADMIN_RESET_PASSWORD"];
 
-        if (string.IsNullOrWhiteSpace(email) ||
-            string.IsNullOrWhiteSpace(password))
+        if (string.IsNullOrWhiteSpace(email))
         {
             logger.LogWarning(
-                "ADMIN_EMAIL ou ADMIN_PASSWORD não configurados. " +
-                "O usuário administrador inicial não foi criado.");
+                "ADMIN_EMAIL não configurado. " +
+                "O usuário administrador não foi criado nem redefinido.");
             return;
         }
 
         var administrator = await userManager.FindByEmailAsync(email);
 
+        if (administrator is not null &&
+            !string.IsNullOrWhiteSpace(resetPassword))
+        {
+            var resetToken = await userManager.GeneratePasswordResetTokenAsync(
+                administrator);
+
+            var resetResult = await userManager.ResetPasswordAsync(
+                administrator,
+                resetToken,
+                resetPassword);
+
+            ValidarResultado(
+                resetResult,
+                "Não foi possível redefinir a senha do usuário administrador.");
+
+            logger.LogWarning(
+                "A senha do administrador {Email} foi redefinida por ADMIN_RESET_PASSWORD. " +
+                "Remova essa variável do ambiente após o primeiro login.",
+                email);
+        }
+
         if (administrator is null)
         {
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                logger.LogWarning(
+                    "ADMIN_PASSWORD não configurado e o usuário administrador não existe. " +
+                    "O usuário administrador inicial não foi criado.");
+                return;
+            }
+
             administrator = new ApplicationUser
             {
                 UserName = email,
