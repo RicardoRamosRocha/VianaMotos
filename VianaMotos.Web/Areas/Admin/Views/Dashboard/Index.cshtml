@@ -25,6 +25,13 @@
         <= 3 => "O estoque disponível está reduzido. Este pode ser um bom momento para planejar novas aquisições e ampliar as opções apresentadas aos clientes.",
         _ => "O estoque apresenta uma quantidade saudável de motocicletas disponíveis para negociação e divulgação comercial."
     };
+
+    var resumoCatalogo = totalMotos switch
+    {
+        0 => "Catálogo aguardando os primeiros anúncios",
+        1 => "1 motocicleta cadastrada no catálogo",
+        _ => $"{totalMotos} motocicletas cadastradas no catálogo"
+    };
 }
 
 <style>
@@ -35,6 +42,53 @@
         --dashboard-text: var(--viana-graphite-950, #111317);
         --dashboard-muted: var(--viana-gray-500, #7d8794);
         padding-bottom: 35px;
+    }
+
+    .dashboard-context-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        margin-bottom: 14px;
+        padding: 0 4px;
+        color: var(--dashboard-muted);
+        font-size: .72rem;
+        font-weight: 750;
+    }
+
+    .dashboard-context-label,
+    .dashboard-context-status,
+    .dashboard-context-platform {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .dashboard-context-label i {
+        color: var(--dashboard-red);
+        font-size: .85rem;
+    }
+
+    .dashboard-context-status {
+        color: #138a54;
+    }
+
+    .dashboard-context-status::before {
+        width: 7px;
+        height: 7px;
+        background: #28b976;
+        border-radius: 50%;
+        box-shadow: 0 0 0 4px rgba(40, 185, 118, .12);
+        content: "";
+    }
+
+    .dashboard-context-platform {
+        margin-left: auto;
+        color: var(--dashboard-red);
+    }
+
+    .dashboard-context-platform i {
+        font-size: .78rem;
     }
 
     .dashboard-hero {
@@ -133,6 +187,48 @@
         color: rgba(255, 255, 255, .65);
         font-size: .95rem;
         line-height: 1.7;
+    }
+
+    .dashboard-hero-summary {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 22px;
+        padding: 8px 12px;
+        color: rgba(255, 255, 255, .76);
+        background: rgba(255, 255, 255, .06);
+        border: 1px solid rgba(255, 255, 255, .1);
+        border-radius: 999px;
+        font-size: .72rem;
+        font-weight: 700;
+    }
+
+    .dashboard-hero-summary i {
+        color: #ff5361;
+    }
+
+    .dashboard-hero-proof {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 9px;
+        margin-top: 20px;
+    }
+
+    .dashboard-hero-proof span {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 7px 10px;
+        color: rgba(255, 255, 255, .66);
+        background: rgba(255, 255, 255, .06);
+        border: 1px solid rgba(255, 255, 255, .1);
+        border-radius: 999px;
+        font-size: .66rem;
+        font-weight: 800;
+    }
+
+    .dashboard-hero-proof i {
+        color: #62e6a1;
     }
 
     .dashboard-hero-actions {
@@ -264,10 +360,22 @@
     }
 
     .dashboard-panel {
+        position: relative;
         background: #fff;
         border: 1px solid rgba(17, 24, 39, .08);
         border-radius: 21px;
         box-shadow: 0 16px 42px rgba(17, 24, 39, .07);
+    }
+
+    .dashboard-panel::before {
+        position: absolute;
+        top: 0;
+        right: 26px;
+        left: 26px;
+        height: 2px;
+        background: linear-gradient(90deg, rgba(196, 0, 0, .75), transparent 72%);
+        border-radius: 999px;
+        content: "";
     }
 
     .dashboard-panel-header {
@@ -800,6 +908,14 @@
     }
 
     @@media (max-width: 767.98px) {
+        .dashboard-context-bar {
+            flex-wrap: wrap;
+        }
+
+        .dashboard-context-platform {
+            margin-left: 0;
+        }
+
         .dashboard-hero {
             padding: 27px;
             border-radius: 20px;
@@ -856,6 +972,22 @@
 
 <div class="admin-container executive-dashboard">
 
+    <div class="dashboard-context-bar" aria-label="Contexto do painel">
+        <span class="dashboard-context-label">
+            <i class="bi bi-grid-1x2-fill"></i>
+            Visão geral da operação
+        </span>
+
+        <span class="dashboard-context-status">
+            Catálogo atualizado
+        </span>
+
+        <span class="dashboard-context-platform">
+            <i class="bi bi-layers-fill"></i>
+            Orizon workspace
+        </span>
+    </div>
+
     <section class="dashboard-hero">
         <div class="dashboard-hero-content">
             <span class="dashboard-eyebrow">
@@ -868,6 +1000,16 @@
                 Uma visão estratégica do estoque, das vendas e do desempenho
                 comercial da Viana Motos.
             </p>
+
+            <span class="dashboard-hero-summary">
+                <i class="bi bi-broadcast-pin"></i>
+                @resumoCatalogo
+            </span>
+
+            <div class="dashboard-hero-proof">
+                <span><i class="bi bi-check2-circle"></i> Estoque organizado</span>
+                <span><i class="bi bi-lightning-charge-fill"></i> Atendimento mais rápido</span>
+            </div>
         </div>
 
         <div class="dashboard-hero-actions">

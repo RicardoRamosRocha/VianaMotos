@@ -1,3 +1,9 @@
+@{
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty;
+    bool IsActive(string controller) =>
+        string.Equals(currentController, controller, StringComparison.OrdinalIgnoreCase);
+}
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -8,6 +14,7 @@
     <title>@ViewData["Title"] | Viana Motos</title>
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/_content/Orizon.UI/css/orizon.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/admin-premium.css" asp-append-version="true" />
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -15,147 +22,191 @@
 
 <body>
 
-    <div class="admin-shell">
+    <div class="admin-shell hybrid-admin-shell" data-sidebar-collapsed="false">
 
-        <nav class="navbar navbar-expand-lg navbar-dark admin-navbar">
-
-            <div class="container-fluid px-3 px-lg-4">
-
-                <a class="navbar-brand"
-                   asp-area="Admin"
-                   asp-controller="Dashboard"
-                   asp-action="Index">
-
+        <aside class="admin-sidebar" id="adminSidebar" aria-label="Navegação administrativa">
+            <div class="admin-sidebar-brand">
+                <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" class="admin-brand-link">
                     <span class="admin-brand-mark">
-                        <img src="~/images/VianaLogo.png"
-                             alt="Viana Motos" />
+                        <img src="~/images/VianaLogo.png" alt="Viana Motos" />
                     </span>
-
                     <span class="admin-brand-text">
                         <span class="admin-brand-name">Viana Motos</span>
-                        <span class="admin-brand-meta">Painel administrativo</span>
+                        <span class="admin-brand-meta">Sistema comercial</span>
                     </span>
-
                 </a>
-
-                <button class="navbar-toggler"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#adminMenu"
-                        aria-controls="adminMenu"
-                        aria-expanded="false"
-                        aria-label="Abrir menu">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="adminMenu">
-
-                    <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
-
-                        <li class="nav-item">
-                            <a class="nav-link"
-                               asp-area="Admin"
-                               asp-controller="Dashboard"
-                               asp-action="Index">
-                                Painel
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link"
-                               asp-area="Admin"
-                               asp-controller="Clientes"
-                               asp-action="Index">
-                                Clientes
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link"
-                               asp-area="Admin"
-                               asp-controller="Vendas"
-                               asp-action="Index">
-                                Vendas
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link"
-                               asp-area="Admin"
-                               asp-controller="Motos"
-                               asp-action="Index">
-                                Motos
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link"
-                               asp-area="Admin"
-                               asp-controller="Simulador"
-                               asp-action="Index">
-                                Simulador
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link"
-                               asp-area="Admin"
-                               asp-controller="Marcas"
-                               asp-action="Index">
-                                Marcas
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link"
-                               asp-area="Admin"
-                               asp-controller="Categorias"
-                               asp-action="Index">
-                                Categorias
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link admin-nav-accent"
-                               asp-area=""
-                               asp-controller="Home"
-                               asp-action="Index">
-                                Ver Site
-                            </a>
-                        </li>
-
-                        <li class="nav-item d-flex align-items-lg-center ms-lg-2">
-                            <form asp-area=""
-                                  asp-controller="Conta"
-                                  asp-action="Logout"
-                                  method="post"
-                                  class="m-0">
-                                <button type="submit"
-                                        class="nav-link btn btn-link border-0">
-                                    Sair
-                                </button>
-                            </form>
-                        </li>
-
-                    </ul>
-
-                </div>
-
+                <span class="admin-environment-badge"><i class="bi bi-circle-fill"></i> Operação ativa</span>
             </div>
 
-        </nav>
+            <div class="admin-sidebar-scroll">
+                <span class="admin-nav-section-label">Visão geral</span>
+                <nav class="admin-side-nav">
+                    <a class="admin-side-link @(IsActive("Dashboard") ? "is-active" : string.Empty)"
+                       aria-label="Painel executivo" title="Painel executivo"
+                       asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
+                        <i class="bi bi-grid-1x2-fill"></i><span>Painel executivo</span>
+                    </a>
+                </nav>
 
-        <main class="admin-main">
-            @RenderBody()
-        </main>
+                <span class="admin-nav-section-label">Operação comercial</span>
+                <nav class="admin-side-nav">
+                    <a class="admin-side-link @(IsActive("Motos") ? "is-active" : string.Empty)"
+                       aria-label="Estoque de motos" title="Estoque de motos"
+                       asp-area="Admin" asp-controller="Motos" asp-action="Index">
+                        <i class="bi bi-bicycle"></i><span>Estoque de motos</span>
+                    </a>
+                    <a class="admin-side-link @(IsActive("Clientes") ? "is-active" : string.Empty)"
+                       aria-label="Clientes" title="Clientes"
+                       asp-area="Admin" asp-controller="Clientes" asp-action="Index">
+                        <i class="bi bi-people"></i><span>Clientes</span>
+                    </a>
+                    <a class="admin-side-link @(IsActive("Vendas") ? "is-active" : string.Empty)"
+                       aria-label="Vendas" title="Vendas"
+                       asp-area="Admin" asp-controller="Vendas" asp-action="Index">
+                        <i class="bi bi-receipt"></i><span>Vendas</span>
+                    </a>
+                    <a class="admin-side-link @(IsActive("Simulador") ? "is-active" : string.Empty)"
+                       aria-label="Simulador comercial" title="Simulador comercial"
+                       asp-area="Admin" asp-controller="Simulador" asp-action="Index">
+                        <i class="bi bi-calculator"></i><span>Simulador comercial</span>
+                    </a>
+                </nav>
 
-        <footer class="admin-footer">
-            Viana Motos Painel Administrativo
-        </footer>
+                <span class="admin-nav-section-label">Catálogo</span>
+                <nav class="admin-side-nav">
+                    <a class="admin-side-link @(IsActive("Marcas") ? "is-active" : string.Empty)"
+                       aria-label="Marcas" title="Marcas"
+                       asp-area="Admin" asp-controller="Marcas" asp-action="Index">
+                        <i class="bi bi-tags"></i><span>Marcas</span>
+                    </a>
+                    <a class="admin-side-link @(IsActive("Categorias") ? "is-active" : string.Empty)"
+                       aria-label="Categorias" title="Categorias"
+                       asp-area="Admin" asp-controller="Categorias" asp-action="Index">
+                        <i class="bi bi-collection"></i><span>Categorias</span>
+                    </a>
+                </nav>
+            </div>
+
+            <div class="admin-sidebar-bottom">
+                <a class="admin-site-switch" aria-label="Ver site público" title="Ver site público" asp-area="" asp-controller="Home" asp-action="Index">
+                    <span class="admin-site-switch-icon"><i class="bi bi-arrow-up-right"></i></span>
+                    <span><strong>Ver site público</strong><small>Experiência do cliente</small></span>
+                </a>
+                <form asp-area="" asp-controller="Conta" asp-action="Logout" method="post">
+                    <button type="submit" class="admin-side-logout" aria-label="Encerrar sessão" title="Encerrar sessão">
+                        <i class="bi bi-box-arrow-left"></i><span>Encerrar sessão</span>
+                    </button>
+                </form>
+            </div>
+        </aside>
+
+        <div class="admin-workspace">
+            <header class="admin-topbar">
+                <div class="admin-topbar-leading">
+                    <button type="button"
+                            class="admin-sidebar-toggle"
+                            id="adminSidebarToggle"
+                            data-viana-sidebar-toggle
+                            aria-label="Recolher menu lateral"
+                            title="Recolher menu lateral"
+                            aria-controls="adminSidebar"
+                            aria-expanded="true">
+                        <i class="bi bi-chevron-left" aria-hidden="true"></i>
+                    </button>
+                    <div>
+                        <span class="admin-topbar-kicker">Viana Motos <span>/</span> Workspace</span>
+                        <strong class="admin-topbar-title">@ViewData["Title"]</strong>
+                    </div>
+                </div>
+                <div class="admin-topbar-actions">
+                    <span class="admin-live-pill"><i class="bi bi-shield-check"></i> Ambiente seguro</span>
+                    <a class="admin-topbar-site" asp-area="" asp-controller="Home" asp-action="Index" title="Abrir site público">
+                        <i class="bi bi-globe2"></i><span>Site público</span>
+                    </a>
+                    <span class="admin-user-avatar">VM</span>
+                </div>
+            </header>
+
+            <main class="admin-main">
+                @RenderBody()
+            </main>
+
+            <footer class="admin-footer">
+                <span>Viana Motos <strong>·</strong> Workspace comercial</span>
+                <span>Powered by Orizon UI</span>
+            </footer>
+        </div>
 
     </div>
 
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        (() => {
+            const shell = document.querySelector('.hybrid-admin-shell');
+            const toggle = document.getElementById('adminSidebarToggle');
+            const icon = toggle?.querySelector('i');
+            if (!shell || !toggle || !icon) return;
+
+            const storageKey = 'viana-admin-sidebar-collapsed';
+            const isMobile = () => window.matchMedia('(max-width: 991.98px)').matches;
+
+            const setCollapsed = (collapsed) => {
+                shell.classList.toggle('is-sidebar-collapsed', collapsed);
+                shell.dataset.sidebarCollapsed = collapsed ? 'true' : 'false';
+            };
+
+            try {
+                setCollapsed(localStorage.getItem(storageKey) === 'true');
+            } catch {
+                setCollapsed(false);
+            }
+
+            const updateToggleState = () => {
+                const mobile = isMobile();
+                const open = shell.classList.contains('sidebar-open');
+                const collapsed = shell.classList.contains('is-sidebar-collapsed');
+
+                icon.className = `bi ${mobile ? (open ? 'bi-x-lg' : 'bi-list') : (collapsed ? 'bi-chevron-right' : 'bi-chevron-left')}`;
+
+                const label = mobile
+                    ? (open ? 'Fechar navegação' : 'Abrir navegação')
+                    : (collapsed ? 'Expandir menu lateral' : 'Recolher menu lateral');
+
+                toggle.setAttribute('aria-label', label);
+                toggle.setAttribute('title', label);
+                toggle.setAttribute('aria-expanded', mobile ? open.toString() : (!collapsed).toString());
+            };
+
+            updateToggleState();
+
+            toggle.addEventListener('click', () => {
+                if (isMobile()) {
+                    shell.classList.toggle('sidebar-open');
+                } else {
+                    const collapsed = !shell.classList.contains('is-sidebar-collapsed');
+                    setCollapsed(collapsed);
+                    try {
+                        localStorage.setItem(storageKey, collapsed.toString());
+                    } catch {
+                        // A preferência local indisponível não deve impedir a navegação.
+                    }
+                }
+
+                updateToggleState();
+            });
+
+            document.addEventListener('click', (event) => {
+                if (!shell.classList.contains('sidebar-open') || !isMobile()) return;
+                if (!event.target.closest('.admin-sidebar') && !event.target.closest('#adminSidebarToggle')) {
+                    shell.classList.remove('sidebar-open');
+                    updateToggleState();
+                }
+            });
+
+            window.addEventListener('resize', updateToggleState);
+        })();
+    </script>
 
     @await RenderSectionAsync("Scripts", required: false)
 

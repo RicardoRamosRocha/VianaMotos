@@ -1,34 +1,96 @@
 @model VianaMotos.Web.Models.Moto
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
 
 @{
     ViewData["Title"] = Model.Modelo;
     var fotos = Model.Fotos.OrderByDescending(x => x.Principal).ThenBy(x => x.Ordem).ToList();
     var principal = fotos.FirstOrDefault();
+    var cultura = System.Globalization.CultureInfo.GetCultureInfo("pt-BR");
+    var nomeMoto = string.Join(" ", new[] { Model.Marca?.Nome, Model.Modelo }
+        .Where(x => !string.IsNullOrWhiteSpace(x)));
+    var telefoneWhatsApp = new string((Configuration["WhatsApp:PhoneNumber"] ?? string.Empty)
+        .Where(char.IsDigit)
+        .ToArray());
+    var urlMoto = Url.Action("Details", "Home", new { id = Model.Id }, Context.Request.Scheme)
+        ?? string.Empty;
+    var mensagemWhatsApp = Uri.EscapeDataString(
+        $"Olá! Tenho interesse na {nomeMoto} {Model.Ano}, anunciada por {Model.Valor.ToString("C", cultura)}. " +
+        $"Gostaria de receber mais informações.\n\n{urlMoto}");
+    var urlWhatsApp = string.IsNullOrWhiteSpace(telefoneWhatsApp)
+        ? null
+        : $"https://wa.me/{telefoneWhatsApp}?text={mensagemWhatsApp}";
 }
 
-<section class="details-hero">
+<main class="details-page">
     <div class="container">
-        <div class="row g-5 align-items-start">
+        <nav class="details-breadcrumb" aria-label="Navegação estrutural">
+            <a asp-action="Index">Início</a>
+            <span aria-hidden="true">/</span>
+            <a href="/#estoque">Estoque</a>
+            <span aria-hidden="true">/</span>
+            <span aria-current="page">@nomeMoto</span>
+        </nav>
+
+        <header class="details-header">
+            <div>
+                <span class="section-eyebrow">Detalhes da motocicleta</span>
+                <h1 class="details-page-title">@Model.Modelo</h1>
+                <p class="details-page-brand">@Model.Marca?.Nome</p>
+            </div>
+
+            <a href="/#estoque" class="details-back-link">
+                <span aria-hidden="true">←</span>
+                Voltar ao estoque
+            </a>
+        </header>
+
+        <div class="row g-4 g-xl-5 align-items-start">
 
             <div class="col-lg-7">
                 @if (principal != null)
                 {
-                    <div class="gallery">
+                    <div class="details-gallery">
                         <div class="gallery-main">
                             <img id="mainGalleryImage"
                                  src="@ImageUrlHelper.ObterUrl(principal.CaminhoImagem)"
-                                 alt="@Model.Modelo" />
+                                 alt="@nomeMoto"
+                                 data-gallery-index="0" />
+
+                            @if (fotos.Count > 1)
+                            {
+                                <button type="button"
+                                        class="gallery-navigation gallery-navigation-previous"
+                                        data-gallery-direction="previous"
+                                        aria-label="Foto anterior">
+                                    ‹
+                                </button>
+                                <button type="button"
+                                        class="gallery-navigation gallery-navigation-next"
+                                        data-gallery-direction="next"
+                                        aria-label="Próxima foto">
+                                    ›
+                                </button>
+
+                                <span class="gallery-image-counter" aria-live="polite">
+                                    <span id="currentGalleryImage">1</span>
+                                    /
+                                    <span>@fotos.Count</span>
+                                </span>
+                            }
                         </div>
 
                         <div class="gallery-thumbnails">
-                            @foreach (var foto in fotos)
+                            @for (var indice = 0; indice < fotos.Count; indice++)
                             {
+                                var foto = fotos[indice];
                                 <button type="button"
                                         class="gallery-thumbnail @(foto.Id == principal.Id ? "is-active" : "")"
                                         data-gallery-src="@ImageUrlHelper.ObterUrl(foto.CaminhoImagem)"
-                                        aria-label="Ver foto da moto">
+                                        data-gallery-index="@indice"
+                                        aria-label="Ver foto @(indice + 1) de @fotos.Count">
                                     <img src="@ImageUrlHelper.ObterUrl(foto.CaminhoImagem)"
-                                         alt="@Model.Modelo" />
+                                         alt="Foto @(indice + 1) de @nomeMoto"
+                                         loading="lazy" />
                                 </button>
                             }
                         </div>
@@ -36,8 +98,10 @@
                 }
                 else
                 {
-                    <div class="empty-state">
-                        Fotos em breve.
+                    <div class="details-empty-gallery">
+                        <span>VM</span>
+                        <strong>Fotos em preparação</strong>
+                        <p>Nossa equipe está preparando as imagens desta motocicleta.</p>
                     </div>
                 }
             </div>
@@ -57,113 +121,188 @@
                                 Indisponível
                             </span>
                         }
+
+                        <span class="details-reference">Ref. @Model.Id.ToString("D4")</span>
                     </div>
 
-                    <h1 class="details-title">@Model.Modelo</h1>
-                    <div class="details-brand">
-                        @Model.Marca?.Nome
-                    </div>
-
+                    <div class="details-price-label">Valor anunciado</div>
                     <div class="details-price">
-                        @Model.Valor.ToString("C")
+                        @Model.Valor.ToString("C", cultura)
                     </div>
+                    <p class="details-finance-note">
+                        Consulte condições de entrada, financiamento e negociação com nossa equipe.
+                    </p>
+
+                    <div class="details-divider"></div>
+                    <h2 class="details-section-heading">Ficha técnica</h2>
 
                     <div class="details-spec-grid">
                         <div class="spec-card">
-                            <strong>Ano</strong>
-                            @Model.Ano
+                            <span>Ano</span>
+                            <strong>@Model.Ano</strong>
                         </div>
 
                         <div class="spec-card">
-                            <strong>Quilometragem</strong>
-                            @Model.Quilometragem km
+                            <span>Quilometragem</span>
+                            <strong>@Model.Quilometragem.ToString("N0", cultura) km</strong>
                         </div>
 
                         <div class="spec-card">
-                            <strong>Cor</strong>
-                            @(Model.Cor ?? "Não informada")
+                            <span>Cor</span>
+                            <strong>@(Model.Cor ?? "Não informada")</strong>
                         </div>
 
                         <div class="spec-card">
-                            <strong>Combustível</strong>
-                            @Model.Combustivel?.Nome
+                            <span>Combustível</span>
+                            <strong>@(Model.Combustivel?.Nome ?? "Não informado")</strong>
                         </div>
 
                         <div class="spec-card">
-                            <strong>Categoria</strong>
-                            @Model.Categoria?.Nome
+                            <span>Categoria</span>
+                            <strong>@(Model.Categoria?.Nome ?? "Não informada")</strong>
                         </div>
 
                         <div class="spec-card">
-                            <strong>Status</strong>
-                            @(Model.Disponivel ? "Disponível" : "Indisponível")
+                            <span>Status</span>
+                            <strong>@(Model.Disponivel ? "Disponível" : "Indisponível")</strong>
                         </div>
                     </div>
 
                     <div class="details-actions">
-                        <a asp-area="Admin"
-                           asp-controller="Simulador"
-                           asp-action="Index"
-                           class="primary-cta">
-                            Simular parcelas
-                        </a>
+                        @if (urlWhatsApp != null && Model.Disponivel)
+                        {
+                            <a href="@urlWhatsApp"
+                               class="primary-cta"
+                               target="_blank"
+                               rel="noopener noreferrer">
+                                Falar no WhatsApp
+                            </a>
+                        }
+                        else
+                        {
+                            <a href="#interesse" class="primary-cta">
+                                Tenho interesse
+                            </a>
+                        }
 
-                        <a href="#interesse"
-                           class="secondary-cta">
-                            Tenho interesse
+                        <a href="/#estoque" class="details-outline-button">
+                            Ver outras motos
                         </a>
+                    </div>
 
-                        <a asp-action="Index"
-                           class="secondary-cta">
-                            Voltar ao estoque
-                        </a>
+                    <div class="details-support">
+                        <span class="details-support-icon" aria-hidden="true">✓</span>
+                        <p>
+                            <strong>Atendimento consultivo</strong>
+                            Tire suas dúvidas e consulte as opções de pagamento sem compromisso.
+                        </p>
                     </div>
                 </aside>
             </div>
 
         </div>
     </div>
-</section>
+</main>
 
-<section id="interesse" class="container mb-5">
-    <div class="description-card">
-        <h2>Descrição</h2>
-        <p>
-            @(!string.IsNullOrWhiteSpace(Model.Descricao)
-                ? Model.Descricao
-                : "Esta motocicleta está disponível para consulta. Entre em contato com a equipe para receber mais informações sobre condição, documentação e possibilidades de negociação.")
-        </p>
+<section id="interesse" class="details-description-section">
+    <div class="container">
+        <div class="description-card">
+            <div class="row g-4 g-lg-5 align-items-center">
+                <div class="col-lg-7">
+                    <span class="section-eyebrow">Conheça esta oportunidade</span>
+                    <h2>Sobre a motocicleta</h2>
+                    <p>
+                        @(!string.IsNullOrWhiteSpace(Model.Descricao)
+                            ? Model.Descricao
+                            : "Esta motocicleta está disponível para consulta. Entre em contato com a equipe para receber mais informações sobre condição, documentação e possibilidades de negociação.")
+                    </p>
+                </div>
 
-        <div class="details-actions">
-            <a href="/#estoque" class="primary-cta">
-                Ver outras motos
-            </a>
-            <a asp-action="Index" class="secondary-cta">
-                Voltar ao estoque
-            </a>
+                <div class="col-lg-5">
+                    <aside class="interest-card">
+                        <span class="interest-card-eyebrow">Atendimento personalizado</span>
+                        <h3>Gostou desta moto?</h3>
+                        <p>
+                            Fale com a equipe Viana Motos e receba informações sobre negociação e financiamento.
+                        </p>
+
+                        <div class="details-actions">
+                            @if (urlWhatsApp != null && Model.Disponivel)
+                            {
+                                <a href="@urlWhatsApp"
+                                   class="primary-cta"
+                                   target="_blank"
+                                   rel="noopener noreferrer">
+                                    Conversar no WhatsApp
+                                </a>
+                            }
+                            <a href="/#estoque" class="details-outline-button">
+                                Explorar o estoque
+                            </a>
+                        </div>
+                    </aside>
+                </div>
+            </div>
         </div>
     </div>
 </section>
 
 @section Scripts {
     <script>
-        document.querySelectorAll('.gallery-thumbnail').forEach(function (button) {
-            button.addEventListener('click', function () {
-                var mainImage = document.getElementById('mainGalleryImage');
-                var nextSrc = button.getAttribute('data-gallery-src');
+        (function () {
+            var mainImage = document.getElementById('mainGalleryImage');
+            var thumbnails = Array.from(document.querySelectorAll('.gallery-thumbnail'));
+            var counter = document.getElementById('currentGalleryImage');
 
-                if (!mainImage || !nextSrc) {
+            if (!mainImage || thumbnails.length === 0) {
+                return;
+            }
+
+            function selectImage(index) {
+                var selected = thumbnails[index];
+                var nextSrc = selected && selected.getAttribute('data-gallery-src');
+
+                if (!selected || !nextSrc) {
                     return;
                 }
 
+                mainImage.classList.add('is-changing');
                 mainImage.setAttribute('src', nextSrc);
+                mainImage.setAttribute('data-gallery-index', index.toString());
 
-                document.querySelectorAll('.gallery-thumbnail').forEach(function (item) {
+                thumbnails.forEach(function (item) {
                     item.classList.remove('is-active');
                 });
 
-                button.classList.add('is-active');
+                selected.classList.add('is-active');
+                selected.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+
+                if (counter) {
+                    counter.textContent = (index + 1).toString();
+                }
+            }
+
+            mainImage.addEventListener('load', function () {
+                mainImage.classList.remove('is-changing');
             });
-        });
+
+            thumbnails.forEach(function (button, index) {
+                button.addEventListener('click', function () {
+                    selectImage(index);
+                });
+            });
+
+            document.querySelectorAll('[data-gallery-direction]').forEach(function (button) {
+                button.addEventListener('click', function () {
+                    var currentIndex = Number(mainImage.getAttribute('data-gallery-index') || '0');
+                    var direction = button.getAttribute('data-gallery-direction');
+                    var nextIndex = direction === 'next'
+                        ? (currentIndex + 1) % thumbnails.length
+                        : (currentIndex - 1 + thumbnails.length) % thumbnails.length;
+
+                    selectImage(nextIndex);
+                });
+            });
+        })();
     </script>
 }

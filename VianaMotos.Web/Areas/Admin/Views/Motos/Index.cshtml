@@ -1,124 +1,245 @@
 @model IEnumerable<VianaMotos.Web.Models.Moto>
 
 @{
-    ViewData["Title"] = "Motos";
+    ViewData["Title"] = "Catálogo de motos";
+
+    var motos = Model?.ToList() ?? new List<VianaMotos.Web.Models.Moto>();
+    var disponiveis = motos.Count(x => x.Disponivel);
+    var comFotos = motos.Count(x => x.Fotos != null && x.Fotos.Any());
+    var marcas = motos
+        .Where(x => x.Marca != null)
+        .Select(x => x.Marca!.Nome)
+        .Distinct(StringComparer.OrdinalIgnoreCase)
+        .OrderBy(x => x)
+        .ToList();
+    var categorias = motos
+        .Where(x => x.Categoria != null)
+        .Select(x => x.Categoria!.Nome)
+        .Distinct(StringComparer.OrdinalIgnoreCase)
+        .OrderBy(x => x)
+        .ToList();
 }
 
-<div class="admin-container">
-
-    <header class="page-header">
-        <div>
-            <h1 class="page-title">Motos</h1>
-            <p class="page-subtitle">
-                Estoque visual, organizado e pronto para apoiar uma experiencia premium de venda.
+<div class="admin-container motos-catalog-page">
+    <section class="motos-catalog-hero" aria-labelledby="catalog-title">
+        <div class="motos-catalog-hero-copy">
+            <span class="motos-eyebrow"><i class="bi bi-stars"></i> Catálogo comercial</span>
+            <h1 id="catalog-title">Seu estoque, pronto para vender.</h1>
+            <p>
+                Uma visão premium das motocicletas da Viana Motos, com as informações certas para apresentar,
+                negociar e manter o estoque sempre atualizado.
             </p>
         </div>
 
-        <div class="page-actions">
-            <a asp-action="Create"
-               class="btn btn-primary">
-                <i class="bi bi-plus-lg me-2"></i>
-                Nova Moto
+        <div class="motos-hero-actions" aria-label="Ações do catálogo">
+            <a asp-action="Create" class="btn btn-primary">
+                <i class="bi bi-plus-lg me-2"></i>Nova motocicleta
+            </a>
+            <a asp-area="" asp-controller="Home" asp-action="Index" class="btn dashboard-outline-light">
+                <i class="bi bi-arrow-up-right me-2"></i>Ver vitrine pública
             </a>
         </div>
-    </header>
 
-    <section class="table-card">
-        <div class="table-card-header">
-            <div>
-                <h2 class="section-title mb-1">Estoque cadastrado</h2>
-                <span class="text-secondary">@Model.Count() motos encontradas</span>
-            </div>
+        <div class="motos-catalog-hero-orbit" aria-hidden="true">
+            <span class="motos-orbit-ring motos-orbit-ring-one"></span>
+            <span class="motos-orbit-ring motos-orbit-ring-two"></span>
+            <i class="bi bi-bicycle"></i>
         </div>
 
-        <div class="table-responsive">
-            <table class="table admin-table">
-                <thead>
-                    <tr>
-                        <th>Foto</th>
-                        <th>Modelo</th>
-                        <th>Marca</th>
-                        <th>Categoria</th>
-                        <th>Ano</th>
-                        <th>Valor</th>
-                        <th>Status</th>
-                        <th class="text-end">Acoes</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var moto in Model)
-                    {
-                        <tr>
-                            <td>
-                                @if (moto.Fotos != null && moto.Fotos.Any())
-                                {
-                                    var foto = moto.Fotos
-                                        .OrderByDescending(x => x.Principal)
-                                        .ThenBy(x => x.Ordem)
-                                        .First();
-
-                                    <img src="@ImageUrlHelper.ObterUrl(foto.CaminhoImagem)"
-                                         class="admin-thumb"
-                                         alt="@moto.Modelo" />
-                                }
-                                else
-                                {
-                                    <span class="status-badge is-neutral">Sem foto</span>
-                                }
-                            </td>
-
-                            <td>
-                                <strong class="d-block text-dark">@moto.Modelo</strong>
-                                <span class="text-secondary">@moto.Quilometragem km</span>
-                            </td>
-                            <td>@moto.Marca?.Nome</td>
-                            <td>@moto.Categoria?.Nome</td>
-                            <td>@moto.Ano</td>
-                            <td>
-                                <strong class="text-dark">@moto.Valor.ToString("C")</strong>
-                            </td>
-                            <td>
-                                @if (moto.Disponivel)
-                                {
-                                    <span class="status-badge is-success">Disponível</span>
-                                }
-                                else
-                                {
-                                    <span class="status-badge is-danger">Indisponivel</span>
-                                }
-                            </td>
-                            <td>
-                                <div class="action-buttons justify-content-end">
-                                    <a asp-action="Details"
-                                       asp-route-id="@moto.Id"
-                                       class="btn btn-info btn-sm">
-                                        Detalhes
-                                    </a>
-
-                                    <a asp-action="Edit"
-                                       asp-route-id="@moto.Id"
-                                       class="btn btn-warning btn-sm">
-                                        Editar
-                                    </a>
-
-                                    <a asp-action="Fotos"
-                                       asp-route-id="@moto.Id"
-                                       class="btn btn-secondary btn-sm">
-                                        Fotos
-                                    </a>
-
-                                    <a asp-action="Delete"
-                                       asp-route-id="@moto.Id"
-                                       class="btn btn-danger btn-sm">
-                                        Excluir
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+        <div class="motos-catalog-metrics" aria-label="Resumo do catálogo">
+            <div class="motos-catalog-metric">
+                <span class="motos-metric-icon"><i class="bi bi-grid-3x3-gap-fill"></i></span>
+                <span><strong>@motos.Count</strong><small>no catálogo</small></span>
+            </div>
+            <div class="motos-catalog-metric">
+                <span class="motos-metric-icon is-green"><i class="bi bi-check2-circle"></i></span>
+                <span><strong>@disponiveis</strong><small>disponíveis</small></span>
+            </div>
+            <div class="motos-catalog-metric">
+                <span class="motos-metric-icon is-gold"><i class="bi bi-camera-fill"></i></span>
+                <span><strong>@comFotos</strong><small>com fotos</small></span>
+            </div>
         </div>
     </section>
 
+    <section class="motos-catalog-toolbar" aria-label="Filtros do catálogo">
+        <div class="motos-search-box">
+            <i class="bi bi-search" aria-hidden="true"></i>
+            <input id="motosSearch"
+                   type="search"
+                   class="form-control"
+                   aria-label="Buscar motocicletas"
+                   placeholder="Buscar por modelo, marca ou categoria..."
+                   autocomplete="off" />
+        </div>
+
+        <div class="motos-filter-selects">
+            <select id="motosBrandFilter" class="form-select" aria-label="Filtrar por marca">
+                <option value="">Todas as marcas</option>
+                @foreach (var marca in marcas)
+                {
+                    <option value="@marca">@marca</option>
+                }
+            </select>
+            <select id="motosCategoryFilter" class="form-select" aria-label="Filtrar por categoria">
+                <option value="">Todas as categorias</option>
+                @foreach (var categoria in categorias)
+                {
+                    <option value="@categoria">@categoria</option>
+                }
+            </select>
+            <select id="motosStatusFilter" class="form-select" aria-label="Filtrar por disponibilidade">
+                <option value="">Todos os status</option>
+                <option value="disponivel">Disponíveis</option>
+                <option value="indisponivel">Indisponíveis</option>
+            </select>
+        </div>
+
+        <span class="motos-results-count" id="motosResultsCount">@motos.Count motos</span>
+    </section>
+
+    @if (motos.Count == 0)
+    {
+        <section class="empty-state motos-empty-state">
+            <span class="motos-empty-icon"><i class="bi bi-bicycle"></i></span>
+            <h2>Seu catálogo ainda está vazio</h2>
+            <p>Cadastre a primeira motocicleta para começar a montar sua vitrine comercial.</p>
+            <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-lg me-2"></i>Cadastrar motocicleta</a>
+        </section>
+    }
+    else
+    {
+        <section class="motos-catalog-grid" id="motosCatalogGrid" aria-live="polite">
+            @foreach (var moto in motos)
+            {
+                var foto = moto.Fotos?
+                    .OrderByDescending(x => x.Principal)
+                    .ThenBy(x => x.Ordem)
+                    .FirstOrDefault();
+                var marcaNome = moto.Marca?.Nome ?? "Marca não informada";
+                var categoriaNome = moto.Categoria?.Nome ?? "Sem categoria";
+                var combustivelNome = moto.Combustivel?.Nome ?? "Não informado";
+                var status = moto.Disponivel ? "disponivel" : "indisponivel";
+                var busca = $"{moto.Modelo} {marcaNome} {categoriaNome} {moto.Ano}".ToLowerInvariant();
+
+                <article class="moto-catalog-card"
+                         data-search="@busca"
+                         data-brand="@marcaNome"
+                         data-category="@categoriaNome"
+                         data-status="@status">
+                    <div class="moto-card-media">
+                        @if (foto != null)
+                        {
+                            <img src="@ImageUrlHelper.ObterUrl(foto.CaminhoImagem)"
+                                 alt="@moto.Marca?.Nome @moto.Modelo"
+                                 loading="lazy" />
+                        }
+                        else
+                        {
+                            <div class="moto-card-no-image">
+                                <i class="bi bi-image"></i>
+                                <span>Adicionar fotos</span>
+                            </div>
+                        }
+
+                        <div class="moto-card-media-topline">
+                            <span class="moto-card-status @(moto.Disponivel ? "is-available" : "is-unavailable")">
+                                <i class="bi bi-circle-fill"></i>@(moto.Disponivel ? "Disponível" : "Indisponível")
+                            </span>
+                            <span class="moto-card-year">@moto.Ano</span>
+                        </div>
+
+                        <span class="moto-card-photo-count">
+                            <i class="bi bi-images"></i>@(moto.Fotos?.Count ?? 0)
+                        </span>
+                    </div>
+
+                    <div class="moto-card-body">
+                        <div class="moto-card-heading">
+                            <span class="moto-card-brand">@marcaNome</span>
+                            <h2>@moto.Modelo</h2>
+                        </div>
+
+                        <div class="moto-card-specs">
+                            <span><i class="bi bi-speedometer2"></i>@moto.Quilometragem.ToString("N0") km</span>
+                            <span><i class="bi bi-fuel-pump"></i>@combustivelNome</span>
+                            <span><i class="bi bi-tag"></i>@categoriaNome</span>
+                        </div>
+
+                        <div class="moto-card-price-row">
+                            <div>
+                                <span class="moto-card-price-label">Valor anunciado</span>
+                                <strong class="moto-card-price">@moto.Valor.ToString("C")</strong>
+                            </div>
+                            <span class="moto-card-id">#@moto.Id.ToString("D3")</span>
+                        </div>
+
+                        <div class="moto-card-actions">
+                            <a asp-action="Details" asp-route-id="@moto.Id" class="btn btn-primary">
+                                Detalhes <i class="bi bi-arrow-up-right"></i>
+                            </a>
+                            <div class="moto-card-secondary-actions">
+                                <a asp-action="Edit" asp-route-id="@moto.Id" class="btn btn-light" title="Editar motocicleta" aria-label="Editar motocicleta">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a asp-action="Fotos" asp-route-id="@moto.Id" class="btn btn-light" title="Gerenciar fotos" aria-label="Gerenciar fotos">
+                                    <i class="bi bi-images"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            }
+        </section>
+
+        <div class="motos-catalog-no-results" id="motosNoResults" hidden>
+            <i class="bi bi-search"></i>
+            <strong>Nenhuma motocicleta encontrada</strong>
+            <span>Tente alterar os filtros ou limpar a busca.</span>
+        </div>
+    }
 </div>
+
+@section Scripts {
+    <script>
+        (() => {
+            const cards = [...document.querySelectorAll('.moto-catalog-card')];
+            if (!cards.length) return;
+
+            const search = document.getElementById('motosSearch');
+            const brand = document.getElementById('motosBrandFilter');
+            const category = document.getElementById('motosCategoryFilter');
+            const status = document.getElementById('motosStatusFilter');
+            const count = document.getElementById('motosResultsCount');
+            const noResults = document.getElementById('motosNoResults');
+
+            const normalize = (value) => (value || '').toLocaleLowerCase('pt-BR').trim();
+
+            const filterCards = () => {
+                const term = normalize(search.value);
+                const selectedBrand = normalize(brand.value);
+                const selectedCategory = normalize(category.value);
+                const selectedStatus = normalize(status.value);
+                let visible = 0;
+
+                cards.forEach((card) => {
+                    const matches = (!term || normalize(card.dataset.search).includes(term))
+                        && (!selectedBrand || normalize(card.dataset.brand) === selectedBrand)
+                        && (!selectedCategory || normalize(card.dataset.category) === selectedCategory)
+                        && (!selectedStatus || normalize(card.dataset.status) === selectedStatus);
+
+                    card.hidden = !matches;
+                    if (matches) visible += 1;
+                });
+
+                count.textContent = `${visible} ${visible === 1 ? 'moto' : 'motos'}`;
+                noResults.hidden = visible !== 0;
+            };
+
+            [search, brand, category, status].forEach((control) => {
+                control.addEventListener('input', filterCards);
+                control.addEventListener('change', filterCards);
+            });
+        })();
+    </script>
+}
