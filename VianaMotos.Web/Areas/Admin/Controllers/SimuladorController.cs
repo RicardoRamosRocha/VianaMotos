@@ -104,22 +104,27 @@ public class SimuladorController : Controller
         model.TotalJuros = model.TotalPago - model.ValorFinanciado;
     }
 
-    private async Task CarregarMotosAsync(SimuladorViewModel model)
+   private async Task CarregarMotosAsync(SimuladorViewModel model)
+{
+    var culture = CultureInfo.GetCultureInfo("pt-BR");
+
+    var motos = await _context.Motos
+        .AsNoTracking()
+        .Include(m => m.Marca)
+        .Where(m => m.Disponivel)
+        .OrderBy(m => m.Modelo)
+        .ToListAsync();
+
+    model.ValoresMotos = motos.ToDictionary(
+        m => m.Id,
+        m => m.Valor
+    );
+
+    model.Motos = motos.Select(m => new SelectListItem
     {
-        var culture = CultureInfo.GetCultureInfo("pt-BR");
-
-        var motos = await _context.Motos
-            .AsNoTracking()
-            .Include(m => m.Marca)
-            .Where(m => m.Disponivel)
-            .OrderBy(m => m.Modelo)
-            .ToListAsync();
-
-        model.Motos = motos.Select(m => new SelectListItem
-        {
-            Value = m.Id.ToString(),
-            Text = $"{m.Modelo} - {m.Marca?.Nome} - {m.Ano} - {m.Valor.ToString("C", culture)}",
-            Selected = model.MotoId == m.Id
-        });
-    }
+        Value = m.Id.ToString(),
+        Text = $"{m.Modelo} - {m.Marca?.Nome} - {m.Ano} - {m.Valor.ToString("C", culture)}",
+        Selected = model.MotoId == m.Id
+    });
+}
 }

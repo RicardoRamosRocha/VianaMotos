@@ -1,197 +1,429 @@
+
 @model VianaMotos.Web.ViewModels.SimuladorViewModel
 
 @{
     ViewData["Title"] = "Simulador de Parcelas";
+
     var exibirResultado = ViewContext.ModelState.IsValid
         && Model.MotoId.HasValue
         && Model.Parcelas > 0
         && Model.ValorMoto > 0;
 }
 
-<div class="admin-container">
+@await Html.PartialAsync("_PageHeader", new PageHeaderViewModel
+{
+    Eyebrow = "Comercial",
+    Title = "Simulador de parcelas",
+    Subtitle = "Construa uma condição de pagamento clara e apresente a melhor opção para o cliente.",
+    Icon = "bi-calculator"
+})
 
-    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-4">
-        <div>
-            <h1 class="h2 fw-bold mb-1">Simulador de Parcelas</h1>
-            <p class="text-secondary mb-0">
-                Escolha uma moto disponível e calcule as condições do financiamento.
-            </p>
+<div class="vm-simulator">
+
+    <section class="vm-simulator__form-panel">
+
+        <div class="vm-simulator__section-heading">
+            <div class="vm-simulator__heading-icon">
+                <i class="bi bi-sliders"></i>
+            </div>
+
+            <div>
+                <span class="vm-simulator__kicker">CONDIÇÕES DA PROPOSTA</span>
+                <h2>Monte a simulação</h2>
+                <p>Informe os dados da negociação para calcular as parcelas.</p>
+            </div>
         </div>
-    </div>
 
-    <div class="row g-4">
+        <form asp-action="Index" method="post" class="vm-simulator__form">
 
-        <div class="col-lg-5">
-            <div class="card shadow-sm">
-                <div class="card-body">
+            <div asp-validation-summary="ModelOnly"
+                 class="text-danger mb-3">
+            </div>
 
-                    <h2 class="h5 fw-bold mb-3">Dados da simulação</h2>
+            <div class="vm-simulator__field">
+                <label asp-for="MotoId" class="form-label">
+                    Motocicleta
+                </label>
 
-                    <form asp-action="Index" method="post">
+                <div class="vm-simulator__input-wrap">
+                    <i class="bi bi-bicycle"></i>
 
-                        <div asp-validation-summary="ModelOnly"
-                             class="text-danger mb-3">
-                        </div>
+                    <select asp-for="MotoId"
+                            asp-items="Model.Motos"
+                            class="form-select">
+                        <option value="">Selecione uma motocicleta</option>
+                    </select>
+                </div>
 
-                        <div class="mb-3">
-                            <label asp-for="MotoId" class="form-label">
-                                Moto
-                            </label>
+                <span asp-validation-for="MotoId"
+                      class="text-danger">
+                </span>
+            </div>
 
-                            <select asp-for="MotoId"
-                                    asp-items="Model.Motos"
-                                    class="form-select">
-                                <option value="">
-                                    Selecione uma moto
-                                </option>
-                            </select>
+            <div class="vm-simulator__field">
+                <label asp-for="Entrada" class="form-label">
+                    Valor da entrada
+                </label>
 
-                            <span asp-validation-for="MotoId"
-                                  class="text-danger">
-                            </span>
-                        </div>
+                <div class="vm-simulator__money-input">
+                    <span>R$</span>
 
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label asp-for="Entrada" class="form-label">
-                                    Entrada
-                                </label>
+                    <input asp-for="Entrada"
+                           type="number"
+                           min="0"
+                           step="0.01"
+                           class="form-control" />
+                </div>
 
-                                <input asp-for="Entrada"
-                                       type="number"
-                                       min="0"
-                                       step="0.01"
-                                       class="form-control" />
+                <span asp-validation-for="Entrada"
+                      class="text-danger">
+                </span>
+            </div>
 
-                                <span asp-validation-for="Entrada"
-                                      class="text-danger">
-                                </span>
-                            </div>
+            <div class="vm-simulator__quick-options">
+                <span>Entrada rápida</span>
 
-                            <div class="col-md-6 mb-3">
-                                <label asp-for="TaxaMensal" class="form-label">
-                                    Taxa mensal (%)
-                                </label>
+                <div>
+                    <button type="button"
+                            class="vm-simulator__chip"
+                            data-entry-percent="0">
+                        Sem entrada
+                    </button>
 
-                                <input asp-for="TaxaMensal"
-                                       type="number"
-                                       min="0"
-                                       step="0.01"
-                                       class="form-control" />
+                    <button type="button"
+                            class="vm-simulator__chip"
+                            data-entry-percent="10">
+                        10%
+                    </button>
 
-                                <span asp-validation-for="TaxaMensal"
-                                      class="text-danger">
-                                </span>
-                            </div>
-                        </div>
+                    <button type="button"
+                            class="vm-simulator__chip"
+                            data-entry-percent="20">
+                        20%
+                    </button>
 
-                        <div class="mb-4">
-                            <label asp-for="Parcelas" class="form-label">
-                                Parcelas
-                            </label>
+                    <button type="button"
+                            class="vm-simulator__chip"
+                            data-entry-percent="30">
+                        30%
+                    </button>
 
-                            <input asp-for="Parcelas"
+                    <button type="button"
+                            class="vm-simulator__chip"
+                            data-entry-percent="50">
+                        50%
+                    </button>
+                </div>
+            </div>
+
+            <div class="row g-3">
+
+                <div class="col-md-6">
+                    <div class="vm-simulator__field">
+                        <label asp-for="TaxaMensal" class="form-label">
+                            Taxa mensal
+                        </label>
+
+                        <div class="vm-simulator__suffix-input">
+                            <input asp-for="TaxaMensal"
                                    type="number"
-                                   min="1"
-                                   step="1"
+                                   min="0"
+                                   step="0.01"
                                    class="form-control" />
 
-                            <span asp-validation-for="Parcelas"
-                                  class="text-danger">
-                            </span>
+                            <span>%</span>
                         </div>
 
-                        <button type="submit" class="btn btn-viana w-100">
-                            Simular
+                        <span asp-validation-for="TaxaMensal"
+                              class="text-danger">
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="vm-simulator__field">
+                        <label asp-for="Parcelas" class="form-label">
+                            Número de parcelas
+                        </label>
+
+                        <input asp-for="Parcelas"
+                               type="number"
+                               min="1"
+                               step="1"
+                               class="form-control" />
+
+                        <span asp-validation-for="Parcelas"
+                              class="text-danger">
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="vm-simulator__terms">
+                <span>Escolha um prazo</span>
+
+                <div class="vm-simulator__term-grid">
+                    @foreach (var prazo in new[] { 12, 18, 24, 36, 48 })
+                    {
+                        <button type="button"
+                                class="vm-simulator__term @(Model.Parcelas == prazo ? "is-active" : "")"
+                                data-installments="@prazo">
+                            <strong>@prazo</strong>
+                            <small>parcelas</small>
                         </button>
-
-                    </form>
-
+                    }
                 </div>
             </div>
-        </div>
 
-        <div class="col-lg-7">
-            <div class="card shadow-sm h-100">
-                <div class="card-body">
+            <button type="submit"
+                    class="orizon-button orizon-button--primary vm-simulator__submit">
+                <i class="bi bi-calculator"></i>
+                Calcular simulação
+                <i class="bi bi-arrow-right"></i>
+            </button>
 
-                    <div class="d-flex flex-column flex-md-row justify-content-between gap-3 mb-3">
-                        <div>
-                            <h2 class="h5 fw-bold mb-1">Resultado</h2>
-                            <span class="text-secondary">
-                                Resumo financeiro da simulação
-                            </span>
-                        </div>
+        </form>
 
-                        @if (exibirResultado)
-                        {
-                            <div class="text-md-end">
-                                <span class="d-block text-secondary">
-                                    Parcela
-                                </span>
-                                <strong class="fs-3 text-success">
-                                    @Model.ValorParcela.ToString("C")
-                                </strong>
-                            </div>
-                        }
+    </section>
+
+
+    <section class="vm-simulator__result-panel">
+
+        @if (exibirResultado)
+        {
+            <div class="vm-simulator__result-top">
+                <div>
+                    <span class="vm-simulator__result-kicker">
+                        SUA SIMULAÇÃO
+                    </span>
+
+                    <h2>Condição estimada</h2>
+
+                    <p>
+                        Confira os valores antes de apresentar a proposta ao cliente.
+                    </p>
+                </div>
+
+                <div class="vm-simulator__result-status">
+                    <i class="bi bi-check-circle-fill"></i>
+                    Calculada
+                </div>
+            </div>
+
+            <div class="vm-simulator__installment-hero">
+
+                <span>Parcela estimada</span>
+
+                <div class="vm-simulator__installment-value">
+                    <small>@Model.Parcelas x</small>
+
+                    <strong>
+                        @Model.ValorParcela.ToString("C")
+                    </strong>
+                </div>
+
+                <p>por mês</p>
+
+            </div>
+
+            <div class="vm-simulator__summary">
+
+                <div class="vm-simulator__summary-item">
+                    <span>Valor da moto</span>
+                    <strong>@Model.ValorMoto.ToString("C")</strong>
+                </div>
+
+                <div class="vm-simulator__summary-item">
+                    <span>Entrada</span>
+                    <strong>@Model.Entrada.ToString("C")</strong>
+                </div>
+
+                <div class="vm-simulator__summary-item vm-simulator__summary-item--featured">
+                    <span>Valor financiado</span>
+                    <strong>@Model.ValorFinanciado.ToString("C")</strong>
+                </div>
+
+                <div class="vm-simulator__summary-item">
+                    <span>Taxa mensal</span>
+                    <strong>@Model.TaxaMensal.ToString("N2")%</strong>
+                </div>
+
+                <div class="vm-simulator__summary-item">
+                    <span>Total de juros</span>
+                    <strong>@Model.TotalJuros.ToString("C")</strong>
+                </div>
+
+                <div class="vm-simulator__summary-item">
+                    <span>Total estimado</span>
+                    <strong>@Model.TotalPago.ToString("C")</strong>
+                </div>
+
+            </div>
+
+            <div class="vm-simulator__notice">
+                <i class="bi bi-info-circle"></i>
+
+                <p>
+                    Esta é uma simulação comercial. As condições definitivas
+                    dependem da análise e aprovação da instituição financeira.
+                </p>
+            </div>
+        }
+        else
+        {
+            <div class="vm-simulator__empty">
+
+                <div class="vm-simulator__empty-icon">
+                    <i class="bi bi-calculator"></i>
+                </div>
+
+                <span>SIMULAÇÃO COMERCIAL</span>
+
+                <h2>Encontre uma parcela que cabe no orçamento</h2>
+
+                <p>
+                    Selecione a motocicleta, informe a entrada, a taxa e o prazo.
+                    O resumo da proposta aparecerá aqui.
+                </p>
+
+                <div class="vm-simulator__empty-steps">
+
+                    <div>
+                        <strong>01</strong>
+                        <span>Escolha a moto</span>
                     </div>
 
-                    @if (exibirResultado)
-                    {
-                        <div class="table-responsive">
-                            <table class="table admin-table align-middle mb-0">
-                                <tbody>
-                                    <tr>
-                                        <th scope="row">Valor da moto</th>
-                                        <td class="text-end">@Model.ValorMoto.ToString("C")</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Valor da entrada</th>
-                                        <td class="text-end">@Model.Entrada.ToString("C")</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Valor financiado</th>
-                                        <td class="text-end">@Model.ValorFinanciado.ToString("C")</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Parcelas</th>
-                                        <td class="text-end">@Model.Parcelas x</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Taxa mensal</th>
-                                        <td class="text-end">@Model.TaxaMensal.ToString("N2")%</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Valor da parcela</th>
-                                        <td class="text-end">@Model.ValorParcela.ToString("C")</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Total pago</th>
-                                        <td class="text-end">@Model.TotalPago.ToString("C")</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Total de juros</th>
-                                        <td class="text-end">@Model.TotalJuros.ToString("C")</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="border rounded p-4 text-center text-secondary">
-                            Informe os dados ao lado para visualizar a simulação.
-                        </div>
-                    }
+                    <i class="bi bi-chevron-right"></i>
+
+                    <div>
+                        <strong>02</strong>
+                        <span>Defina a condição</span>
+                    </div>
+
+                    <i class="bi bi-chevron-right"></i>
+
+                    <div>
+                        <strong>03</strong>
+                        <span>Apresente a parcela</span>
+                    </div>
 
                 </div>
-            </div>
-        </div>
 
-    </div>
+            </div>
+        }
+
+    </section>
 
 </div>
 
+
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        (() => {
+
+            const parcelasInput = document.getElementById('Parcelas');
+            const entradaInput = document.getElementById('Entrada');
+            const motoSelect = document.getElementById('MotoId');
+
+            const valoresMotos = @Html.Raw(
+                System.Text.Json.JsonSerializer.Serialize(Model.ValoresMotos)
+            );
+
+            // -----------------------------
+            // PRAZOS
+            // -----------------------------
+
+            const termButtons =
+                document.querySelectorAll('[data-installments]');
+
+            termButtons.forEach(button => {
+
+                button.addEventListener('click', () => {
+
+                    if (!parcelasInput)
+                        return;
+
+                    parcelasInput.value =
+                        button.dataset.installments;
+
+                    termButtons.forEach(item =>
+                        item.classList.remove('is-active'));
+
+                    button.classList.add('is-active');
+                });
+
+            });
+
+
+            // -----------------------------
+            // ENTRADA RÁPIDA
+            // -----------------------------
+
+            const entryButtons =
+                document.querySelectorAll('[data-entry-percent]');
+
+            entryButtons.forEach(button => {
+
+                button.addEventListener('click', () => {
+
+                    if (!motoSelect || !entradaInput)
+                        return;
+
+                    const motoId = motoSelect.value;
+
+                    if (!motoId || !valoresMotos[motoId]) {
+                        motoSelect.focus();
+                        return;
+                    }
+
+                    const valorMoto =
+                        Number(valoresMotos[motoId]);
+
+                    const percentual =
+                        Number(button.dataset.entryPercent);
+
+                    const entrada =
+                        valorMoto * (percentual / 100);
+
+                    entradaInput.value =
+                        entrada.toFixed(2);
+
+                    entryButtons.forEach(item =>
+                        item.classList.remove('is-active'));
+
+                    button.classList.add('is-active');
+                });
+
+            });
+
+
+            // Se o usuário alterar manualmente a entrada,
+            // removemos a seleção automática.
+
+            entradaInput?.addEventListener('input', () => {
+
+                entryButtons.forEach(item =>
+                    item.classList.remove('is-active'));
+
+            });
+
+
+            // Ao trocar a motocicleta, a entrada anterior
+            // deixa de representar aquela negociação.
+
+            motoSelect?.addEventListener('change', () => {
+
+                if (entradaInput)
+                    entradaInput.value = '0.00';
+
+                entryButtons.forEach(item =>
+                    item.classList.remove('is-active'));
+
+            });
+
+        })();
+    </script>
+
 }

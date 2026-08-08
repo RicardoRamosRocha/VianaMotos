@@ -1,4 +1,4 @@
-﻿@model VianaMotos.Web.ViewModels.VendaCreateViewModel
+@model VianaMotos.Web.ViewModels.VendaCreateViewModel
 
 @{
     ViewData["Title"] = "Nova Venda";
@@ -6,13 +6,14 @@
 
 <div class="container-fluid">
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="fw-bold">Nova Venda</h2>
-
-        <a asp-action="Index" class="btn btn-outline-secondary">
-            Voltar
-        </a>
-    </div>
+    @await Html.PartialAsync("_PageHeader", new PageHeaderViewModel
+{
+    Eyebrow = "Comercial",
+    Title = "Nova venda",
+    Subtitle = "Registre uma nova negociação comercial da loja.",
+    Icon = "bi-receipt-cutoff",
+        Actions = new[] { new PageHeaderActionViewModel { Text = "Voltar", Url = Url.Action("Index")!, Icon = "bi-arrow-left", IsPrimary = false } }
+})
 
     <div class="card shadow-sm border-0">
         <div class="card-body">

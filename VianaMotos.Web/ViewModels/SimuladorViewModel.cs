@@ -32,5 +32,7 @@ public class SimuladorViewModel
     [Display(Name = "Total de juros")]
     public decimal TotalJuros { get; set; }
 
+    public Dictionary<int, decimal> ValoresMotos { get; set; } = new();
+
     public IEnumerable<SelectListItem> Motos { get; set; } = new List<SelectListItem>();
 }

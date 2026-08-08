@@ -1,15 +1,28 @@
-﻿@model IEnumerable<VianaMotos.Web.Models.Combustivel>
+@model IEnumerable<VianaMotos.Web.Models.Combustivel>
+@{
+    ViewData["Title"] = "Combustíveis";
+}
 
-<h1>Combustíveis</h1>
+@await Html.PartialAsync("_PageHeader", new PageHeaderViewModel
+{
+    Eyebrow = "Catálogo",
+    Title = "Combustíveis",
+    Subtitle = "Gerencie os tipos de combustível disponíveis no catálogo.",
+    Icon = "bi-fuel-pump",
+        Actions = new[] { new PageHeaderActionViewModel { Text = "Novo combustível", Url = Url.Action("Create")!, Icon = "bi-plus-lg", IsPrimary = true } }
+})@{
+    ViewData["Title"] = "CombustÃ­veis";
+}
 
-<p>
-    <a asp-area="Admin"
-       asp-controller="Combustiveis"
-       asp-action="Create"
-       class="btn btn-primary">
-        Novo Combustível
-    </a>
-</p>
+@await Html.PartialAsync("_PageHeader", new PageHeaderViewModel
+{
+    Eyebrow = "Catálogo",
+    Title = "Combustíveis",
+    Subtitle = "Gerencie os tipos de combustível disponíveis no catálogo.",
+    Icon = "bi-fuel-pump",
+        Actions = new[] { new PageHeaderActionViewModel { Text = "Novo combustível", Url = Url.Action("Create")!, Icon = "bi-plus-lg", IsPrimary = true } }
+})
+
 
 <table class="table table-striped">
     <thead>

@@ -1,10 +1,19 @@
-﻿@model VianaMotos.Web.Models.Moto
+@model VianaMotos.Web.Models.Moto
+@{
+    ViewData["Title"] = "Excluir motocicleta";
+}
 
+@await Html.PartialAsync("_PageHeader", new PageHeaderViewModel
+{
+    Eyebrow = "Estoque",
+    Title = "Excluir motocicleta",
+    Subtitle = "Revise os dados antes de remover esta motocicleta do estoque.",
+    Icon = "bi-trash3",
+        Actions = new[] { new PageHeaderActionViewModel { Text = "Voltar", Url = Url.Action("Index")!, Icon = "bi-arrow-left", IsPrimary = false } }
+})
 <div class="card shadow border-0">
 
-    <div class="card-header bg-danger text-white">
-        <h3 class="mb-0">Excluir Moto</h3>
-    </div>
+
 
     <div class="card-body">
 

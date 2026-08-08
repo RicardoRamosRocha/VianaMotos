@@ -1,4 +1,4 @@
-﻿@model VianaMotos.Web.ViewModels.MotoViewModel
+@model VianaMotos.Web.ViewModels.MotoViewModel
 
 @{
     ViewData["Title"] = "Editar motocicleta";
@@ -12,39 +12,6 @@
 <style>
     .moto-form-page {
         padding-bottom: 32px;
-    }
-
-    .moto-form-header {
-        display: flex;
-        align-items: flex-end;
-        justify-content: space-between;
-        gap: 24px;
-        margin-bottom: 26px;
-    }
-
-    .moto-form-eyebrow {
-        display: block;
-        margin-bottom: 8px;
-        color: var(--viana-red, #c40000);
-        font-size: .72rem;
-        font-weight: 850;
-        letter-spacing: .14em;
-        text-transform: uppercase;
-    }
-
-    .moto-form-title {
-        margin: 0;
-        color: var(--viana-graphite-950, #111317);
-        font-size: clamp(2rem, 4vw, 3rem);
-        font-weight: 850;
-        line-height: 1;
-    }
-
-    .moto-form-subtitle {
-        max-width: 700px;
-        margin: 11px 0 0;
-        color: var(--viana-gray-500, #7d8794);
-        line-height: 1.6;
     }
 
     .moto-form-layout {
@@ -420,10 +387,6 @@
     }
 
     @@media (max-width: 767.98px) {
-        .moto-form-header {
-            align-items: flex-start;
-            flex-direction: column;
-        }
 
         .moto-form-card {
             padding: 21px;
@@ -452,28 +415,14 @@
 
 <div class="moto-form-page">
 
-    <header class="moto-form-header">
-        <div>
-            <span class="moto-form-eyebrow">
-                Gestão de estoque
-            </span>
-
-            <h1 class="moto-form-title">
-                Editar motocicleta
-            </h1>
-
-            <p class="moto-form-subtitle">
-                Atualize as informações comerciais, a disponibilidade e as fotos
-                de @Model.Moto.Modelo.
-            </p>
-        </div>
-
-        <a asp-action="Details"
-           asp-route-id="@Model.Moto.Id"
-           class="btn btn-outline-secondary">
-            Voltar aos detalhes
-        </a>
-    </header>
+    @await Html.PartialAsync("_PageHeader", new PageHeaderViewModel
+{
+    Eyebrow = "Estoque",
+    Title = "Editar motocicleta",
+    Subtitle = "Atualize os dados, a disponibilidade e as imagens da motocicleta.",
+    Icon = "bi-pencil-square",
+        Actions = new[] { new PageHeaderActionViewModel { Text = "Ver detalhes", Url = Url.Action("Details", new { id = Model.Moto.Id })!, Icon = "bi-eye", IsPrimary = false }, new PageHeaderActionViewModel { Text = "Voltar", Url = Url.Action("Index")!, Icon = "bi-arrow-left", IsPrimary = false } }
+})
 
     <div asp-validation-summary="All"
          class="moto-validation-summary"></div>

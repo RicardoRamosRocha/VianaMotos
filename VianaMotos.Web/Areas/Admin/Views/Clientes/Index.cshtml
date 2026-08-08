@@ -2,51 +2,59 @@
 
 @{
     ViewData["Title"] = "Clientes";
+    var clientes = Model.ToList();
+    var ativos = clientes.Count(x => x.Ativo);
+    var inativos = clientes.Count - ativos;
 }
 
-<div class="admin-container">
+<div class="admin-container clients-page">
 
-    <header class="page-header">
-        <div>
-            <h1 class="page-title">Clientes</h1>
-            <p class="page-subtitle">
-                Cadastros organizados para atendimento, negociacao e relacionamento comercial.
-            </p>
-        </div>
+    @await Html.PartialAsync("_PageHeader", new PageHeaderViewModel
+{
+    Eyebrow = "Cadastros",
+    Title = "Clientes",
+    Subtitle = "Gerencie clientes, contatos e informações comerciais.",
+    Icon = "bi-people",
+        Actions = new[] { new PageHeaderActionViewModel { Text = "Novo cliente", Url = Url.Action("Create")!, Icon = "bi-plus-lg", IsPrimary = true } }
+})
 
-        <div class="page-actions">
-            <a asp-action="Create"
-               class="btn btn-primary">
-                <i class="bi bi-plus-lg me-2"></i>
-                Novo Cliente
-            </a>
-        </div>
-    </header>
-
-    <section class="table-card">
-        <div class="table-card-header">
+    <section class="clients-table-card">
+        <div class="clients-toolbar">
             <div>
-                <h2 class="section-title mb-1">Base de clientes</h2>
-                <span class="text-secondary">@Model.Count() registros encontrados</span>
+                <span class="clients-section-kicker">Base de relacionamento</span>
+                <h2>Clientes cadastrados</h2>
+                <p>Consulte contatos e mantenha o atendimento sempre próximo.</p>
+            </div>
+
+            <div class="clients-filters">
+                <label class="clients-search" for="clientSearch">
+                    <i class="bi bi-search"></i>
+                    <input id="clientSearch" type="search" placeholder="Buscar cliente, telefone ou e-mail..." autocomplete="off" />
+                </label>
+                <select id="clientStatus" class="form-select clients-status-filter" aria-label="Filtrar por status">
+                    <option value="all">Todos os status</option>
+                    <option value="active">Ativos</option>
+                    <option value="inactive">Inativos</option>
+                </select>
             </div>
         </div>
 
-        <div class="table-responsive">
-            <table class="table admin-table">
+        <div class="clients-table-wrap">
+            <table class="table admin-table clients-table">
                 <thead>
                     <tr>
                         <th>Cliente</th>
                         <th>CPF</th>
                         <th>Telefone</th>
-                        <th>Email</th>
+                        <th>E-mail</th>
                         <th>Cidade</th>
                         <th>Status</th>
-                        <th class="text-end">Acoes</th>
+                        <th class="text-end">Ações</th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    @foreach (var cliente in Model)
+                    @foreach (var cliente in clientes)
                     {
                         var iniciais = string.Join("", cliente.Nome
                             .Split(' ', StringSplitOptions.RemoveEmptyEntries)
@@ -54,46 +62,37 @@
                             .Select(x => x[0]))
                             .ToUpper();
 
-                        <tr>
+                        <tr class="client-row" data-status="@(cliente.Ativo ? "active" : "inactive")" data-search="@($"{cliente.Nome} {cliente.Cpf} {cliente.Telefone} {cliente.Email} {cliente.Cidade}")">
                             <td>
-                                <div class="d-flex align-items-center gap-3">
+                                <div class="client-identity">
                                     <span class="avatar">@iniciais</span>
-                                    <div>
-                                        <strong class="d-block text-dark">@cliente.Nome</strong>
-                                        <span class="text-secondary">@cliente.Estado</span>
+                                    <div class="client-identity-copy">
+                                        <strong>@cliente.Nome</strong>
+                                        <span>@cliente.Estado · Cliente Viana Motos</span>
                                     </div>
                                 </div>
                             </td>
-                            <td>@cliente.Cpf</td>
-                            <td>@cliente.Telefone</td>
-                            <td>@cliente.Email</td>
-                            <td>@cliente.Cidade</td>
+                            <td><span class="client-data">@cliente.Cpf</span></td>
+                            <td><span class="client-data">@cliente.Telefone</span></td>
+                            <td><span class="client-data client-email">@cliente.Email</span></td>
+                            <td><span class="client-data">@cliente.Cidade</span></td>
                             <td>
                                 @if (cliente.Ativo)
                                 {
-                                    <span class="status-badge is-success">
-                                        Ativo
-                                    </span>
+                                    <span class="status-badge is-success"><i class="bi bi-check-circle-fill"></i>Ativo</span>
                                 }
                                 else
                                 {
-                                    <span class="status-badge is-danger">
-                                        Inativo
-                                    </span>
+                                    <span class="status-badge is-danger"><i class="bi bi-dash-circle-fill"></i>Inativo</span>
                                 }
                             </td>
                             <td>
-                                <div class="action-buttons justify-content-end">
-                                    <a asp-action="Edit"
-                                       asp-route-id="@cliente.Id"
-                                       class="btn btn-warning btn-sm">
-                                        Editar
+                                <div class="client-actions">
+                                    <a asp-action="Edit" asp-route-id="@cliente.Id" class="client-action" title="Editar cliente" aria-label="Editar @cliente.Nome">
+                                        <i class="bi bi-pencil-square"></i>
                                     </a>
-
-                                    <a asp-action="Delete"
-                                       asp-route-id="@cliente.Id"
-                                       class="btn btn-danger btn-sm">
-                                        Excluir
+                                    <a asp-action="Delete" asp-route-id="@cliente.Id" class="client-action is-danger" title="Excluir cliente" aria-label="Excluir @cliente.Nome">
+                                        <i class="bi bi-trash3"></i>
                                     </a>
                                 </div>
                             </td>
@@ -101,7 +100,43 @@
                     }
                 </tbody>
             </table>
+
+            <div id="clientsEmptyState" class="clients-empty-state" hidden>
+                <i class="bi bi-search"></i>
+                <strong>Nenhum cliente encontrado</strong>
+                <span>Ajuste a busca ou o filtro de status para continuar.</span>
+            </div>
         </div>
     </section>
 
 </div>
+
+@section Scripts {
+    <script>
+        (() => {
+            const search = document.getElementById('clientSearch');
+            const status = document.getElementById('clientStatus');
+            const rows = [...document.querySelectorAll('.client-row')];
+            const empty = document.getElementById('clientsEmptyState');
+
+            const filter = () => {
+                const term = (search.value || '').trim().toLowerCase();
+                const selectedStatus = status.value;
+                let visible = 0;
+
+                rows.forEach(row => {
+                    const matchesText = !term || row.dataset.search.toLowerCase().includes(term);
+                    const matchesStatus = selectedStatus === 'all' || row.dataset.status === selectedStatus;
+                    const show = matchesText && matchesStatus;
+                    row.hidden = !show;
+                    if (show) visible++;
+                });
+
+                empty.hidden = visible > 0;
+            };
+
+            search?.addEventListener('input', filter);
+            status?.addEventListener('change', filter);
+        })();
+    </script>
+}

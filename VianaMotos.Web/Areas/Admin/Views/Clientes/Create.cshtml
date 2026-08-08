@@ -6,21 +6,14 @@
 
 <div class="admin-container">
 
-    <header class="page-header">
-        <div>
-            <h1 class="page-title">Novo Cliente</h1>
-            <p class="page-subtitle">
-                Registre os dados essenciais para um atendimento comercial preciso e profissional.
-            </p>
-        </div>
-
-        <div class="page-actions">
-            <a asp-action="Index"
-               class="btn btn-outline-secondary">
-                Voltar
-            </a>
-        </div>
-    </header>
+    @await Html.PartialAsync("_PageHeader", new PageHeaderViewModel
+{
+    Eyebrow = "Cadastros",
+    Title = "Novo cliente",
+    Subtitle = "Registre os dados essenciais para um atendimento comercial preciso.",
+    Icon = "bi-person-plus",
+        Actions = new[] { new PageHeaderActionViewModel { Text = "Voltar", Url = Url.Action("Index")!, Icon = "bi-arrow-left", IsPrimary = false } }
+})
 
     <section class="form-card">
         <form asp-action="Create" method="post">

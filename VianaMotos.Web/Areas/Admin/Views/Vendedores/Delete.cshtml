@@ -1,0 +1,46 @@
+@model VianaMotos.Web.Models.Vendedor
+
+@{
+    ViewData["Title"] = "Excluir Vendedor";
+}
+
+<div class="admin-container">
+    @await Html.PartialAsync("_PageHeader", new PageHeaderViewModel
+{
+    Eyebrow = "Comercial",
+    Title = "Excluir vendedor",
+    Subtitle = "Revise os dados antes de remover este profissional.",
+    Icon = "bi-trash3",
+        Actions = new[] { new PageHeaderActionViewModel { Text = "Voltar", Url = Url.Action("Index")!, Icon = "bi-arrow-left", IsPrimary = false } }
+})
+
+    <section class="form-card">
+        <div class="alert alert-danger d-flex align-items-start gap-3" role="alert">
+            <i class="bi bi-exclamation-triangle-fill fs-4"></i>
+            <div>
+                <strong>Esta ação não poderá ser desfeita.</strong>
+                <div>O cadastro de <strong>@Model.Nome</strong> será removido permanentemente.</div>
+            </div>
+        </div>
+
+        <dl class="row my-4">
+            <dt class="col-sm-3 py-2">Nome</dt>
+            <dd class="col-sm-9 py-2">@Model.Nome</dd>
+
+            <dt class="col-sm-3 py-2">CPF</dt>
+            <dd class="col-sm-9 py-2">@(Model.Cpf ?? "Não informado")</dd>
+
+            <dt class="col-sm-3 py-2">Telefone</dt>
+            <dd class="col-sm-9 py-2">@(Model.Telefone ?? "Não informado")</dd>
+
+            <dt class="col-sm-3 py-2">E-mail</dt>
+            <dd class="col-sm-9 py-2">@(Model.Email ?? "Não informado")</dd>
+        </dl>
+
+        <form asp-action="Delete" asp-route-id="@Model.Id" method="post">
+            @Html.AntiForgeryToken()
+            <button type="submit" class="btn btn-danger"><i class="bi bi-trash3 me-2"></i>Confirmar exclusão</button>
+            <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Cancelar</a>
+        </form>
+    </section>
+</div>

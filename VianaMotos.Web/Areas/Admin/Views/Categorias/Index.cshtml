@@ -1,15 +1,17 @@
-﻿@model IEnumerable<VianaMotos.Web.Models.Categoria>
+@model IEnumerable<VianaMotos.Web.Models.Categoria>
+@{
+    ViewData["Title"] = "Categorias";
+}
 
-<h1>Categorias</h1>
+@await Html.PartialAsync("_PageHeader", new PageHeaderViewModel
+{
+    Eyebrow = "Catálogo",
+    Title = "Categorias",
+    Subtitle = "Organize as classificações usadas no catálogo de motocicletas.",
+    Icon = "bi-collection",
+        Actions = new[] { new PageHeaderActionViewModel { Text = "Nova categoria", Url = Url.Action("Create")!, Icon = "bi-plus-lg", IsPrimary = true } }
+})
 
-<p>
-    <a asp-area="Admin"
-       asp-controller="Categorias"
-       asp-action="Create"
-       class="btn btn-primary">
-        Nova Categoria
-    </a>
-</p>
 
 <table class="table table-striped">
     <thead>

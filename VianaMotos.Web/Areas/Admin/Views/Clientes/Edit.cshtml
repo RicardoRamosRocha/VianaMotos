@@ -1,11 +1,20 @@
-﻿@model VianaMotos.Web.Models.Cliente
+@model VianaMotos.Web.Models.Cliente
+@{
+    ViewData["Title"] = "Editar cliente";
+}
 
+@await Html.PartialAsync("_PageHeader", new PageHeaderViewModel
+{
+    Eyebrow = "Cadastros",
+    Title = "Editar cliente",
+    Subtitle = "Atualize os dados cadastrais e comerciais do cliente.",
+    Icon = "bi-person-gear",
+        Actions = new[] { new PageHeaderActionViewModel { Text = "Voltar", Url = Url.Action("Index")!, Icon = "bi-arrow-left", IsPrimary = false } }
+})
 <div class="card shadow-lg border-0">
     <div class="card-body p-4">
 
-        <h2 class="fw-bold mb-4">
-            Editar cadastro do Cliente
-        </h2>
+
 
         <form asp-action="Edit" method="post">
 

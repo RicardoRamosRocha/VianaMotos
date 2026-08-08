@@ -44,217 +44,6 @@
         padding-bottom: 35px;
     }
 
-    .dashboard-context-bar {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 18px;
-        margin-bottom: 14px;
-        padding: 0 4px;
-        color: var(--dashboard-muted);
-        font-size: .72rem;
-        font-weight: 750;
-    }
-
-    .dashboard-context-label,
-    .dashboard-context-status,
-    .dashboard-context-platform {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .dashboard-context-label i {
-        color: var(--dashboard-red);
-        font-size: .85rem;
-    }
-
-    .dashboard-context-status {
-        color: #138a54;
-    }
-
-    .dashboard-context-status::before {
-        width: 7px;
-        height: 7px;
-        background: #28b976;
-        border-radius: 50%;
-        box-shadow: 0 0 0 4px rgba(40, 185, 118, .12);
-        content: "";
-    }
-
-    .dashboard-context-platform {
-        margin-left: auto;
-        color: var(--dashboard-red);
-    }
-
-    .dashboard-context-platform i {
-        font-size: .78rem;
-    }
-
-    .dashboard-hero {
-        position: relative;
-        isolation: isolate;
-        display: flex;
-        align-items: flex-end;
-        justify-content: space-between;
-        gap: 35px;
-        min-height: 230px;
-        margin-bottom: 25px;
-        padding: 35px;
-        overflow: hidden;
-        color: #fff;
-        background:
-            radial-gradient(
-                circle at 85% 20%,
-                rgba(196, 0, 0, .42),
-                transparent 30%
-            ),
-            linear-gradient(135deg, #171a20 0%, #08090b 75%);
-        border: 1px solid rgba(255, 255, 255, .08);
-        border-radius: 25px;
-        box-shadow: 0 25px 60px rgba(8, 9, 11, .2);
-    }
-
-    .dashboard-hero::before {
-        position: absolute;
-        z-index: -1;
-        top: -150px;
-        right: -80px;
-        width: 420px;
-        height: 420px;
-        border: 1px solid rgba(255, 255, 255, .08);
-        border-radius: 50%;
-        content: "";
-        box-shadow:
-            0 0 0 65px rgba(255, 255, 255, .018),
-            0 0 0 130px rgba(255, 255, 255, .012);
-    }
-
-    .dashboard-hero::after {
-        position: absolute;
-        z-index: -1;
-        inset: 0;
-        background-image:
-            linear-gradient(
-                rgba(255, 255, 255, .018) 1px,
-                transparent 1px
-            ),
-            linear-gradient(
-                90deg,
-                rgba(255, 255, 255, .018) 1px,
-                transparent 1px
-            );
-        background-size: 44px 44px;
-        content: "";
-        mask-image: linear-gradient(to right, #000, transparent 90%);
-    }
-
-    .dashboard-hero-content {
-        max-width: 760px;
-    }
-
-    .dashboard-eyebrow {
-        display: inline-flex;
-        align-items: center;
-        gap: 9px;
-        margin-bottom: 13px;
-        color: #ff3b49;
-        font-size: .7rem;
-        font-weight: 850;
-        letter-spacing: .15em;
-        text-transform: uppercase;
-    }
-
-    .dashboard-eyebrow::before {
-        width: 28px;
-        height: 2px;
-        background: currentColor;
-        content: "";
-    }
-
-    .dashboard-hero h1 {
-        margin: 0;
-        color: #fff;
-        font-size: clamp(2.3rem, 5vw, 4rem);
-        font-weight: 900;
-        line-height: .98;
-        letter-spacing: -.055em;
-    }
-
-    .dashboard-hero p {
-        max-width: 650px;
-        margin: 16px 0 0;
-        color: rgba(255, 255, 255, .65);
-        font-size: .95rem;
-        line-height: 1.7;
-    }
-
-    .dashboard-hero-summary {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        margin-top: 22px;
-        padding: 8px 12px;
-        color: rgba(255, 255, 255, .76);
-        background: rgba(255, 255, 255, .06);
-        border: 1px solid rgba(255, 255, 255, .1);
-        border-radius: 999px;
-        font-size: .72rem;
-        font-weight: 700;
-    }
-
-    .dashboard-hero-summary i {
-        color: #ff5361;
-    }
-
-    .dashboard-hero-proof {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 9px;
-        margin-top: 20px;
-    }
-
-    .dashboard-hero-proof span {
-        display: inline-flex;
-        align-items: center;
-        gap: 7px;
-        padding: 7px 10px;
-        color: rgba(255, 255, 255, .66);
-        background: rgba(255, 255, 255, .06);
-        border: 1px solid rgba(255, 255, 255, .1);
-        border-radius: 999px;
-        font-size: .66rem;
-        font-weight: 800;
-    }
-
-    .dashboard-hero-proof i {
-        color: #62e6a1;
-    }
-
-    .dashboard-hero-actions {
-        display: flex;
-        flex-shrink: 0;
-        flex-direction: column;
-        gap: 10px;
-        min-width: 190px;
-    }
-
-    .dashboard-hero-actions .btn {
-        width: 100%;
-    }
-
-    .dashboard-outline-light {
-        color: #fff;
-        background: rgba(255, 255, 255, .06);
-        border: 1px solid rgba(255, 255, 255, .18);
-    }
-
-    .dashboard-outline-light:hover {
-        color: #fff;
-        background: rgba(255, 255, 255, .12);
-        border-color: rgba(255, 255, 255, .3);
-    }
-
     .dashboard-metrics {
         display: grid;
         grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -892,15 +681,6 @@
     }
 
     @@media (max-width: 991.98px) {
-        .dashboard-hero {
-            align-items: flex-start;
-            flex-direction: column;
-        }
-
-        .dashboard-hero-actions {
-            width: 100%;
-            flex-direction: row;
-        }
 
         .dashboard-bottom-grid {
             grid-template-columns: 1fr;
@@ -908,22 +688,6 @@
     }
 
     @@media (max-width: 767.98px) {
-        .dashboard-context-bar {
-            flex-wrap: wrap;
-        }
-
-        .dashboard-context-platform {
-            margin-left: 0;
-        }
-
-        .dashboard-hero {
-            padding: 27px;
-            border-radius: 20px;
-        }
-
-        .dashboard-hero-actions {
-            flex-direction: column;
-        }
 
         .dashboard-metrics {
             grid-template-columns: 1fr;
@@ -972,64 +736,14 @@
 
 <div class="admin-container executive-dashboard">
 
-    <div class="dashboard-context-bar" aria-label="Contexto do painel">
-        <span class="dashboard-context-label">
-            <i class="bi bi-grid-1x2-fill"></i>
-            Visão geral da operação
-        </span>
-
-        <span class="dashboard-context-status">
-            Catálogo atualizado
-        </span>
-
-        <span class="dashboard-context-platform">
-            <i class="bi bi-layers-fill"></i>
-            Orizon workspace
-        </span>
-    </div>
-
-    <section class="dashboard-hero">
-        <div class="dashboard-hero-content">
-            <span class="dashboard-eyebrow">
-                Central de gestão
-            </span>
-
-            <h1>Painel executivo</h1>
-
-            <p>
-                Uma visão estratégica do estoque, das vendas e do desempenho
-                comercial da Viana Motos.
-            </p>
-
-            <span class="dashboard-hero-summary">
-                <i class="bi bi-broadcast-pin"></i>
-                @resumoCatalogo
-            </span>
-
-            <div class="dashboard-hero-proof">
-                <span><i class="bi bi-check2-circle"></i> Estoque organizado</span>
-                <span><i class="bi bi-lightning-charge-fill"></i> Atendimento mais rápido</span>
-            </div>
-        </div>
-
-        <div class="dashboard-hero-actions">
-            <a asp-area="Admin"
-               asp-controller="Motos"
-               asp-action="Create"
-               class="btn btn-primary">
-                <i class="bi bi-plus-lg me-2"></i>
-                Nova motocicleta
-            </a>
-
-            <a asp-area="Admin"
-               asp-controller="Motos"
-               asp-action="Index"
-               class="btn dashboard-outline-light">
-                <i class="bi bi-grid me-2"></i>
-                Consultar estoque
-            </a>
-        </div>
-    </section>
+    @await Html.PartialAsync("_PageHeader", new PageHeaderViewModel
+{
+    Eyebrow = "Visão geral",
+    Title = "Painel executivo",
+    Subtitle = "Acompanhe estoque, vendas e desempenho comercial em uma visão integrada.",
+    Icon = "bi-grid-1x2",
+        Actions = new[] { new PageHeaderActionViewModel { Text = "Nova motocicleta", Url = Url.Action("Create", "Motos")!, Icon = "bi-plus-lg", IsPrimary = true }, new PageHeaderActionViewModel { Text = "Consultar estoque", Url = Url.Action("Index", "Motos")!, Icon = "bi-bicycle", IsPrimary = false } }
+})
 
     <section class="dashboard-metrics">
         <article class="dashboard-metric">

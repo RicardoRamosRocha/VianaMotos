@@ -1,6 +1,17 @@
-﻿@model VianaMotos.Web.Models.Marca
+@model VianaMotos.Web.Models.Marca
+@{
+    ViewData["Title"] = "Editar marca";
+}
 
-<h1>Editar Marca</h1>
+@await Html.PartialAsync("_PageHeader", new PageHeaderViewModel
+{
+    Eyebrow = "Catálogo",
+    Title = "Editar marca",
+    Subtitle = "Atualize os dados desta fabricante.",
+    Icon = "bi-tags",
+        Actions = new[] { new PageHeaderActionViewModel { Text = "Voltar", Url = Url.Action("Index")!, Icon = "bi-arrow-left", IsPrimary = false } }
+})
+
 
 <form asp-action="Edit" method="post">
 

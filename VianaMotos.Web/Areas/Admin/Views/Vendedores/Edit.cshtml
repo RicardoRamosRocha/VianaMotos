@@ -1,0 +1,66 @@
+@model VianaMotos.Web.Models.Vendedor
+
+@{
+    ViewData["Title"] = "Editar Vendedor";
+}
+
+<div class="admin-container">
+    @await Html.PartialAsync("_PageHeader", new PageHeaderViewModel
+{
+    Eyebrow = "Comercial",
+    Title = "Editar vendedor",
+    Subtitle = "Atualize os dados cadastrais e comerciais do profissional.",
+    Icon = "bi-person-gear",
+        Actions = new[] { new PageHeaderActionViewModel { Text = "Ver detalhes", Url = Url.Action("Details", new { id = Model.Id })!, Icon = "bi-eye", IsPrimary = false }, new PageHeaderActionViewModel { Text = "Voltar", Url = Url.Action("Index")!, Icon = "bi-arrow-left", IsPrimary = false } }
+})
+
+    <section class="form-card">
+        <form asp-action="Edit" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="Id" />
+
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-4"></div>
+
+            <h2 class="section-title">Dados do vendedor</h2>
+            <p class="text-muted mb-4">Mantenha os dados de contato e o status sempre atualizados.</p>
+
+            <div class="row g-4">
+                <div class="col-lg-8">
+                    <label asp-for="Nome" class="form-label"></label>
+                    <input asp-for="Nome" class="form-control" autocomplete="name" autofocus />
+                    <span asp-validation-for="Nome" class="text-danger"></span>
+                </div>
+                <div class="col-lg-4">
+                    <label asp-for="Cpf" class="form-label"></label>
+                    <input asp-for="Cpf" class="form-control" inputmode="numeric" autocomplete="off" />
+                    <span asp-validation-for="Cpf" class="text-danger"></span>
+                </div>
+                <div class="col-lg-6">
+                    <label asp-for="Telefone" class="form-label"></label>
+                    <input asp-for="Telefone" class="form-control" type="tel" autocomplete="tel" />
+                    <span asp-validation-for="Telefone" class="text-danger"></span>
+                </div>
+                <div class="col-lg-6">
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email" class="form-control" type="email" autocomplete="email" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="col-12">
+                    <div class="form-check form-switch">
+                        <input asp-for="Ativo" class="form-check-input" role="switch" />
+                        <label asp-for="Ativo" class="form-check-label">Vendedor ativo na equipe</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="toolbar mt-4 pt-2">
+                <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg me-2"></i>Salvar alterações</button>
+                <a asp-action="Index" class="btn btn-outline-secondary">Cancelar</a>
+            </div>
+        </form>
+    </section>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

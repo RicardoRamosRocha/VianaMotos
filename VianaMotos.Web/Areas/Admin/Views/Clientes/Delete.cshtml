@@ -1,12 +1,21 @@
-﻿@model VianaMotos.Web.Models.Cliente
+@model VianaMotos.Web.Models.Cliente
+@{
+    ViewData["Title"] = "Excluir cliente";
+}
 
+@await Html.PartialAsync("_PageHeader", new PageHeaderViewModel
+{
+    Eyebrow = "Cadastros",
+    Title = "Excluir cliente",
+    Subtitle = "Revise os dados antes de remover este cliente.",
+    Icon = "bi-trash3",
+        Actions = new[] { new PageHeaderActionViewModel { Text = "Voltar", Url = Url.Action("Index")!, Icon = "bi-arrow-left", IsPrimary = false } }
+})
 <div class="card shadow-lg border-0">
 
     <div class="card-body p-4">
 
-        <h2 class="text-danger mb-4">
-            Excluir Cliente
-        </h2>
+
 
         <div class="alert alert-danger">
 

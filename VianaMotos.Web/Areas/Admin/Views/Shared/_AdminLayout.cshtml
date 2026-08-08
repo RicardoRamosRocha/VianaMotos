@@ -60,6 +60,11 @@
                        asp-area="Admin" asp-controller="Clientes" asp-action="Index">
                         <i class="bi bi-people"></i><span>Clientes</span>
                     </a>
+                    <a class="admin-side-link @(IsActive("Vendedores") ? "is-active" : string.Empty)"
+                       aria-label="Vendedores" title="Vendedores"
+                       asp-area="Admin" asp-controller="Vendedores" asp-action="Index">
+                        <i class="bi bi-person-badge"></i><span>Vendedores</span>
+                    </a>
                     <a class="admin-side-link @(IsActive("Vendas") ? "is-active" : string.Empty)"
                        aria-label="Vendas" title="Vendas"
                        asp-area="Admin" asp-controller="Vendas" asp-action="Index">

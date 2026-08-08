@@ -1,6 +1,17 @@
-﻿@model VianaMotos.Web.Models.Combustivel
+@model VianaMotos.Web.Models.Combustivel
+@{
+    ViewData["Title"] = "Editar combustível";
+}
 
-<h1>Editar Combustível</h1>
+@await Html.PartialAsync("_PageHeader", new PageHeaderViewModel
+{
+    Eyebrow = "Catálogo",
+    Title = "Editar combustível",
+    Subtitle = "Atualize os dados deste tipo de combustível.",
+    Icon = "bi-fuel-pump",
+        Actions = new[] { new PageHeaderActionViewModel { Text = "Voltar", Url = Url.Action("Index")!, Icon = "bi-arrow-left", IsPrimary = false } }
+})
+
 
 <form asp-action="Edit" method="post">
 

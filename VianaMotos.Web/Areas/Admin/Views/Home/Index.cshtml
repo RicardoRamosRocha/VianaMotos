@@ -1,7 +1,11 @@
-﻿@{
+@{
     ViewData["Title"] = "Painel Administrativo";
 }
 
-<h1>Painel Administrativo</h1>
-
-<p>Bem-vindo ao sistema Viana Motos.</p>
+@await Html.PartialAsync("_PageHeader", new PageHeaderViewModel
+{
+    Eyebrow = "Visão geral",
+    Title = "Painel administrativo",
+    Subtitle = "Acesse os recursos de gestão comercial da Viana Motos.",
+    Icon = "bi-grid-1x2"
+})

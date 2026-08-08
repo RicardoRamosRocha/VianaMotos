@@ -1,13 +1,20 @@
-﻿@model VianaMotos.Web.Models.Moto
+@model VianaMotos.Web.Models.Moto
+@{
+    ViewData["Title"] = "Fotos da motocicleta";
+}
 
+@await Html.PartialAsync("_PageHeader", new PageHeaderViewModel
+{
+    Eyebrow = "Estoque",
+    Title = "Fotos da motocicleta",
+    Subtitle = "Gerencie as imagens usadas na apresentação desta motocicleta.",
+    Icon = "bi-images",
+        Actions = new[] { new PageHeaderActionViewModel { Text = "Ver detalhes", Url = Url.Action("Details", new { id = Model.Id })!, Icon = "bi-eye", IsPrimary = false }, new PageHeaderActionViewModel { Text = "Voltar", Url = Url.Action("Index")!, Icon = "bi-arrow-left", IsPrimary = false } }
+})
 <div class="card shadow">
     <div class="card-body">
 
-<h2>Fotos da Moto</h2>
 
-<h4>@Model.Modelo</h4>
-
-<hr />
 
 <form asp-action="AdicionarFotos"
       asp-route-id="@Model.Id"

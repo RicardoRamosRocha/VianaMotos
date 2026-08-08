@@ -167,39 +167,6 @@ body {
     margin: 0 auto;
 }
 
-.page-header {
-    align-items: flex-end;
-    display: flex;
-    gap: 24px;
-    justify-content: space-between;
-    margin-bottom: 26px;
-}
-
-.page-title {
-    color: var(--viana-graphite-950);
-    font-size: clamp(2rem, 4vw, 3rem);
-    font-weight: 850;
-    letter-spacing: 0;
-    line-height: 1;
-    margin: 0;
-}
-
-.page-subtitle {
-    color: var(--viana-gray-500);
-    font-size: 1rem;
-    line-height: 1.6;
-    margin: 12px 0 0;
-    max-width: 760px;
-}
-
-.page-actions {
-    align-items: center;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: flex-end;
-}
-
 .stats-card,
 .form-card,
 .table-card,
@@ -628,188 +595,6 @@ textarea.form-control {
     padding-bottom: 24px;
 }
 
-.motos-catalog-hero {
-    position: relative;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 28px;
-    min-height: 285px;
-    margin-bottom: 24px;
-    padding: 38px 40px 28px;
-    overflow: hidden;
-    color: #fff;
-    background:
-        radial-gradient(circle at 76% 12%, rgba(239, 36, 54, .42), transparent 29%),
-        radial-gradient(circle at 58% 120%, rgba(255, 255, 255, .08), transparent 28%),
-        linear-gradient(118deg, #0b0c0f 0%, #171a20 58%, #242936 100%);
-    border: 1px solid rgba(255, 255, 255, .08);
-    border-radius: 26px;
-    box-shadow: 0 24px 60px rgba(8, 9, 11, .2);
-}
-
-.motos-catalog-hero::after {
-    position: absolute;
-    right: -80px;
-    bottom: -160px;
-    width: 410px;
-    height: 410px;
-    content: "";
-    border: 1px solid rgba(255, 255, 255, .08);
-    border-radius: 50%;
-}
-
-.motos-catalog-hero-copy {
-    position: relative;
-    z-index: 2;
-    max-width: 690px;
-}
-
-.motos-eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 16px;
-    color: #ff9aa2;
-    font-size: .7rem;
-    font-weight: 900;
-    letter-spacing: .16em;
-    text-transform: uppercase;
-}
-
-.motos-catalog-hero h1 {
-    max-width: 650px;
-    margin: 0;
-    color: #fff;
-    font-size: clamp(2rem, 4.3vw, 3.5rem);
-    font-weight: 900;
-    letter-spacing: -.045em;
-    line-height: .98;
-}
-
-.motos-catalog-hero p {
-    max-width: 600px;
-    margin: 17px 0 23px;
-    color: rgba(255, 255, 255, .65);
-    font-size: .96rem;
-    line-height: 1.65;
-}
-
-.motos-hero-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.motos-hero-actions .btn {
-    min-height: 42px;
-}
-
-.motos-public-link {
-    color: #171a20;
-    background: rgba(255, 255, 255, .94);
-    border-color: rgba(255, 255, 255, .94);
-}
-
-.motos-public-link:hover,
-.motos-public-link:focus-visible {
-    color: #171a20;
-    background: #fff;
-    border-color: #fff;
-}
-
-.motos-catalog-hero-orbit {
-    position: absolute;
-    z-index: 1;
-    top: 6px;
-    right: 178px;
-    display: grid;
-    width: 220px;
-    height: 220px;
-    place-items: center;
-    color: rgba(255, 255, 255, .16);
-    font-size: 5.2rem;
-}
-
-.motos-orbit-ring {
-    position: absolute;
-    display: block;
-    border: 1px solid rgba(255, 255, 255, .12);
-    border-radius: 50%;
-}
-
-.motos-orbit-ring-one {
-    width: 190px;
-    height: 190px;
-}
-
-.motos-orbit-ring-two {
-    width: 125px;
-    height: 125px;
-    border-color: rgba(239, 36, 54, .32);
-}
-
-.motos-catalog-metrics {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    align-items: flex-end;
-    align-self: end;
-    gap: 10px;
-    grid-column: 1 / -1;
-}
-
-.motos-catalog-metric {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    min-width: 158px;
-    padding: 11px 13px;
-    background: rgba(255, 255, 255, .07);
-    border: 1px solid rgba(255, 255, 255, .1);
-    border-radius: 15px;
-    backdrop-filter: blur(12px);
-}
-
-.motos-catalog-metric > span:last-child {
-    display: flex;
-    flex-direction: column;
-    line-height: 1.12;
-}
-
-.motos-catalog-metric strong {
-    color: #fff;
-    font-size: 1.16rem;
-    font-weight: 900;
-}
-
-.motos-catalog-metric small {
-    margin-top: 4px;
-    color: rgba(255, 255, 255, .5);
-    font-size: .68rem;
-    font-weight: 750;
-}
-
-.motos-metric-icon {
-    display: inline-flex;
-    width: 36px;
-    height: 36px;
-    align-items: center;
-    justify-content: center;
-    color: #ff858f;
-    background: rgba(196, 0, 0, .2);
-    border-radius: 11px;
-}
-
-.motos-metric-icon.is-green {
-    color: #62e3a5;
-    background: rgba(19, 138, 84, .17);
-}
-
-.motos-metric-icon.is-gold {
-    color: #f3ca68;
-    background: rgba(185, 129, 17, .17);
-}
-
 .motos-catalog-toolbar {
     display: grid;
     grid-template-columns: minmax(250px, 1.25fr) minmax(0, 1.8fr) auto;
@@ -1187,49 +972,6 @@ textarea.form-control {
 }
 
 @media (max-width: 767.98px) {
-    .motos-catalog-hero {
-        display: block;
-        min-height: 0;
-        padding: 29px 23px 22px;
-    }
-
-    .motos-catalog-hero-orbit {
-        top: -38px;
-        right: -34px;
-        opacity: .48;
-        transform: scale(.72);
-        transform-origin: top right;
-    }
-
-    .motos-catalog-hero h1 {
-        max-width: 300px;
-        font-size: 2.3rem;
-    }
-
-    .motos-catalog-hero p {
-        max-width: 100%;
-        font-size: .86rem;
-    }
-
-    .motos-catalog-metrics {
-        align-items: stretch;
-        margin-top: 28px;
-    }
-
-    .motos-catalog-metric {
-        min-width: 0;
-        flex: 1;
-        padding: 9px;
-    }
-
-    .motos-catalog-metric small {
-        font-size: .59rem;
-    }
-
-    .motos-metric-icon {
-        display: none;
-    }
-
     .motos-catalog-toolbar {
         display: flex;
         align-items: stretch;
@@ -1896,150 +1638,1629 @@ textarea.form-control {
    ========================================================= */
 
 @media (min-width: 1200px) {
-    .motos-catalog-hero {
-        display: flex;
-        align-items: flex-end;
-        justify-content: space-between;
-        gap: 35px;
-        min-height: 230px;
-        height: 230px;
-        margin-bottom: 25px;
-        padding: 35px;
-        border-radius: 25px;
-    }
-
-    .motos-catalog-hero-copy {
-        max-width: 820px;
-        padding-bottom: 58px;
-    }
-
-    .motos-catalog-hero h1 {
-        max-width: 820px;
-        font-size: clamp(2rem, 4vw, 3.25rem);
-    }
-
-    .motos-catalog-hero p {
-        max-width: 720px;
-        margin: 10px 0 0;
-        font-size: .9rem;
-        line-height: 1.45;
-    }
-
-    .motos-hero-actions {
-        display: flex;
-        flex-shrink: 0;
-        flex-direction: column;
-        gap: 10px;
-        min-width: 190px;
-        align-self: flex-end;
-    }
-
-    .motos-hero-actions .btn {
-        width: 100%;
-    }
-
-    .motos-catalog-hero-orbit {
-        right: 235px;
-    }
-
-    .motos-catalog-metrics {
-        position: absolute;
-        z-index: 3;
-        bottom: 25px;
-        left: 35px;
-        display: flex;
-        align-items: flex-end;
-        gap: 10px;
-    }
-
-    .motos-catalog-metric {
-        min-width: 142px;
-        padding: 8px 10px;
-        border-radius: 13px;
-    }
-
-    .motos-metric-icon {
-        width: 32px;
-        height: 32px;
-        border-radius: 9px;
-    }
-
-    .motos-catalog-metric strong {
-        font-size: 1rem;
-    }
-
-    .motos-catalog-metric small {
-        margin-top: 2px;
-        font-size: .62rem;
-    }
 }
 
 @media (min-width: 768px) and (max-width: 1199.98px) {
-    .motos-catalog-hero {
-        min-height: 260px;
-    }
-
-    .motos-catalog-hero-copy {
-        padding-bottom: 0;
-    }
-
-    .motos-hero-actions {
-        display: flex;
-        flex-shrink: 0;
-        flex-direction: column;
-        gap: 10px;
-        min-width: 190px;
-        align-self: flex-end;
-    }
-
-    .motos-hero-actions .btn {
-        width: 100%;
-    }
-
-    .motos-catalog-metrics {
-        grid-column: 1 / -1;
-    }
 }
 
 @media (max-width: 767.98px) {
-    .motos-catalog-hero {
-        height: auto;
-    }
-
-    .motos-catalog-hero-copy {
-        padding-bottom: 0;
-    }
-
-    .motos-hero-actions {
-        display: flex;
-        width: 100%;
-        min-width: 0;
-        flex-direction: column;
-        gap: 10px;
-        margin-top: 16px;
-    }
-
-    .motos-hero-actions .btn {
-        width: 100%;
-    }
-
-    .motos-catalog-metrics {
-        position: relative;
-        bottom: auto;
-        left: auto;
-    }
 }
 
 /* As ações do catálogo seguem exatamente o padrão do hero do Dashboard. */
-.motos-hero-actions .dashboard-outline-light {
-    color: #fff;
-    background: rgba(255, 255, 255, .06);
-    border: 1px solid rgba(255, 255, 255, .18);
+/* =========================================================
+   CLIENTES — RELACIONAMENTO COMERCIAL PREMIUM
+   ========================================================= */
+
+.clients-page {
+    padding-bottom: 24px;
 }
 
-.motos-hero-actions .dashboard-outline-light:hover,
-.motos-hero-actions .dashboard-outline-light:focus-visible {
+.clients-section-kicker {
+    color: #ff9aa2;
+    font-size: .7rem;
+    font-weight: 900;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+}
+
+.clients-table-card {
+    overflow: hidden;
+    background: var(--viana-white);
+    border: var(--viana-border);
+    border-radius: var(--viana-radius);
+    box-shadow: var(--viana-shadow);
+}
+
+.clients-toolbar {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 22px;
+    padding: 23px 26px 20px;
+    border-bottom: var(--viana-border);
+}
+
+.clients-toolbar h2 {
+    margin: 5px 0 0;
+    color: var(--viana-graphite-950);
+    font-size: 1.25rem;
+    font-weight: 850;
+}
+
+.clients-toolbar p {
+    margin: 5px 0 0;
+    color: var(--viana-gray-500);
+    font-size: .84rem;
+}
+
+.clients-filters {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.clients-search {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    width: 290px;
+    height: 42px;
+    padding: 0 13px;
+    border: 1px solid var(--viana-gray-300);
+    border-radius: 12px;
+    color: var(--viana-gray-500);
+    background: #fff;
+}
+
+.clients-search:focus-within {
+    border-color: rgba(196, 0, 0, .45);
+    box-shadow: 0 0 0 .24rem rgba(196, 0, 0, .1);
+}
+
+.clients-search input {
+    width: 100%;
+    border: 0;
+    outline: 0;
+    color: var(--viana-graphite-950);
+    font-size: .82rem;
+}
+
+.clients-search input::placeholder {
+    color: var(--viana-gray-500);
+}
+
+.clients-status-filter {
+    width: 152px;
+    min-height: 42px;
+    padding: .55rem .75rem;
+    border-radius: 12px;
+    font-size: .78rem;
+}
+
+.clients-table-wrap {
+    overflow-x: auto;
+}
+
+.clients-table {
+    min-width: 980px;
+}
+
+.clients-table th {
+    padding-top: 13px;
+    padding-bottom: 13px;
+    font-size: .68rem;
+    letter-spacing: .04em;
+}
+
+.clients-table td {
+    padding: 14px 18px;
+    font-size: .84rem;
+}
+
+.client-identity {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    min-width: 220px;
+}
+
+.client-identity .avatar {
+    flex: 0 0 38px;
+    width: 38px;
+    height: 38px;
+    font-size: .72rem;
+    background: linear-gradient(145deg, var(--viana-graphite-950), var(--viana-graphite-700));
+}
+
+.client-identity-copy strong,
+.client-identity-copy span {
+    display: block;
+}
+
+.client-identity-copy strong {
+    color: var(--viana-graphite-950);
+    font-size: .86rem;
+    font-weight: 850;
+}
+
+.client-identity-copy span {
+    max-width: 220px;
+    margin-top: 3px;
+    overflow: hidden;
+    color: var(--viana-gray-500);
+    font-size: .7rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.client-data {
+    color: var(--viana-gray-700);
+    white-space: nowrap;
+}
+
+.client-email {
+    display: block;
+    max-width: 190px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.clients-table .status-badge {
+    padding: .34rem .58rem;
+    font-size: .64rem;
+}
+
+.client-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 6px;
+}
+
+.client-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--viana-gray-200);
+    border-radius: 9px;
+    color: var(--viana-graphite-700);
+    background: var(--viana-gray-100);
+    text-decoration: none;
+    transition: .2s ease;
+}
+
+.client-action:hover,
+.client-action:focus-visible {
     color: #fff;
-    background: rgba(255, 255, 255, .12);
-    border-color: rgba(255, 255, 255, .3);
+    background: var(--viana-graphite-950);
+    border-color: var(--viana-graphite-950);
+}
+
+.client-action.is-danger:hover,
+.client-action.is-danger:focus-visible {
+    color: #fff;
+    background: var(--viana-danger);
+    border-color: var(--viana-danger);
+}
+
+.clients-empty-state {
+    align-items: center;
+    min-height: 180px;
+    padding: 28px;
+    color: var(--viana-gray-500);
+    text-align: center;
+}
+
+.clients-empty-state i,
+.clients-empty-state strong,
+.clients-empty-state span {
+    display: block;
+}
+
+.clients-empty-state i {
+    margin-bottom: 8px;
+    color: var(--viana-red);
+    font-size: 1.5rem;
+}
+
+.clients-empty-state strong {
+    color: var(--viana-graphite-950);
+}
+
+.clients-empty-state span {
+    margin-top: 4px;
+    font-size: .82rem;
+}
+
+@media (max-width: 991.98px) {
+.clients-toolbar {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .clients-filters {
+        width: 100%;
+    }
+
+    .clients-search {
+        flex: 1;
+        width: auto;
+    }
+}
+
+@media (max-width: 575.98px) {
+.clients-filters {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .clients-search,
+    .clients-status-filter {
+        width: 100%;
+    }
+}
+
+/* =========================================================
+   VIANA MOTOS - PAGE HERO PREMIUM
+   ========================================================= */
+
+.vm-page-header {
+    position: relative;
+    isolation: isolate;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+
+    width: 100%;
+    min-height: 164px;
+    margin: 0 0 30px;
+    padding: 30px 34px;
+
+    overflow: hidden;
+
+    color: #ffffff;
+
+    background:
+        radial-gradient(
+            circle at 86% 18%,
+            rgba(220, 25, 42, 0.15) 0,
+            rgba(220, 25, 42, 0.04) 24%,
+            transparent 48%
+        ),
+        radial-gradient(
+            circle at 5% 110%,
+            rgba(255, 255, 255, 0.055) 0,
+            transparent 32%
+        ),
+        linear-gradient(
+            118deg,
+            #17191d 0%,
+            #111317 46%,
+            #090a0c 100%
+        );
+
+    border: 1px solid rgba(255, 255, 255, 0.075);
+    border-radius: var(--orizon-radius-xl, 22px);
+
+    box-shadow:
+        0 20px 50px rgba(12, 14, 18, 0.12),
+        0 3px 10px rgba(12, 14, 18, 0.06),
+        inset 0 1px 0 rgba(255, 255, 255, 0.055);
+}
+
+/* Linha superior de acabamento */
+.vm-page-header::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+
+    top: 0;
+    left: 32px;
+    right: 32px;
+
+    height: 1px;
+
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.16),
+        rgba(239, 36, 54, 0.30),
+        transparent
+    );
+}
+
+/* Elemento decorativo automotivo */
+.vm-page-header::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+
+    width: 330px;
+    height: 330px;
+
+    top: 50%;
+    right: -115px;
+
+    transform: translateY(-50%);
+
+    border: 1px solid rgba(255, 255, 255, 0.035);
+    border-radius: 50%;
+
+    box-shadow:
+        0 0 0 38px rgba(255, 255, 255, 0.012),
+        0 0 0 76px rgba(255, 255, 255, 0.008);
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   CONTEÚDO PRINCIPAL
+   ========================================================= */
+
+.vm-page-header__main {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    align-items: center;
+    gap: 22px;
+
+    min-width: 0;
+}
+
+.vm-page-header__content {
+    min-width: 0;
+}
+
+
+/* =========================================================
+   ÍCONE
+   ========================================================= */
+
+.vm-page-header__icon {
+    position: relative;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 62px;
+    height: 62px;
+    flex: 0 0 62px;
+
+    color: #ff6572;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(220, 25, 42, 0.17),
+            rgba(220, 25, 42, 0.07)
+        );
+
+    border: 1px solid rgba(255, 99, 112, 0.20);
+    border-radius: var(--orizon-radius-lg, 17px);
+
+    box-shadow:
+        0 12px 28px rgba(0, 0, 0, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.07);
+
+    font-size: 1.35rem;
+}
+
+.vm-page-header__icon::after {
+    content: "";
+
+    position: absolute;
+    right: -1px;
+    bottom: -1px;
+
+    width: 18px;
+    height: 3px;
+
+    background: var(--viana-red);
+    border-radius: 999px 0 16px 0;
+
+    box-shadow: 0 0 12px rgba(220, 25, 42, 0.40);
+}
+
+
+/* =========================================================
+   EYEBROW / CONTEXTO
+   ========================================================= */
+
+.vm-page-header__eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    margin-bottom: 7px;
+
+    color: rgba(255, 255, 255, 0.52);
+
+    font-size: 0.64rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: 0.17em;
+    text-transform: uppercase;
+}
+
+.vm-page-header__eyebrow-mark {
+    display: inline-block;
+
+    width: 22px;
+    height: 2px;
+    flex: 0 0 22px;
+
+    background: linear-gradient(
+        90deg,
+        var(--viana-red),
+        #ff5968
+    );
+
+    border-radius: 999px;
+
+    box-shadow: 0 0 10px rgba(239, 36, 54, 0.32);
+}
+
+
+/* =========================================================
+   TÍTULO
+   ========================================================= */
+
+.vm-page-header__title {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: clamp(1.75rem, 2.4vw, 2.25rem);
+    font-weight: 800;
+    line-height: 1.06;
+    letter-spacing: -0.038em;
+
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.16);
+}
+
+
+/* =========================================================
+   SUBTÍTULO
+   ========================================================= */
+
+.vm-page-header__subtitle {
+    max-width: 700px;
+
+    margin: 9px 0 0;
+
+    color: rgba(255, 255, 255, 0.54);
+
+    font-size: 0.84rem;
+    font-weight: 400;
+    line-height: 1.6;
+    letter-spacing: 0.005em;
+}
+
+
+/* =========================================================
+   AÇÕES
+   ========================================================= */
+
+.vm-page-header__actions {
+    position: relative;
+    z-index: 3;
+
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+
+/* =========================================================
+   BOTÃO BASE
+   ========================================================= */
+
+.vm-page-header__action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+
+    min-height: 44px;
+
+    padding: 10px 17px;
+
+    border: 1px solid transparent;
+    border-radius: var(--orizon-button-radius, 11px);
+    
+    font-size: 0.76rem;
+    font-weight: 800;
+    line-height: 1;
+
+    text-decoration: none;
+    white-space: nowrap;
+
+    transition:
+        transform 0.18s ease,
+        background 0.18s ease,
+        border-color 0.18s ease,
+        box-shadow 0.18s ease,
+        color 0.18s ease;
+}
+
+.vm-page-header__action i {
+    font-size: 0.92rem;
+}
+
+
+/* =========================================================
+   BOTÃO PRINCIPAL
+   ========================================================= */
+
+.vm-page-header__action--primary {
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #e42132 0%,
+            var(--viana-red) 55%,
+            #a90000 100%
+        );
+
+    border-color: rgba(255, 110, 120, 0.26);
+
+    box-shadow:
+        0 10px 24px rgba(196, 0, 0, 0.22),
+        inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.vm-page-header__action--primary:hover,
+.vm-page-header__action--primary:focus-visible {
+    color: #ffffff;
+
+    transform: translateY(-2px);
+
+    background:
+        linear-gradient(
+            135deg,
+            #ef3041 0%,
+            #cf091c 55%,
+            #b30000 100%
+        );
+
+    border-color: rgba(255, 130, 140, 0.38);
+
+    box-shadow:
+        0 14px 30px rgba(196, 0, 0, 0.30),
+        inset 0 1px 0 rgba(255, 255, 255, 0.20);
+}
+
+
+/* =========================================================
+   BOTÃO SECUNDÁRIO
+   ========================================================= */
+
+.vm-page-header__action--secondary {
+    color: rgba(255, 255, 255, 0.78);
+
+    background: rgba(255, 255, 255, 0.055);
+
+    border-color: rgba(255, 255, 255, 0.10);
+
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);
+}
+
+.vm-page-header__action--secondary:hover,
+.vm-page-header__action--secondary:focus-visible {
+    color: #ffffff;
+
+    background: rgba(255, 255, 255, 0.095);
+
+    border-color: rgba(255, 255, 255, 0.18);
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   ACESSIBILIDADE
+   ========================================================= */
+
+.vm-page-header__action:focus-visible {
+    outline: 3px solid rgba(255, 99, 112, 0.22);
+    outline-offset: 3px;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 991.98px) {
+
+    .vm-page-header {
+        align-items: flex-start;
+        flex-direction: column;
+
+        gap: 24px;
+
+        min-height: auto;
+
+        padding: 28px;
+    }
+
+    .vm-page-header__actions {
+        justify-content: flex-start;
+        width: 100%;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 575.98px) {
+
+    .vm-page-header {
+        gap: 22px;
+
+        margin-bottom: 24px;
+        padding: 22px 19px;
+
+        border-radius: 18px;
+    }
+
+    .vm-page-header::before {
+        left: 20px;
+        right: 20px;
+    }
+
+    .vm-page-header::after {
+        width: 240px;
+        height: 240px;
+
+        right: -130px;
+    }
+
+    .vm-page-header__main {
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .vm-page-header__icon {
+        width: 50px;
+        height: 50px;
+        flex-basis: 50px;
+
+        border-radius: 14px;
+
+        font-size: 1.1rem;
+    }
+
+    .vm-page-header__eyebrow {
+        margin-bottom: 6px;
+
+        font-size: 0.58rem;
+    }
+
+    .vm-page-header__title {
+        font-size: 1.55rem;
+    }
+
+    .vm-page-header__subtitle {
+        margin-top: 7px;
+
+        font-size: 0.78rem;
+        line-height: 1.5;
+    }
+
+    .vm-page-header__actions {
+        align-items: stretch;
+        flex-direction: column;
+
+        width: 100%;
+    }
+
+    .vm-page-header__action {
+        width: 100%;
+
+        white-space: normal;
+    }
+}
+
+/* =========================================================
+   VIANA MOTOS - SIMULADOR COMERCIAL PREMIUM
+   ========================================================= */
+
+.vm-simulator {
+    display: grid;
+    grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr);
+    gap: 24px;
+    align-items: stretch;
+}
+
+
+/* =========================================================
+   PAINEL DE CONFIGURAÇÃO
+   ========================================================= */
+
+.vm-simulator__form-panel {
+    position: relative;
+    padding: 28px;
+    overflow: hidden;
+
+    background: #ffffff;
+    border: 1px solid rgba(15, 23, 42, .08);
+    border-radius: var(--orizon-radius-xl, 20px);
+
+    box-shadow:
+        0 16px 38px rgba(15, 23, 42, .06),
+        0 2px 8px rgba(15, 23, 42, .03);
+}
+
+.vm-simulator__form-panel::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 28px;
+    width: 84px;
+    height: 3px;
+
+    background: linear-gradient(
+        90deg,
+        var(--viana-red),
+        #ef4050
+    );
+
+    border-radius: 0 0 999px 999px;
+}
+
+
+/* =========================================================
+   CABEÇALHO INTERNO
+   ========================================================= */
+
+.vm-simulator__section-heading {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 28px;
+}
+
+.vm-simulator__heading-icon {
+    display: inline-flex;
+    width: 48px;
+    height: 48px;
+    flex: 0 0 48px;
+
+    align-items: center;
+    justify-content: center;
+
+    color: var(--viana-red);
+    background: rgba(196, 0, 0, .07);
+
+    border: 1px solid rgba(196, 0, 0, .10);
+    border-radius: 13px;
+
+    font-size: 1.05rem;
+}
+
+.vm-simulator__kicker {
+    display: block;
+    margin-bottom: 4px;
+
+    color: var(--viana-red);
+
+    font-size: .61rem;
+    font-weight: 850;
+    letter-spacing: .14em;
+}
+
+.vm-simulator__section-heading h2 {
+    margin: 0;
+
+    color: #15181d;
+
+    font-size: 1.18rem;
+    font-weight: 800;
+    letter-spacing: -.025em;
+}
+
+.vm-simulator__section-heading p {
+    margin: 4px 0 0;
+
+    color: #7a808a;
+
+    font-size: .77rem;
+    line-height: 1.45;
+}
+
+
+/* =========================================================
+   FORMULÁRIO
+   ========================================================= */
+
+.vm-simulator__form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.vm-simulator__field {
+    min-width: 0;
+}
+
+.vm-simulator__field .form-label {
+    margin-bottom: 7px;
+
+    color: #3e444d;
+
+    font-size: .73rem;
+    font-weight: 750;
+}
+
+.vm-simulator__field .form-control,
+.vm-simulator__field .form-select {
+    min-height: 46px;
+
+    color: #24282e;
+    background-color: #fbfbfc;
+
+    border: 1px solid #e1e4e8;
+    border-radius: 11px;
+
+    font-size: .81rem;
+
+    box-shadow: none;
+
+    transition:
+        border-color .18s ease,
+        box-shadow .18s ease,
+        background-color .18s ease;
+}
+
+.vm-simulator__field .form-control:focus,
+.vm-simulator__field .form-select:focus {
+    background-color: #ffffff;
+
+    border-color: rgba(196, 0, 0, .45);
+
+    box-shadow:
+        0 0 0 3px rgba(196, 0, 0, .07);
+}
+
+
+/* =========================================================
+   SELECT COM ÍCONE
+   ========================================================= */
+
+.vm-simulator__input-wrap {
+    position: relative;
+}
+
+.vm-simulator__input-wrap > i {
+    position: absolute;
+    z-index: 2;
+
+    top: 50%;
+    left: 14px;
+
+    color: #969ca5;
+
+    font-size: .92rem;
+
+    transform: translateY(-50%);
+
+    pointer-events: none;
+}
+
+.vm-simulator__input-wrap .form-select {
+    padding-left: 40px;
+}
+
+
+/* =========================================================
+   CAMPOS MONETÁRIO / SUFIXO
+   ========================================================= */
+
+.vm-simulator__money-input,
+.vm-simulator__suffix-input {
+    position: relative;
+}
+
+.vm-simulator__money-input > span,
+.vm-simulator__suffix-input > span {
+    position: absolute;
+    z-index: 2;
+
+    top: 50%;
+
+    color: #747b84;
+
+    font-size: .75rem;
+    font-weight: 800;
+
+    transform: translateY(-50%);
+
+    pointer-events: none;
+}
+
+.vm-simulator__money-input > span {
+    left: 14px;
+}
+
+.vm-simulator__money-input .form-control {
+    padding-left: 42px;
+}
+
+.vm-simulator__suffix-input > span {
+    right: 14px;
+}
+
+.vm-simulator__suffix-input .form-control {
+    padding-right: 40px;
+}
+
+
+/* =========================================================
+   ENTRADA RÁPIDA
+   ========================================================= */
+
+.vm-simulator__quick-options > span,
+.vm-simulator__terms > span {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #777e87;
+
+    font-size: .67rem;
+    font-weight: 750;
+}
+
+.vm-simulator__quick-options > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
+.vm-simulator__chip {
+    min-height: 31px;
+    padding: 5px 11px;
+
+    color: #5c626b;
+    background: #f7f8f9;
+
+    border: 1px solid #e3e5e8;
+    border-radius: 999px;
+
+    font-size: .66rem;
+    font-weight: 750;
+
+    transition:
+        color .16s ease,
+        background-color .16s ease,
+        border-color .16s ease,
+        transform .16s ease;
+}
+
+.vm-simulator__chip:hover {
+    color: var(--viana-red);
+    background: rgba(196, 0, 0, .045);
+
+    border-color: rgba(196, 0, 0, .18);
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   PRAZOS
+   ========================================================= */
+
+.vm-simulator__term-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+}
+
+.vm-simulator__term {
+    display: flex;
+    min-width: 0;
+    min-height: 57px;
+
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    color: #555b64;
+    background: #fafafb;
+
+    border: 1px solid #e1e4e8;
+    border-radius: 11px;
+
+    transition:
+        color .17s ease,
+        background .17s ease,
+        border-color .17s ease,
+        transform .17s ease,
+        box-shadow .17s ease;
+}
+
+.vm-simulator__term strong {
+    font-size: .91rem;
+    line-height: 1;
+}
+
+.vm-simulator__term small {
+    margin-top: 4px;
+
+    color: #979ca4;
+
+    font-size: .57rem;
+    font-weight: 650;
+}
+
+.vm-simulator__term:hover {
+    color: var(--viana-red);
+    background: rgba(196, 0, 0, .035);
+
+    border-color: rgba(196, 0, 0, .18);
+
+    transform: translateY(-1px);
+}
+
+.vm-simulator__term.is-active {
+    color: #ffffff;
+
+    background: linear-gradient(
+        135deg,
+        #d71829,
+        #ae000d
+    );
+
+    border-color: transparent;
+
+    box-shadow: 0 8px 18px rgba(196, 0, 0, .18);
+}
+
+.vm-simulator__term.is-active small {
+    color: rgba(255, 255, 255, .68);
+}
+
+
+/* =========================================================
+   BOTÃO CALCULAR
+   ========================================================= */
+
+.vm-simulator__submit {
+    display: flex;
+    width: 100%;
+    min-height: 47px;
+
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    margin-top: 3px;
+
+    border-radius: var(--orizon-button-radius, 11px);
+}
+
+
+/* =========================================================
+   PAINEL DE RESULTADO
+   ========================================================= */
+
+.vm-simulator__result-panel {
+    position: relative;
+    isolation: isolate;
+
+    min-height: 100%;
+
+    padding: 30px;
+
+    overflow: hidden;
+
+    color: #ffffff;
+
+    background:
+        radial-gradient(
+            circle at 88% 9%,
+            rgba(207, 17, 35, .17),
+            transparent 30%
+        ),
+        linear-gradient(
+            145deg,
+            #191b20 0%,
+            #111318 48%,
+            #090a0d 100%
+        );
+
+    border: 1px solid rgba(255, 255, 255, .07);
+    border-radius: var(--orizon-radius-xl, 20px);
+
+    box-shadow:
+        0 22px 50px rgba(12, 14, 18, .13),
+        inset 0 1px 0 rgba(255, 255, 255, .045);
+}
+
+.vm-simulator__result-panel::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+
+    width: 270px;
+    height: 270px;
+
+    right: -140px;
+    bottom: -130px;
+
+    border: 1px solid rgba(255, 255, 255, .035);
+    border-radius: 50%;
+
+    box-shadow:
+        0 0 0 38px rgba(255, 255, 255, .008),
+        0 0 0 76px rgba(255, 255, 255, .005);
+}
+
+
+/* =========================================================
+   TOPO DO RESULTADO
+   ========================================================= */
+
+.vm-simulator__result-top {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.vm-simulator__result-kicker {
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: #ff7b86;
+
+    font-size: .61rem;
+    font-weight: 850;
+    letter-spacing: .16em;
+}
+
+.vm-simulator__result-top h2 {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 1.2rem;
+    font-weight: 800;
+    letter-spacing: -.025em;
+}
+
+.vm-simulator__result-top p {
+    max-width: 420px;
+
+    margin: 5px 0 0;
+
+    color: rgba(255, 255, 255, .48);
+
+    font-size: .75rem;
+    line-height: 1.5;
+}
+
+.vm-simulator__result-status {
+    display: inline-flex;
+
+    align-items: center;
+    gap: 6px;
+
+    padding: 6px 10px;
+
+    color: #a7e9bd;
+    background: rgba(36, 166, 87, .09);
+
+    border: 1px solid rgba(74, 208, 123, .12);
+    border-radius: 999px;
+
+    font-size: .62rem;
+    font-weight: 750;
+}
+
+
+/* =========================================================
+   PARCELA - PROTAGONISTA
+   ========================================================= */
+
+.vm-simulator__installment-hero {
+    position: relative;
+    z-index: 2;
+
+    margin: 28px 0 24px;
+    padding: 25px 26px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 255, 255, .055),
+            rgba(255, 255, 255, .025)
+        );
+
+    border: 1px solid rgba(255, 255, 255, .075);
+    border-radius: 17px;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, .04);
+}
+
+.vm-simulator__installment-hero > span {
+    color: rgba(255, 255, 255, .46);
+
+    font-size: .67rem;
+    font-weight: 700;
+}
+
+.vm-simulator__installment-value {
+    display: flex;
+
+    align-items: baseline;
+    gap: 12px;
+
+    margin-top: 7px;
+}
+
+.vm-simulator__installment-value small {
+    color: #ff707c;
+
+    font-size: .9rem;
+    font-weight: 850;
+}
+
+.vm-simulator__installment-value strong {
+    color: #ffffff;
+
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 850;
+    line-height: 1;
+    letter-spacing: -.045em;
+}
+
+.vm-simulator__installment-hero > p {
+    margin: 6px 0 0 39px;
+
+    color: rgba(255, 255, 255, .38);
+
+    font-size: .67rem;
+}
+
+
+/* =========================================================
+   RESUMO FINANCEIRO
+   ========================================================= */
+
+.vm-simulator__summary {
+    position: relative;
+    z-index: 2;
+
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 1px;
+
+    overflow: hidden;
+
+    background: rgba(255, 255, 255, .06);
+
+    border: 1px solid rgba(255, 255, 255, .065);
+    border-radius: 14px;
+}
+
+.vm-simulator__summary-item {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+
+    min-height: 54px;
+    padding: 13px 15px;
+
+    background: rgba(11, 12, 15, .72);
+}
+
+.vm-simulator__summary-item span {
+    color: rgba(255, 255, 255, .43);
+
+    font-size: .65rem;
+}
+
+.vm-simulator__summary-item strong {
+    color: rgba(255, 255, 255, .88);
+
+    font-size: .73rem;
+    font-weight: 800;
+}
+
+.vm-simulator__summary-item--featured strong {
+    color: #ff818b;
+}
+
+
+/* =========================================================
+   AVISO
+   ========================================================= */
+
+.vm-simulator__notice {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+
+    align-items: flex-start;
+    gap: 10px;
+
+    margin-top: 18px;
+    padding: 12px 14px;
+
+    color: rgba(255, 255, 255, .42);
+
+    background: rgba(255, 255, 255, .025);
+
+    border-radius: 10px;
+}
+
+.vm-simulator__notice i {
+    margin-top: 2px;
+
+    color: rgba(255, 255, 255, .54);
+}
+
+.vm-simulator__notice p {
+    margin: 0;
+
+    font-size: .62rem;
+    line-height: 1.55;
+}
+
+
+/* =========================================================
+   ESTADO INICIAL
+   ========================================================= */
+
+.vm-simulator__empty {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    min-height: 100%;
+
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    padding: 50px 32px;
+
+    text-align: center;
+}
+
+.vm-simulator__empty-icon {
+    display: inline-flex;
+
+    width: 66px;
+    height: 66px;
+
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 20px;
+
+    color: #ff6572;
+    background: rgba(196, 0, 0, .10);
+
+    border: 1px solid rgba(255, 99, 112, .16);
+    border-radius: 18px;
+
+    font-size: 1.45rem;
+
+    box-shadow:
+        0 14px 30px rgba(0, 0, 0, .18),
+        inset 0 1px 0 rgba(255, 255, 255, .05);
+}
+
+.vm-simulator__empty > span {
+    color: #ff7b86;
+
+    font-size: .59rem;
+    font-weight: 850;
+    letter-spacing: .17em;
+}
+
+.vm-simulator__empty h2 {
+    max-width: 470px;
+
+    margin: 10px 0 0;
+
+    color: #ffffff;
+
+    font-size: clamp(1.35rem, 2.4vw, 1.85rem);
+    font-weight: 800;
+    letter-spacing: -.035em;
+}
+
+.vm-simulator__empty > p {
+    max-width: 490px;
+
+    margin: 10px 0 0;
+
+    color: rgba(255, 255, 255, .45);
+
+    font-size: .75rem;
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   PASSOS DO ESTADO INICIAL
+   ========================================================= */
+
+.vm-simulator__empty-steps {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+    gap: 17px;
+
+    margin-top: 30px;
+}
+
+.vm-simulator__empty-steps > div {
+    display: flex;
+
+    align-items: center;
+    gap: 8px;
+}
+
+.vm-simulator__empty-steps strong {
+    display: inline-flex;
+
+    width: 28px;
+    height: 28px;
+
+    align-items: center;
+    justify-content: center;
+
+    color: #ff7b86;
+    background: rgba(196, 0, 0, .08);
+
+    border: 1px solid rgba(255, 99, 112, .12);
+    border-radius: 8px;
+
+    font-size: .59rem;
+}
+
+.vm-simulator__empty-steps span {
+    color: rgba(255, 255, 255, .48);
+
+    font-size: .63rem;
+    font-weight: 650;
+}
+
+.vm-simulator__empty-steps > i {
+    color: rgba(255, 255, 255, .14);
+
+    font-size: .7rem;
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE
+   ========================================================= */
+
+@media (max-width: 1199.98px) {
+
+    .vm-simulator {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+
+    .vm-simulator__term-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .vm-simulator__summary {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+@media (max-width: 991.98px) {
+
+    .vm-simulator {
+        grid-template-columns: 1fr;
+    }
+
+    .vm-simulator__result-panel {
+        min-height: 520px;
+    }
+}
+
+
+@media (max-width: 575.98px) {
+
+    .vm-simulator {
+        gap: 18px;
+    }
+
+    .vm-simulator__form-panel,
+    .vm-simulator__result-panel {
+        padding: 21px 18px;
+
+        border-radius: 17px;
+    }
+
+    .vm-simulator__section-heading {
+        align-items: flex-start;
+    }
+
+    .vm-simulator__heading-icon {
+        width: 44px;
+        height: 44px;
+        flex-basis: 44px;
+    }
+
+    .vm-simulator__term-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .vm-simulator__result-top {
+        flex-direction: column;
+    }
+
+    .vm-simulator__installment-value {
+        align-items: flex-start;
+        flex-direction: column;
+
+        gap: 6px;
+    }
+
+    .vm-simulator__installment-hero > p {
+        margin-left: 0;
+    }
+
+    .vm-simulator__empty {
+        padding: 36px 8px;
+    }
+
+    .vm-simulator__empty-steps {
+        align-items: stretch;
+        flex-direction: column;
+
+        width: 100%;
+    }
+
+    .vm-simulator__empty-steps > div {
+        justify-content: center;
+    }
+
+    .vm-simulator__empty-steps > i {
+        transform: rotate(90deg);
+    }
+}
+
+.vm-simulator__chip.is-active {
+    color: #ffffff;
+    background: linear-gradient(
+        135deg,
+        #d71829,
+        #ae000d
+    );
+    border-color: transparent;
+    box-shadow: 0 6px 14px rgba(196, 0, 0, .16);
 }

@@ -1,6 +1,17 @@
-﻿@model VianaMotos.Web.Models.Categoria
+@model VianaMotos.Web.Models.Categoria
+@{
+    ViewData["Title"] = "Nova categoria";
+}
 
-<h1>Nova Categoria</h1>
+@await Html.PartialAsync("_PageHeader", new PageHeaderViewModel
+{
+    Eyebrow = "Catálogo",
+    Title = "Nova categoria",
+    Subtitle = "Cadastre uma nova classificação para o catálogo.",
+    Icon = "bi-collection",
+        Actions = new[] { new PageHeaderActionViewModel { Text = "Voltar", Url = Url.Action("Index")!, Icon = "bi-arrow-left", IsPrimary = false } }
+})
+
 
 <form asp-action="Create" method="post">
 

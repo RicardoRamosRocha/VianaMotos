@@ -1,4 +1,4 @@
-﻿@model VianaMotos.Web.Models.Moto
+@model VianaMotos.Web.Models.Moto
 
 @{
     ViewData["Title"] = $"Detalhes — {Model.Modelo}";
@@ -14,44 +14,6 @@
 <style>
     .moto-details-page {
         padding-bottom: 30px;
-    }
-
-    .moto-details-header {
-        display: flex;
-        align-items: flex-end;
-        justify-content: space-between;
-        gap: 24px;
-        margin-bottom: 26px;
-    }
-
-    .moto-details-eyebrow {
-        display: block;
-        margin-bottom: 8px;
-        color: var(--viana-red, #c40000);
-        font-size: .72rem;
-        font-weight: 850;
-        letter-spacing: .14em;
-        text-transform: uppercase;
-    }
-
-    .moto-details-title {
-        margin: 0;
-        color: var(--viana-graphite-950, #111317);
-        font-size: clamp(2rem, 4vw, 3rem);
-        font-weight: 850;
-        line-height: 1;
-    }
-
-    .moto-details-subtitle {
-        margin: 10px 0 0;
-        color: var(--viana-gray-500, #7d8794);
-        font-size: .92rem;
-    }
-
-    .moto-details-header-actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
     }
 
     .moto-details-card {
@@ -297,18 +259,6 @@
     }
 
     @@media (max-width: 991.98px) {
-        .moto-details-header {
-            align-items: flex-start;
-            flex-direction: column;
-        }
-
-        .moto-details-header-actions {
-            width: 100%;
-        }
-
-        .moto-details-header-actions .btn {
-            flex: 1;
-        }
 
         .moto-gallery-main {
             height: 440px;
@@ -319,14 +269,6 @@
         .moto-details-card {
             padding: 18px;
             border-radius: 16px;
-        }
-
-        .moto-details-header-actions {
-            flex-direction: column;
-        }
-
-        .moto-details-header-actions .btn {
-            width: 100%;
         }
 
         .moto-gallery-main {
@@ -341,34 +283,14 @@
 
 <div class="moto-details-page">
 
-    <header class="moto-details-header">
-        <div>
-            <span class="moto-details-eyebrow">
-                Gestão de estoque
-            </span>
-
-            <h1 class="moto-details-title">
-                @Model.Modelo
-            </h1>
-
-            <p class="moto-details-subtitle">
-                Visualize as informações comerciais e as imagens da motocicleta.
-            </p>
-        </div>
-
-        <div class="moto-details-header-actions">
-            <a asp-action="Index"
-               class="btn btn-outline-secondary">
-                Voltar para motos
-            </a>
-
-            <a asp-action="Edit"
-               asp-route-id="@Model.Id"
-               class="btn btn-primary">
-                Editar motocicleta
-            </a>
-        </div>
-    </header>
+    @await Html.PartialAsync("_PageHeader", new PageHeaderViewModel
+{
+    Eyebrow = "Estoque",
+    Title = Model.Modelo,
+    Subtitle = "Consulte as informações comerciais e as imagens desta motocicleta.",
+    Icon = "bi-bicycle",
+        Actions = new[] { new PageHeaderActionViewModel { Text = "Editar", Url = Url.Action("Edit", new { id = Model.Id })!, Icon = "bi-pencil-square", IsPrimary = true }, new PageHeaderActionViewModel { Text = "Voltar", Url = Url.Action("Index")!, Icon = "bi-arrow-left", IsPrimary = false } }
+})
 
     <div class="row g-4 align-items-stretch">
 

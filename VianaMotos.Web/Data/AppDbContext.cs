@@ -18,6 +18,7 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Moto> Motos { get; set; }
     public DbSet<FotoMoto> FotosMoto { get; set; }
     public DbSet<Venda> Vendas { get; set; }
+    public DbSet<Vendedor> Vendedores { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

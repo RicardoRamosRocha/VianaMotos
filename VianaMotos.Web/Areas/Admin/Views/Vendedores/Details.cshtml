@@ -1,0 +1,50 @@
+@model VianaMotos.Web.Models.Vendedor
+
+@{
+    ViewData["Title"] = "Detalhes do Vendedor";
+}
+
+<div class="admin-container">
+    @await Html.PartialAsync("_PageHeader", new PageHeaderViewModel
+{
+    Eyebrow = "Comercial",
+    Title = "Detalhes do vendedor",
+    Subtitle = "Consulte as informações cadastrais e comerciais do profissional.",
+    Icon = "bi-person-vcard",
+        Actions = new[] { new PageHeaderActionViewModel { Text = "Editar", Url = Url.Action("Edit", new { id = Model.Id })!, Icon = "bi-pencil-square", IsPrimary = true }, new PageHeaderActionViewModel { Text = "Voltar", Url = Url.Action("Index")!, Icon = "bi-arrow-left", IsPrimary = false } }
+})
+
+    <section class="form-card">
+        <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap mb-4">
+            <div class="d-flex align-items-center gap-3">
+                <span class="avatar"><i class="bi bi-person-badge"></i></span>
+                <div>
+                    <span class="text-muted small">Vendedor #@Model.Id</span>
+                    <h2 class="section-title mb-0">@Model.Nome</h2>
+                </div>
+            </div>
+            @if (Model.Ativo)
+            {
+                <span class="status-badge is-success"><i class="bi bi-check-circle-fill"></i>Ativo</span>
+            }
+            else
+            {
+                <span class="status-badge is-danger"><i class="bi bi-dash-circle-fill"></i>Inativo</span>
+            }
+        </div>
+
+        <dl class="row mb-0">
+            <dt class="col-sm-3 py-2">CPF</dt>
+            <dd class="col-sm-9 py-2">@(Model.Cpf ?? "Não informado")</dd>
+
+            <dt class="col-sm-3 py-2">Telefone</dt>
+            <dd class="col-sm-9 py-2">@(Model.Telefone ?? "Não informado")</dd>
+
+            <dt class="col-sm-3 py-2">E-mail</dt>
+            <dd class="col-sm-9 py-2">@(Model.Email ?? "Não informado")</dd>
+
+            <dt class="col-sm-3 py-2">Data de cadastro</dt>
+            <dd class="col-sm-9 py-2">@Model.DataCadastro.ToLocalTime().ToString("dd/MM/yyyy 'às' HH:mm")</dd>
+        </dl>
+    </section>
+</div>

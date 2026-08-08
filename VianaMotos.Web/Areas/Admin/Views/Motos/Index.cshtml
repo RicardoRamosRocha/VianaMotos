@@ -21,46 +21,14 @@
 }
 
 <div class="admin-container motos-catalog-page">
-    <section class="motos-catalog-hero" aria-labelledby="catalog-title">
-        <div class="motos-catalog-hero-copy">
-            <span class="motos-eyebrow"><i class="bi bi-stars"></i> Catálogo comercial</span>
-            <h1 id="catalog-title">Seu estoque, pronto para vender.</h1>
-            <p>
-                Uma visão premium das motocicletas da Viana Motos, com as informações certas para apresentar,
-                negociar e manter o estoque sempre atualizado.
-            </p>
-        </div>
-
-        <div class="motos-hero-actions" aria-label="Ações do catálogo">
-            <a asp-action="Create" class="btn btn-primary">
-                <i class="bi bi-plus-lg me-2"></i>Nova motocicleta
-            </a>
-            <a asp-area="" asp-controller="Home" asp-action="Index" class="btn dashboard-outline-light">
-                <i class="bi bi-arrow-up-right me-2"></i>Ver vitrine pública
-            </a>
-        </div>
-
-        <div class="motos-catalog-hero-orbit" aria-hidden="true">
-            <span class="motos-orbit-ring motos-orbit-ring-one"></span>
-            <span class="motos-orbit-ring motos-orbit-ring-two"></span>
-            <i class="bi bi-bicycle"></i>
-        </div>
-
-        <div class="motos-catalog-metrics" aria-label="Resumo do catálogo">
-            <div class="motos-catalog-metric">
-                <span class="motos-metric-icon"><i class="bi bi-grid-3x3-gap-fill"></i></span>
-                <span><strong>@motos.Count</strong><small>no catálogo</small></span>
-            </div>
-            <div class="motos-catalog-metric">
-                <span class="motos-metric-icon is-green"><i class="bi bi-check2-circle"></i></span>
-                <span><strong>@disponiveis</strong><small>disponíveis</small></span>
-            </div>
-            <div class="motos-catalog-metric">
-                <span class="motos-metric-icon is-gold"><i class="bi bi-camera-fill"></i></span>
-                <span><strong>@comFotos</strong><small>com fotos</small></span>
-            </div>
-        </div>
-    </section>
+    @await Html.PartialAsync("_PageHeader", new PageHeaderViewModel
+{
+    Eyebrow = "Estoque",
+    Title = "Motocicletas",
+    Subtitle = "Gerencie as motocicletas disponíveis no estoque e no catálogo.",
+    Icon = "bi-bicycle",
+        Actions = new[] { new PageHeaderActionViewModel { Text = "Nova motocicleta", Url = Url.Action("Create")!, Icon = "bi-plus-lg", IsPrimary = true }, new PageHeaderActionViewModel { Text = "Ver vitrine pública", Url = Url.Action("Index", "Home", new { area = "" })!, Icon = "bi-arrow-up-right", IsPrimary = false } }
+})
 
     <section class="motos-catalog-toolbar" aria-label="Filtros do catálogo">
         <div class="motos-search-box">

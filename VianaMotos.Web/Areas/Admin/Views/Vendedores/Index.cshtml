@@ -1,0 +1,163 @@
+@model IEnumerable<VianaMotos.Web.Models.Vendedor>
+
+@{
+    ViewData["Title"] = "Vendedores";
+    var vendedores = Model.ToList();
+    var ativos = vendedores.Count(x => x.Ativo);
+    var inativos = vendedores.Count - ativos;
+}
+
+<div class="admin-container clients-page">
+    @await Html.PartialAsync("_PageHeader", new PageHeaderViewModel
+{
+    Eyebrow = "Comercial",
+    Title = "Vendedores",
+    Subtitle = "Gerencie os profissionais responsáveis pelo atendimento e pelas vendas.",
+    Icon = "bi-person-badge",
+        Actions = new[] { new PageHeaderActionViewModel { Text = "Novo vendedor", Url = Url.Action("Create")!, Icon = "bi-plus-lg", IsPrimary = true } }
+})
+
+    @if (TempData["Sucesso"] is string mensagem)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i>@mensagem
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+        </div>
+    }
+
+    <section class="clients-table-card">
+        <div class="clients-toolbar">
+            <div>
+                <span class="clients-section-kicker">Gestão da equipe</span>
+                <h2>Equipe de vendas</h2>
+                <p>Consulte contatos, situação cadastral e dados dos vendedores.</p>
+            </div>
+
+            @if (vendedores.Count > 0)
+            {
+                <div class="clients-filters">
+                    <label class="clients-search" for="sellerSearch">
+                        <i class="bi bi-search"></i>
+                        <input id="sellerSearch" type="search" placeholder="Buscar nome, telefone ou e-mail..." autocomplete="off" />
+                    </label>
+                    <select id="sellerStatus" class="form-select clients-status-filter" aria-label="Filtrar por status">
+                        <option value="all">Todos os status</option>
+                        <option value="active">Ativos</option>
+                        <option value="inactive">Inativos</option>
+                    </select>
+                </div>
+            }
+        </div>
+
+        <div class="clients-table-wrap">
+            @if (vendedores.Count == 0)
+            {
+                <div class="clients-empty-state">
+                    <i class="bi bi-person-plus"></i>
+                    <strong>Sua equipe comercial começa aqui</strong>
+                    <span>Cadastre o primeiro vendedor para organizar a equipe da Viana Motos.</span>
+                    <a asp-action="Create" class="btn btn-primary btn-sm mt-3">Cadastrar vendedor</a>
+                </div>
+            }
+            else
+            {
+                <table class="table admin-table clients-table">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Telefone</th>
+                            <th>E-mail</th>
+                            <th>Status</th>
+                            <th class="text-end">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var vendedor in vendedores)
+                        {
+                            var iniciais = string.Join("", vendedor.Nome
+                                .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                                .Take(2)
+                                .Select(x => x[0]))
+                                .ToUpper();
+
+                            <tr class="seller-row" data-status="@(vendedor.Ativo ? "active" : "inactive")" data-search="@($"{vendedor.Nome} {vendedor.Cpf} {vendedor.Telefone} {vendedor.Email}")">
+                                <td>
+                                    <div class="client-identity">
+                                        <span class="avatar">@iniciais</span>
+                                        <div class="client-identity-copy">
+                                            <strong>@vendedor.Nome</strong>
+                                            <span>Vendedor Viana Motos · ID #@vendedor.Id</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="client-data">@(vendedor.Telefone ?? "Não informado")</span></td>
+                                <td><span class="client-data client-email">@(vendedor.Email ?? "Não informado")</span></td>
+                                <td>
+                                    @if (vendedor.Ativo)
+                                    {
+                                        <span class="status-badge is-success"><i class="bi bi-check-circle-fill"></i>Ativo</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="status-badge is-danger"><i class="bi bi-dash-circle-fill"></i>Inativo</span>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="client-actions">
+                                        <a asp-action="Details" asp-route-id="@vendedor.Id" class="client-action" title="Ver vendedor" aria-label="Ver detalhes de @vendedor.Nome">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                        <a asp-action="Edit" asp-route-id="@vendedor.Id" class="client-action" title="Editar vendedor" aria-label="Editar @vendedor.Nome">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@vendedor.Id" class="client-action is-danger" title="Excluir vendedor" aria-label="Excluir @vendedor.Nome">
+                                            <i class="bi bi-trash3"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <div id="sellersEmptyState" class="clients-empty-state" hidden>
+                    <i class="bi bi-search"></i>
+                    <strong>Nenhum vendedor encontrado</strong>
+                    <span>Ajuste a busca ou o filtro de status para continuar.</span>
+                </div>
+            }
+        </div>
+    </section>
+</div>
+
+@section Scripts {
+    <script>
+        (() => {
+            const search = document.getElementById('sellerSearch');
+            const status = document.getElementById('sellerStatus');
+            const rows = [...document.querySelectorAll('.seller-row')];
+            const empty = document.getElementById('sellersEmptyState');
+
+            if (!search || !status || !empty) return;
+
+            const filter = () => {
+                const term = (search.value || '').trim().toLowerCase();
+                const selectedStatus = status.value;
+                let visible = 0;
+
+                rows.forEach(row => {
+                    const matchesText = !term || row.dataset.search.toLowerCase().includes(term);
+                    const matchesStatus = selectedStatus === 'all' || row.dataset.status === selectedStatus;
+                    const show = matchesText && matchesStatus;
+                    row.hidden = !show;
+                    if (show) visible++;
+                });
+
+                empty.hidden = visible > 0;
+            };
+
+            search.addEventListener('input', filter);
+            status.addEventListener('change', filter);
+        })();
+    </script>
+}

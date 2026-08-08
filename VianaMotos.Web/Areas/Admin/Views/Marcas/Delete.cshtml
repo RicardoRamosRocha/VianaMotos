@@ -1,6 +1,17 @@
-﻿@model VianaMotos.Web.Models.Marca
+@model VianaMotos.Web.Models.Marca
+@{
+    ViewData["Title"] = "Excluir marca";
+}
 
-<h1>Excluir Marca</h1>
+@await Html.PartialAsync("_PageHeader", new PageHeaderViewModel
+{
+    Eyebrow = "Catálogo",
+    Title = "Excluir marca",
+    Subtitle = "Revise os dados antes de remover esta fabricante.",
+    Icon = "bi-trash3",
+        Actions = new[] { new PageHeaderActionViewModel { Text = "Voltar", Url = Url.Action("Index")!, Icon = "bi-arrow-left", IsPrimary = false } }
+})
+
 
 <div class="alert alert-danger">
     Tem certeza que deseja excluir esta marca?

@@ -1,6 +1,17 @@
-﻿@model VianaMotos.Web.Models.Combustivel
+@model VianaMotos.Web.Models.Combustivel
+@{
+    ViewData["Title"] = "Excluir combustível";
+}
 
-<h1>Excluir Combustível</h1>
+@await Html.PartialAsync("_PageHeader", new PageHeaderViewModel
+{
+    Eyebrow = "Catálogo",
+    Title = "Excluir combustível",
+    Subtitle = "Revise os dados antes de remover este tipo de combustível.",
+    Icon = "bi-trash3",
+        Actions = new[] { new PageHeaderActionViewModel { Text = "Voltar", Url = Url.Action("Index")!, Icon = "bi-arrow-left", IsPrimary = false } }
+})
+
 
 <div class="alert alert-danger">
     Tem certeza que deseja excluir este combustível?
